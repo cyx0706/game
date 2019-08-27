@@ -7,24 +7,24 @@
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 [edgeRight] 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
 [doorPosTop] None
-[doorPosBottom] 10
-[barrier] None
+[doorPosBottom] 10:2:(10,1)
+[barrier] (5,6),(5,5)
 [monster] None
-[npc] xxxx:(5,6),xxxx:(5,5)
+[npc] NN-01:(5,6),NY-01:(5,5)
 [item] None
 ---
 [id] 2
 [nameCN] 王城
 [nameEN] royal-city
 [edgeSign] @
-[initPos] (18,1)
+[initPos] (10,10)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 [edgeRight] 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
-[doorPosTop] 10:1:(18,10)
-[doorPosBottom] 3:3:(5,1),10:4:(5,1),17:5:()
-[barrier] (10,10),(10,13),(10,16)
+[doorPosTop] 10:1:(10,18)
+[doorPosBottom] 7:3:(5,1),3:4:(5,1),17:5:()
+[barrier] (15,10),(9,13),(9,16),(9,17)
 [monster] None
-[npc] xxxx:(10,10),xxxx:(10,13),xxxx:(10,16)
+[npc] NN-07:(15,10),NN-04:(9,13),NN-06:(9,16),NN-03:(9,17)
 [item] None
 ---
 [id] 3
@@ -34,11 +34,11 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
+[doorPosTop] 5:2:(7,18)
 [doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
+[barrier] (5,10),(6,4),(10,5)
+[monster] MY-03:(5,3)
+[npc] NY-03:(10,5),NN-11:(7,7)
 [item] None
 ---
 [id] 4
@@ -48,12 +48,12 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5
 [edgeRight] 30,30,30,30,30,30,30,30,30,30,17,17,17,17,17,17,17,17,17,17
-[doorPosTop] 5:2:(10,18)
-[doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
-[item] xxx
+[doorPosTop] 5:2:(3,18)
+[doorPosBottom] 6:6:(6,1)
+[barrier] (5,5),(6,4),(10,5),(7,7)
+[monster] MY-01:(5,5)
+[npc] NY-02:(10,5),NN-10:(7,7)
+[item] (6,4)
 ---
 [id] 5
 [nameCN] 平原
@@ -62,12 +62,12 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
-[doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
-[item] None
+[doorPosTop] 5:2:(17,18)
+[doorPosBottom] 4:7:(4,1),10:8:(8,1)
+[barrier] (10,5),(6,4),(6,9)
+[monster] MY-02:(6,4)
+[npc] NN-09:(10,5)
+[item] xxxx
 ---
 [id] 6
 [nameCN] 阿瓦隆
@@ -76,11 +76,11 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
+[doorPosTop] 6:4:(6,18)
 [doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
+[barrier] (10,17)
+[monster] None
+[npc] NN-08:(10,17)
 [item] None
 ---
 [id] 7
@@ -90,11 +90,11 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
-[doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
+[doorPosTop] 4:5:(4,18)
+[doorPosBottom] 10:9:(3,2)
+[barrier] (7,7)
+[monster] MY-03:(7,7)
+[npc] None
 [item] None
 ---
 [id] 8
@@ -104,11 +104,11 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
-[doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
+[doorPosTop] 8:5:(10,18)
+[doorPosBottom] 10:9:(10,18)
+[barrier] (5,3),(5,4),(5,5)
+[monster] None
+[npc] NN-12:(5,3),NN-13:(5,4),NN-14:(5,5)
 [item] None
 ---
 [id] 9
@@ -118,11 +118,11 @@
 [initPos] (1,1)
 [edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
-[doorPosTop] 5:2:(15,18)
-[doorPosBottom] None
-[barrier] (5,3),(6,4),(10,5),(7,7)
-[monster] xxxx:(5,3),xxxx:(6,4)
-[npc] xxxx:(10,5),xxxx:(7,7)
+[doorPosTop] 10:7:(10,18)
+[doorPosBottom] 10:8:(10,18)
+[barrier] (5,3),(10,5),(7,7)
+[monster] None
+[npc] NN-16:(10,5),NN-15:(7,7),NY-04:(5,3)
 [item] None
 
 
