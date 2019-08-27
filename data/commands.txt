@@ -15,7 +15,9 @@ flee 3
 
 -商店指令
 purchase 4
-/ purchase <item_name> <num>
+/ purchase <item_name>
+// 购买指定物品1个
+/ purchase <item_name> -number <num>
 // 购买指定物品num个
 
 sell 5

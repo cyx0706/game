@@ -6,13 +6,28 @@
 
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <map>
-#include<sstream>
+#include <regex>
 
 #include "Tool.h"
 
 using namespace std;
+
+/*
+ * @brief 用于在找不到对应命令时，输出 command not found
+ */
+void commandNotFound(){
+    cout << "command not found" << endl;
+}
+
+/*
+ * @brief 用于当前输入的命令被禁止时，输出 command is banned
+ */
+void commandIsBanned() {
+    cout << "command is banned" << endl;
+}
 
 /*
  * @brief 生成 命令行命令的 map
@@ -26,9 +41,9 @@ using namespace std;
  * / attack <character_name>
  * // （战斗状态）使用普通攻击 攻击指定目标
  *
- * 以'-'开头为  命令分类
- * 以'/'开头为  命令格式
- * 以'//'开头为 命令介绍
+ * 以'-'开头为   命令分类
+ * 以'/ '开头为  命令用法
+ * 以'// '开头为 命令简介
  *
  * 开头没有修饰符的为命令
  * 命令后有一数字 用空格隔开
@@ -54,35 +69,89 @@ Client::Client() {
     f.close();
 }
 
-/* 临时测试函数 ********************************************************/
-void sayHello() {
-    cout << "Hello Hello Hello" << endl;
-}
-
-void sayNo() {
-    cout << "NO NO NO" << endl;
-}
-/* 临时测试函数 ********************************************************/
-
 /*
- * @brief 用于在找不到对应命令时，输出 command not found
+ * @brief 输出命令的帮助语句
+ *
+ * @param command 要查看帮助的命令
  */
-void commandNotFound(){
-    cout << "command not found" << endl;
+void Client::commandHelp(string& command) {
+    ifstream f("../data/commands.txt");
+
+    string str;
+    // 一次读取一行 读到要查找到命令的位置
+    while (getline(f,str)) {
+        if (!str.empty() && str[0] != '/' && str[0] != '-') {
+            str = Tool::split(str)[0];
+
+            if (command == str) {
+                break;
+            }
+        }
+    }
+
+    // 读到文件结尾即为没有此条命令的帮助
+    if (f.eof()) {
+        cout << "no command help" << endl;
+    } else {
+        while (getline(f,str)) {
+            // 文件中 每条命令(包含:命令、命令用法、命令简介)之间用空行隔开
+            // 读到空行则此命令的所有帮助语句即为输出完毕
+            if (str.empty()) {
+                break;
+            }
+            else {
+                // 将文件中存储此条命令的相关内容进行格式替换
+                // 以'/ ' 开头的为命令用法
+                // 以'// '开头的为命令简介
+                regex informationPattern("// ");
+                regex usagePattern("/ ");
+
+                // 必须先对'// '进行匹配，因为'/ '为'// '的一部分
+                str = regex_replace(str, informationPattern, "简介:");
+                str = regex_replace(str, usagePattern, "用法:");
+
+                cout << str << endl;
+            }
+        }
+    }
+
+    f.close();
 }
 
 /*
- * @brief 搜寻对应命令 返回函数指针
+ * @brief 检查命令是否被禁止
+ *
+ * @param command 命令行输入的命令(表示数值)
+ * @param bannedCommands 被禁止调用的命令
+ * @return 未被禁止则返回false 被禁止则返回true
+ */
+bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
+    for (int one: bannedCommands) {
+        if ((CommandLists)one == command) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/*
+ * @brief 搜寻对应命令 可用即执行
  *
  * @param commands 命令行输入的命令
- * @return 返回函数指针
  */
-auto Client::findCommand(vector<string> commands) {
+void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommands) {
     // 寻找是否在 commandMap 中有对应的命令
-    // 如果没有对应的命令返回 commandNotFound() 函数指针
+    // 如果没有对应的命令 执行 commandNotFound()
     // commandMap.find() 返回迭代器类型
     auto iter = commandsMap.find(commands[0]);
-    if (iter != commandsMap.end()){
+    if (iter != commandsMap.end()) {
+        // 查看是否是帮助命令
+        if (commands.size() == 2 && (commands[1] == "-h" || commands[1] == "--help")) {
+            commandHelp(commands[0]);
+
+            return;
+        }
 
         // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
         // 表示数值转换为 int 类型
@@ -93,54 +162,59 @@ auto Client::findCommand(vector<string> commands) {
         stream >> number ;
         stream.clear();
 
-        // 找到对应的函数，返回函数指针
-        // TODO
         auto command = (CommandLists)number;
-        switch (command) {
-            case attack:
-                return sayHello;
-                break;
-            case skill:
-                return sayNo;
-                break;
-            case flee:
-                break;
-            case purchase:
-                break;
-            case sell:
-                break;
-            case status:
-                break;
-            case equipment:
-                break;
-            case package:
-                break;
-            case item:
-                break;
-            case equip:
-                break;
-            case takeoff:
-                break;
-            case discard:
-                break;
-            case talk:
-                break;
-            case fight:
-                break;
-            case slaughter:
-                break;
-            case maps:
-                break;
-            case help:
-                break;
-            case mission:
-                break;
-            case save:
-                exit(1);
-                break;
+
+        // 检查命令是否可用
+        if (!isBanned(command, bannedCommands)) {
+            // TODO
+            switch (command) {
+                case attack:
+                    break;
+                case skill:
+                    break;
+                case flee:
+                    break;
+                case purchase:
+                    break;
+                case sell:
+                    break;
+                case status:
+                    break;
+                case equipment:
+                    break;
+                case package:
+                    break;
+                case item:
+                    break;
+                case equip:
+                    break;
+                case takeoff:
+                    break;
+                case discard:
+                    break;
+                case talk:
+                    break;
+                case fight:
+                    break;
+                case slaughter:
+                    break;
+                case maps:
+                    break;
+                case help:
+                    break;
+                case mission:
+                    break;
+                case save:
+                    exit(1);
+                    break;
+                default:
+                    commandNotFound();
+            }
+        } else {
+            commandIsBanned();
         }
     } else {
-        return commandNotFound;
+        commandNotFound();
     }
 }
 
@@ -149,7 +223,7 @@ auto Client::findCommand(vector<string> commands) {
  *
  * @param str
  */
-void Client::base(string str) {
+void Client::base(string str, vector<int>& bannedCommands) {
         // 将前后空格去除，连续空格变为单个空格
         str = Tool::clean(str);
 
@@ -157,9 +231,8 @@ void Client::base(string str) {
             vector commands = Tool::split(str, ' ');
 
             // 调用命令行输入命令对应的函数
-            auto fun = findCommand(commands);
-            fun();
-        }else {
+            executeCommand(commands, bannedCommands);
+        } else {
             cout << "empty command" << endl;
         }
 }
