@@ -161,6 +161,7 @@ auto Client::findCommand(vector<string> commands) {
             case mission:
                 break;
             case save:
+                exit(1);
                 break;
         }
     } else {
@@ -170,14 +171,10 @@ auto Client::findCommand(vector<string> commands) {
 
 /*
  * @brief 命令行的 输出 接受
+ *
+ * @param str
  */
-void Client::base() {
-    while (true) {
-        // 读取输入的一行
-        std::cout << "enter the command: ";
-        string str;
-        getline(cin, str);
-
+void Client::base(string str) {
         // 将前后空格去除，连续空格变为单个空格
         str = Tool::clean(str);
 
@@ -187,11 +184,8 @@ void Client::base() {
             // 调用命令行输入命令对应的函数
             auto fun = findCommand(commands);
             fun();
+        }else {
+            cout << "empty command" << endl;
         }
-
-        // TODO
-        if (str == "save") {
-            break;
-        }
-    }
 }
+

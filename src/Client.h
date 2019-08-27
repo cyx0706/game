@@ -25,7 +25,7 @@ using namespace std;
 class Client {
 public:
     Client();
-    void base();
+    void base(string str);
     auto findCommand(vector<string> commands);
 
 private:
