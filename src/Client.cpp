@@ -15,31 +15,6 @@
 using namespace std;
 
 /*
- * @brief 所有的命令 并 对应一个数字
- */
-enum CommandLists {
-    attack = 1,
-    skill,
-    flee,
-    purchase,
-    sell,
-    status,
-    equipment,
-    package,
-    item,
-    equip,
-    takeoff,
-    discard,
-    talk,
-    fight,
-    slaughter,
-    maps,
-    help,
-    mission,
-    save,
-};
-
-/*
  * @brief 生成 命令行命令的 map
  * 从文件 commands.txt 读取 命令 和 表示数值，存入commandsMap中
  * 命令 和 数值 必须与上方 枚举类型 CommandLists 一致

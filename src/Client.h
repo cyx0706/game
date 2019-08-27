@@ -12,6 +12,31 @@
 using namespace std;
 
 /*
+ * @brief 所有的命令 并 对应一个数字
+ */
+enum CommandLists {
+    attack = 1,
+    skill,
+    flee,
+    purchase,
+    sell,
+    status,
+    equipment,
+    package,
+    item,
+    equip,
+    takeoff,
+    discard,
+    talk,
+    fight,
+    slaughter,
+    maps,
+    help,
+    mission,
+    save,
+};
+
+/*
  * @brief 命令行类
  *
  * @note 调用
