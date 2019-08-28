@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <string>
 #include <map>
 #include <regex>
@@ -51,7 +50,7 @@ void commandIsBanned() {
  */
 Client::Client() {
     // 可执行文件生成在 build 里将 command.txt 放在根目录/data下
-    ifstream f("../data/commands.txt");
+    ifstream f(COMMANDS_TXT_PATH);
 
     string str;
     // 一次读取一行
@@ -75,7 +74,7 @@ Client::Client() {
  * @param command 要查看帮助的命令
  */
 void Client::commandHelp(string& command) {
-    ifstream f("../data/commands.txt");
+    ifstream f(COMMANDS_TXT_PATH);
 
     string str;
     // 一次读取一行 读到要查找到命令的位置
@@ -149,6 +148,12 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
         // 查看是否是帮助命令
         if (commands.size() == 2 && (commands[1] == "-h" || commands[1] == "--help")) {
             commandHelp(commands[0]);
+
+            return;
+        }
+
+        if (commands.size() == 2 && commands[1] == "-help") {
+            cout << "use " << commands[0] << " -h or " << commands[0] << " --help" << endl;
 
             return;
         }
