@@ -55,7 +55,7 @@ NY-04 巨龙（法夫纳<Fafnir>）
 
 MY-01 哥布林（Goblin）
 
-MY-02 史莱姆（blue-slime）
+MY-02 史莱姆（slime）
 
 MY-03 影狼（shadow-wolf）
 

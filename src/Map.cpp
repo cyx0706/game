@@ -2,7 +2,9 @@
 // Created by cyx on 2019/8/27.
 //
 #include "Map.h"
-
+#include "Tool.h"
+#include <fstream>
+using namespace std;
 /*
  * @brief 初始化地图
  */
@@ -173,6 +175,81 @@ bool Map::checkTopMapTransition() {
  * @param mapId: 要读取地图的id
  */
 void Map::load(int mapId) {
+    ifstream fp;
+    int index;
+    int id;
+    vector<string>temp;
+    string sentence;
+    fp.open(mapPath);
+    while (fp.peek() != EOF){
+        getline(fp, sentence); // 文件流读入一行
+       if (sentence == "---"){
+           getline(fp, sentence); // 读出id
+           index = sentence.find_first_of(' ') + 1; // 向后一位
+           id = int(sentence[index]);
+           if (mapId == id){
+               // 读后面的数据
+               mapNow->id = id;
+               // 读中文名
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               mapNow->nameCN = sentence.substr(index);
+               // 读英文名
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               mapNow->nameEN = sentence.substr(index);
+               //读边界符号
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               mapNow->edgeSign = char(sentence[index]);
+               //读取初始位置,在外面会设定,这里无所谓
+               getline(fp, sentence);
+               mapNow->initPos = {1, 1};
+               //读取左边界
+               getline(fp, sentence);
+               temp = Tool::split(sentence, ',');
+               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+                   mapNow->edgeLeft.push_back(fromString<short>(*iter)); // string转int
+               }
+               // 读取右边界
+               getline(fp, sentence);
+               temp = Tool::split(sentence, ',');
+               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+                   mapNow->edgeRight.push_back(fromString<short>(*iter)); // string转int
+               }
+               // 读取顶部门
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               string foo;
+               foo = sentence.substr(index); // 获取后续的字符串
+               if(foo != "None"){
+                   vector<string>doors;
+                   temp = Tool::split(foo, ' ');
+                   for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+                       doors = Tool::split(foo, ':');
+                       auto door = fromString<short>(doors[0]);
+                       int nextMapId = fromString<int>(doors[1]);
+                       //COORD pos = 正则匹配
+                       mapNow->doorPosTop.push_back(door);
+
+                   }
+
+
+               }
+
+
+
+
+               mapNow->edgeSign
+           }
+           else{
+               continue;
+           }
+       }
+       else{
+           continue;
+       }
+    }
 
 }
 

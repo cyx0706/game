@@ -91,3 +91,4 @@ string Tool::clean(const string& str) {
 
     return cleanedStr;
 }
+

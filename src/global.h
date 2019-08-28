@@ -12,6 +12,7 @@
 /*
  * 全局变量存到这里
  */
+string mapPath = R"(../data/map.txt)";
 HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;

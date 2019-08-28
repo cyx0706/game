@@ -8,12 +8,12 @@
  */
 void GameLoop::mapLoop() {
     char input;
-    while(TRUE)
+    while(true)
     {
         if(kbhit())
         {
             mapNow->clean(uPos);//清除原有输出
-            input = getch();
+            input = getchar();
             // 输入Esc转换为命令行模式,返回true通知主调函数
             if (input == ESC){
                 system("cls"); // 清空屏幕

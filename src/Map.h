@@ -18,7 +18,7 @@
 #include "global.h"
 
 using namespace std;
-
+extern string mapPath;
 extern COORD uPos;
 class Map{
 public:
