@@ -9,7 +9,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-using namespace std;
+#include "global.h"
 /*
  * @brief 工具类
  *

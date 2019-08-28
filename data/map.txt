@@ -53,7 +53,7 @@
 [barrier] (5,5),(6,4),(10,5),(7,7)
 [monster] MY-01:(5,5)
 [npc] NY-02:(10,5),NN-10:(7,7)
-[item] (6,4)
+[item] None
 ---
 [id] 5
 [nameCN] 平原
@@ -67,7 +67,7 @@
 [barrier] (10,5),(6,4),(6,9)
 [monster] MY-02:(6,4)
 [npc] NN-09:(10,5)
-[item] xxxx
+[item] None
 ---
 [id] 6
 [nameCN] 阿瓦隆

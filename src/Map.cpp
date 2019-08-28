@@ -4,7 +4,11 @@
 #include "Map.h"
 #include "Tool.h"
 #include <fstream>
-using namespace std;
+#include <regex>
+extern HANDLE hOut;
+extern unique_ptr<Map>mapNow;
+extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
+extern CONSOLE_CURSOR_INFO cursorInfo;
 /*
  * @brief 初始化地图
  */
@@ -12,7 +16,7 @@ void Map::initMap() {
     initChar();
     short temp = 0;
     bool flag = false;
-    COORD pos = {0, 0};
+    SCOORD pos = {0, 0};
     gotoxy(pos);
     for (int j = edgeLeft[0]; j <= edgeRight[0]; j++) {
         // 画上边界的门
@@ -152,6 +156,7 @@ bool Map::checkBottomMapTransition() {
             return true;
         }
     }
+    return false;
 }
 
 
@@ -167,6 +172,7 @@ bool Map::checkTopMapTransition() {
             return true;
         }
     }
+    return false;
 }
 
 /*
@@ -176,10 +182,14 @@ bool Map::checkTopMapTransition() {
  */
 void Map::load(int mapId) {
     ifstream fp;
-    int index;
+    unsigned int index;
     int id;
     vector<string>temp;
     string sentence;
+    //声明正则匹配点
+    regex r;
+    r = R"(\((\d+),(\d+)\))";
+    smatch group;
     fp.open(mapPath);
     while (fp.peek() != EOF){
         getline(fp, sentence); // 文件流读入一行
@@ -217,30 +227,83 @@ void Map::load(int mapId) {
                for (auto iter = temp.begin(); iter != temp.end(); iter++) {
                    mapNow->edgeRight.push_back(fromString<short>(*iter)); // string转int
                }
+               string foo;
                // 读取顶部门
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
-               string foo;
+               foo = sentence.substr(index); // 获取后续的字符串
+               regex DoorRegex;
+               DoorRegex = R"((\d+):(\d+):(\d+)\((\d+),(\d+)\))";
+               if(foo != "None"){
+                   regex_match(foo, group, DoorRegex);
+                   short door = short(stoi(group[1]));
+                   int nextMapId = stoi(group[2]);
+                   SCOORD pos = {short(stoi(group[3])), short(stoi(group[4]))};
+                   mapNow->roadTo.insert(make_pair(SCOORD {door, 1}, nextMapId));
+                   mapNow->road.insert(make_pair(SCOORD {door, 1}, pos));
+                   mapNow->doorPosTop.push_back(door);
+               }
+               //读取底部门
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index); // 获取后续的字符串
                if(foo != "None"){
                    vector<string>doors;
                    temp = Tool::split(foo, ' ');
                    for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                       doors = Tool::split(foo, ':');
-                       auto door = fromString<short>(doors[0]);
-                       int nextMapId = fromString<int>(doors[1]);
-                       //COORD pos = 正则匹配
-                       mapNow->doorPosTop.push_back(door);
-
+                       regex_match(foo, group, DoorRegex);
+                       short door = short(stoi(group[1]));
+                       int nextMapId = stoi(group[2]);
+                       SCOORD pos = {short(stoi(group[3])), short(stoi(group[4]))};
+                       mapNow->roadTo.insert(make_pair(SCOORD {door, 1}, nextMapId));
+                       mapNow->road.insert(make_pair(SCOORD {door, 1}, pos));
+                       mapNow->doorPosBottom.push_back(door);
                    }
-
-
+               }
+               // 读取障碍物
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               foo = sentence.substr(index);
+               temp = Tool::split(foo, ',');
+               for (auto iter = temp.begin(); iter < temp.end(); iter++) {
+                   regex_match(*iter, group, r);
+                   SCOORD pos = {short(stoi(group[1])), short(stoi(group[2]))};
+                   mapNow->barrier.push_back(pos);
                }
 
+               regex mapRegex;
+               mapRegex = R"((.{5}):\((\d+),(\d+)\))";
+               //读取怪物
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               foo = sentence.substr(index);
+               if (foo != "None"){
+                   temp = Tool::split(foo, ',');
+                   for (auto iter = temp.begin(); iter < temp.end(); iter++) {
+                       regex_match(*iter, group, mapRegex);
+                       SCOORD pos = {short(stoi(group[2])), short(stoi(group[3]))};
+                       mapNow->monsters.insert(make_pair(pos, group[1]));
+                   }
+               }
+               //读取npc
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               foo = sentence.substr(index);
+               if (foo != "None"){
+                   temp = Tool::split(foo, ',');
+                   for (auto iter = temp.begin(); iter < temp.end(); iter++) {
+                       regex_match(*iter, group, mapRegex);
+                       SCOORD pos = {short(stoi(group[2])), short(stoi(group[3]))};
+                       mapNow->npcs.insert(make_pair(pos, group[1]));
+                   }
+               }
+               //读取item
+               getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               foo = sentence.substr(index);
+               if (foo == "None"){
 
-
-
-               mapNow->edgeSign
+               }
            }
            else{
                continue;
@@ -250,16 +313,15 @@ void Map::load(int mapId) {
            continue;
        }
     }
-
 }
 
 /*
  * @brief 控制用户移动的函数
  *
- * @param uPos:玩家坐标的引用 key:方向键
+ * @param key:方向键
  */
 void Map::move(int key) {
-    COORD resetPos = uPos;
+    SCOORD resetPos = uPos;
     short x = uPos.X;
     short y = uPos.Y;
     //向上走
@@ -337,7 +399,7 @@ void Map::print(char playerChar/* ='P' */) {
  *
  * @param clPos: 位置
  */
-void Map::clean(COORD clPos) {
+void Map::clean(SCOORD clPos) {
     SetConsoleCursorPosition(hOut, clPos);
     putchar(' ');
 }
@@ -347,7 +409,7 @@ void Map::clean(COORD clPos) {
  *
  * @param pos:指定坐标
  */
-void Map::gotoxy(COORD pos) {
+void Map::gotoxy(SCOORD pos) {
     SetConsoleCursorPosition(hOut, pos);
 }
 

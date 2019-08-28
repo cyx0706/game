@@ -17,21 +17,39 @@
 #include "GameLoop.h"
 #include "global.h"
 
-using namespace std;
+struct SCOORD:public COORD{
+    bool operator<(const SCOORD &pos);
+    bool operator>(const SCOORD &pos);
+    bool operator<(const SCOORD &pos) const ;
+    bool operator>(const SCOORD &pos) const ;
+};
+bool SCOORD::operator<(const SCOORD &pos) {
+    return this->X < pos.X || this->Y < pos.Y;
+}
+bool SCOORD::operator>(const SCOORD &pos) {
+    return !this->operator<(pos);
+}
+bool SCOORD::operator>(const SCOORD &pos) const {
+    return !this->operator<(pos);
+}
+bool SCOORD::operator<(const SCOORD &pos) const {
+    return this->X < pos.X || this->Y < pos.Y;
+}
+
 extern string mapPath;
-extern COORD uPos;
+extern SCOORD uPos;
 class Map{
 public:
     friend class GameLoop;
     int id;  //根据这个在文件里查找
     char edgeSign;
-    COORD initPos;  // 记录用户的初始化位置
+    SCOORD initPos;  // 记录用户的初始化位置
 
     void initMap();
     void move(int key); // 用户移动来调用这个
-    void gotoxy(COORD pos);
+    void gotoxy(SCOORD pos);
     void print(char playerChar = 'P');  // 显示用户
-    void clean(COORD clPos); // 清除
+    void clean(SCOORD clPos); // 清除
     int checkEvent(); // 检查事件
     void load(int mapId); // 载入地图
     unique_ptr<Map> nextMap(int mapId);
@@ -42,21 +60,21 @@ private:
     vector<short>edgeRight;  // 左右边界
     vector<short>doorPosTop;  // 上下侧的门
     vector<short>doorPosBottom;
-    vector<COORD>barrier;
-    map<COORD, int>items;       //映射对应物品id
-    map<COORD, string>npcs;    // 映射对应的NPC
-    map<COORD, string>monsters;    // 映射对应的怪
+    vector<SCOORD>barrier;
+    map<SCOORD, int>items;       //映射对应物品id
+    map<SCOORD, string>npcs;    // 映射对应的NPC
+    map<SCOORD, string>monsters;    // 映射对应的怪
 
 //    vector<Monsters>monsters; // 地图里的怪物
     string nameCN;
     string nameEN;
-    map<COORD, int>roadTo;   //地图联通
-    map<COORD, COORD>road;   //道路联通
+    map<SCOORD, int>roadTo;   //地图联通
+    map<SCOORD, SCOORD>road;   //道路联通
     bool checkBottomMapTransition();
     bool checkTopMapTransition();
     void initChar(char playerChar = 'P');
     void initBarrier();
 };
 
-
+unique_ptr<Map>mapNow;
 #endif //GAME_MAP_H

@@ -2,10 +2,15 @@
 // Created by cyx on 2019/8/27.
 //
 #include "GameLoop.h"
+#include "Map.h"
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
  */
+
+
+
+Client client;
 void GameLoop::mapLoop() {
     char input;
     while(true)
@@ -63,7 +68,7 @@ void commandLoop(){
             return; // 返回地图循环
         }
         else{
-            client.base(input);
+            client.base(input, bannedCommand);
         }
 
 
