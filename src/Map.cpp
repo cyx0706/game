@@ -9,6 +9,8 @@ extern HANDLE hOut;
 extern unique_ptr<Map>mapNow;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
+extern vector<NPC>globalNPC;
+extern vector<Monster>globalMonster;
 /*
  * @brief 初始化地图
  */
@@ -108,16 +110,39 @@ void Map::initBarrier() {
     //查一下映射的对应对象,不同的符号表示
     SetConsoleTextAttribute(hOut, 0x0a);
     GetConsoleScreenBufferInfo(hOut, &screenInfo);
-    CHAR_INFO chFill = {'T',  screenInfo.wAttributes}; //定义剪切区域填充字符
     short xLeft = 0;
     short xRight = 0;
-    for (int i = 0; i < barrier.size(); i++) {
-        xLeft = barrier[i].X - 1;
-        xRight = barrier[i].X;
-        SMALL_RECT CutScr = {xLeft, barrier[i].Y, xRight, barrier[i].Y};
-        ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, barrier[i], &chFill); //移动文本
+    short y = 0;
+    // 画NPC
+    CHAR_INFO chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
+    for (auto iter = globalNPC.begin(); iter != globalNPC.end(); iter++) {
+        if (!(*iter).mapLocation.mapId == this.mapId){
+            continue;
+        }
+        else{
+            xLeft = (*iter).mapLocation.x - 1;
+            xRight = (*iter).mapLocation.x;
+            y = (*iter).mapLocation.y;
+            SMALL_RECT CutScr = {xLeft, y, xRight, y};
+            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, y, &chFill); //移动文本
+        }
+    }
+    // 画Monster
+    CHAR_INFO chFill = {'M',  screenInfo.wAttributes};
+    for (auto iter = globalMonster.begin(); iter != globalMonster.end() ; iter++) {
+        if (!(*iter).mapLocation.mapId == this.mapId){
+            continue;
+        }
+        else{
+            xLeft = (*iter).mapLocation.x - 1;
+            xRight = (*iter).mapLocation.x;
+            y = (*iter).mapLocation.y;
+            SMALL_RECT CutScr = {xLeft, y, xRight, y};
+            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, y, &chFill); //移动文本
+        }
     }
     SetConsoleTextAttribute(hOut, 0x0f);
+    // 画item
 }
 
 

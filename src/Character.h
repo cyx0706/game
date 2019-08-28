@@ -13,6 +13,12 @@
 #include "Weapon.h"
 #include "Armor.h"
 
+struct Location{
+    int mapId;
+    int x;
+    int y;
+};
+
 using namespace std;
 
 class Character {
@@ -24,8 +30,7 @@ public:
     string description;
     Status status;
     vector <Buff> buffs;
-    int mapLocation;
-    COORD screenLocation;
+    Location mapLocation;
     char displayChar;
     vector <Skill&> skills;
     //方法

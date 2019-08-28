@@ -10,6 +10,7 @@
 #include "Player.h"
 #include "Client.h"
 #include "Map.h"
+#include "Monster.h"
 
 using std::cout;
 using std::cin;

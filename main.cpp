@@ -6,7 +6,8 @@ HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;
 Player player;
-vector<NPC>npcs;
+vector<NPC>globalNPC;
+vector<Monster>globalMonster;
 vector<int>bannedCommand;
 SCOORD uPos = {1, 1};
 int main() {
