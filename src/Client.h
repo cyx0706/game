@@ -11,6 +11,8 @@
 
 using namespace std;
 
+static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
+
 /*
  * @brief 所有的命令 并 对应一个数字
  */
