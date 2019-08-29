@@ -9,8 +9,10 @@
  */
 
 
-
-Client client;
+extern HANDLE hOut;
+extern vector<int>commonBannedCommands;
+extern enum CommandLists;
+extern Client client;
 void GameLoop::mapLoop() {
     char input;
     while(true)
@@ -68,7 +70,7 @@ void commandLoop(){
             return; // 返回地图循环
         }
         else{
-            client.base(input, bannedCommand);
+            client.base(input, commonBannedCommands);
         }
 
 
@@ -88,5 +90,12 @@ void GameLoop::initGame() {
 //
 //}
 void GameLoop::gameStart() {
+
+}
+
+/*
+ * 战斗循环直到一方死亡结束
+ */
+void GameLoop::battleLoop() {
 
 }

@@ -10,21 +10,15 @@
 #define SPACE 32
 #define ESC 27
 
-
-
-extern enum CommandLists;
-
-
-
-
 //执行游戏
 class GameLoop{
 public:
     static void mapLoop();
     static void initGame();
     static void gameStart();
-    static void loop();
+//    static void loop();
     static void commandLoop();
+    static void battleLoop();
 };
 
 #endif //GAME_GAMELOOP_H
