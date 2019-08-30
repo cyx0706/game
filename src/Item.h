@@ -6,11 +6,12 @@
 #define GAME_ITEM_H
 #include <string>
 #include "global.h"
-
+#define ITEMS_TXT_PATH "../data/items.txt"
 using std::string;
 
 class Item{
 public:
+    explicit Item(int id, int number = 1);
     int id;
     string nameCN;
     string nameEN;
@@ -19,6 +20,7 @@ public:
     int boughtPrice;
     bool canDrop;
     bool canSell;
+    void showDescription();
 };
 
 class Drug:public Item{

@@ -102,7 +102,7 @@ public:
     void addKilledMonster();
 
     void addItem(Item &item);
-    void deleteItem(string itemId, int number);
+    void deleteItem(int itemId, int number);
     virtual bool isDead();
 
 private:

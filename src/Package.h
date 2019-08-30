@@ -2,34 +2,36 @@
 // Created by rhc on 2019/8/26.
 //
 
-#ifndef MUD_PACKAGE_H
-#define MUD_PACKAGE_H
+#ifndef GAME_PACKAGE_H
+#define GAME_PACKAGE_H
 #include "global.h"
 #include <iostream>
 #include <vector>
 #include "Character.h"
 #include "Item.h"
-
+#include <iostream>
 class Package {
 public:
     //属性
-    Package()= default;
+    Package();
     vector<Item> items;
     int maxItem;
     //方法
-    bool addItem(int itemId);
+    bool addItem(int itemId, int number);
     void showItems();
     void showItem(int itemId);
-    void deleteItem(int itemId);
+    bool deleteItem(int itemId, int number);
+    friend istream& operator>>(istream& fpStream, Package &pack);
 };
 
-class Shop : public Package{
+class Shop{
 public:
-    Shop()= default;
-    void buy(int itemId);
-    void sell(int itemId);
+    Shop();
+    bool buy(int itemId, int number, int &money)
+    bool sell(int itemId, int number, int &money)
     void shopMenu();
+    Package aPackage;
 };
 
 
-#endif //MUD_PACKAGE_H
+#endif //GAME_PACKAGE_H
