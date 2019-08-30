@@ -1,0 +1,31 @@
+id 1
+nameCN 壹
+nameEN one
+description 这是一
+boughtPrice 10
+canDrop true
+canSell true
+
+id 2
+nameCN 贰
+nameEN two
+description 这是二
+boughtPrice 20
+canDrop false
+canSell false
+
+id 3
+nameCN 叁
+nameEN three
+description 这是三
+boughtPrice 30
+canDrop false
+canSell true
+
+id 4
+nameCN 肆
+nameEN four
+description 这是四
+boughtPrice 40
+canDrop true
+canSell false

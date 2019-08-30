@@ -6,16 +6,23 @@
 #define GAME_ITEM_H
 
 #include <string>
+#include "global.h"
+
+static const string ITEMS_TXT_PATH = "../data/items.txt"; // NOLINT
 
 class Item{
 public:
     int id;
-    std::string nameCN;
-    std::string nameEN;
-    std::string description;
+    string nameCN;
+    string nameEN;
+    string description;
     int num;
     int boughtPrice;
     bool canDrop;
     bool canSell;
+public:
+    Item(int id);
+
 };
+
 #endif //GAME_ITEM_H

@@ -90,3 +90,28 @@ string Tool::clean(const string& str) {
     return cleanedStr;
 }
 
+map<string, string> Tool::dataMap(ifstream& f) {
+    map<string, string> data;
+    string str;
+
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> keyValue = Tool::split(str);
+
+            data.insert(pair<string, string>(keyValue[0], keyValue[1]));
+        } else {
+            break;
+        }
+    }
+
+    return data;
+}
+
+bool Tool::boolFromString(string &str) {
+    if (str == "true") {
+        return true;
+    } else {
+        return false;
+    }
+}
+
