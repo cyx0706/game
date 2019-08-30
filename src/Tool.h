@@ -2,8 +2,8 @@
 // Created by Leo on 2019-08-26.
 //
 
-#ifndef TEST_TOOL_H
-#define TEST_TOOL_H
+#ifndef GAME_TOOL_H
+#define GAME_TOOL_H
 
 #include <vector>
 #include <string>
@@ -42,4 +42,4 @@ inline T fromString(const string &str){
 int getRandom(int min, int max){
     return (rand() % static_cast<int>(max + 1 - min) + min);
 }
-#endif //TEST_TOOL_H
+#endif //GAME_TOOL_H

@@ -5,12 +5,29 @@
 #include "Tool.h"
 #include <fstream>
 #include <regex>
+
 extern HANDLE hOut;
 extern unique_ptr<Map>mapNow;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern vector<NPC>globalNPC;
 extern vector<Monster>globalMonster;
+
+
+bool SCOORD::operator<(const SCOORD &pos) {
+    return this->X < pos.X || this->Y < pos.Y;
+}
+bool SCOORD::operator>(const SCOORD &pos) {
+    return !this->operator<(pos);
+}
+bool SCOORD::operator>(const SCOORD &pos) const {
+    return !this->operator<(pos);
+}
+bool SCOORD::operator<(const SCOORD &pos) const {
+    return this->X < pos.X || this->Y < pos.Y;
+}
+
+
 /*
  * @brief 初始化地图
  */
@@ -116,29 +133,31 @@ void Map::initBarrier() {
     // 画NPC
     CHAR_INFO chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
     for (auto iter = globalNPC.begin(); iter != globalNPC.end(); iter++) {
-        if (!(*iter).mapLocation.mapId == this.mapId){
+        if (!((*iter).mapLocation.mapId == this->id)){
             continue;
         }
         else{
-            xLeft = (*iter).mapLocation.x - 1;
-            xRight = (*iter).mapLocation.x;
-            y = (*iter).mapLocation.y;
+            xLeft = short((*iter).mapLocation.x - 1);
+            xRight = short((*iter).mapLocation.x);
+            y = short((*iter).mapLocation.y);
             SMALL_RECT CutScr = {xLeft, y, xRight, y};
-            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, y, &chFill); //移动文本
+            COORD cutPos = {xRight, y};
+            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
         }
     }
     // 画Monster
-    CHAR_INFO chFill = {'M',  screenInfo.wAttributes};
+    chFill = {'M',  screenInfo.wAttributes};
     for (auto iter = globalMonster.begin(); iter != globalMonster.end() ; iter++) {
-        if (!(*iter).mapLocation.mapId == this.mapId){
+        if (!((*iter).mapLocation.mapId == this->id)){
             continue;
         }
         else{
-            xLeft = (*iter).mapLocation.x - 1;
-            xRight = (*iter).mapLocation.x;
-            y = (*iter).mapLocation.y;
+            xLeft = short((*iter).mapLocation.x - 1);
+            xRight = short((*iter).mapLocation.x);
+            y = short((*iter).mapLocation.y);
             SMALL_RECT CutScr = {xLeft, y, xRight, y};
-            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, y, &chFill); //移动文本
+            COORD cutPos = {xRight, y};
+            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
         }
     }
     SetConsoleTextAttribute(hOut, 0x0f);
@@ -453,6 +472,7 @@ int Map::checkEvent() {
             MessageBox(nullptr, "事件发生", "提示", MB_OK);
         }
     }
+    return 0;
 }
 
 /*

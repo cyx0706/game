@@ -4,15 +4,13 @@
 
 #ifndef GAME_GLOBAL_H
 #define GAME_GLOBAL_H
+#include <iostream>
+#include <sstream>
 #include <memory>
 #include <algorithm>
-#include "NPC.h"
-#include "Player.h"
-#include "Client.h"
-#include "Map.h"
-#include "Monster.h"
 #include <ctime>
 #include <string>
+#include <regex>
 using std::cout;
 using std::cin;
 using std::vector;
@@ -35,7 +33,7 @@ using std::max;
 using std::time;
 using std::srand;
 using std::transform;
-using std::substr;
+using std::istream;
 /*
  * 全局变量存到这里
  */

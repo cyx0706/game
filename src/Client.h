@@ -4,11 +4,10 @@
 
 #ifndef TEST_CLIENT_H
 #define TEST_CLIENT_H
-
+#include "global.h"
 #include <string>
 #include <map>
 #include <vector>
-#include "global.h"
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
 

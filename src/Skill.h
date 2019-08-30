@@ -5,4 +5,8 @@
 #ifndef GAME_SKILL_H
 #define GAME_SKILL_H
 
+#include "global.h"
+class Skill{
+
+};
 #endif //GAME_SKILL_H

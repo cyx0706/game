@@ -2,14 +2,14 @@
 // Created by rhc on 2019/8/26.
 //
 
-#ifndef MUD_STATUS_H
-#define MUD_STATUS_H
+#ifndef GAME_STATUS_H
+#define GAME_STATUS_H
 
-#include <iostream>
-using namespace std;
+#include "global.h"
 
 class Status {
 public:
+    Status()= default;
     //属性
     int HP = 100;//生命值，为0时死亡
     int MP = 100;//魔法值，使用技能时消耗
@@ -22,16 +22,16 @@ public:
     int Speed;
     int Critical;
     int DEF;//防御力
-    int Lv = 0;
 };
 class Buff : public Status{
 public:
+    Buff()= default;
     //属性
-    string name[10];
-    string description[20];
+    string name;
+    string description;
     int duration;
     //方法
     void showDescription();
 };
 
-#endif //MUD_STATUS_H
+#endif //GAME_STATUS_H

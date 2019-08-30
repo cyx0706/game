@@ -4,17 +4,17 @@
 
 #ifndef MUD_PACKAGE_H
 #define MUD_PACKAGE_H
-
+#include "global.h"
 #include <iostream>
-#include <queue>
+#include <vector>
 #include "Character.h"
-
-using namespace std;
+#include "Item.h"
 
 class Package {
 public:
     //属性
-    queue<Item> items;
+    Package()= default;
+    vector<Item> items;
     int maxItem;
     //方法
     bool addItem(int itemId);
@@ -22,9 +22,12 @@ public:
     void showItem(int itemId);
     void deleteItem(int itemId);
 };
+
 class Shop : public Package{
-    void buy(Player& player,int itemId);
-    void sell(Player& player,int itemId);
+public:
+    Shop()= default;
+    void buy(int itemId);
+    void sell(int itemId);
     void shopMenu();
 };
 

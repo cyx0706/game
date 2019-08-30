@@ -6,6 +6,7 @@
 #define GAME_SCENE_H
 
 #include "global.h"
+#include <iostream>
 
 void dynamicScene1();
 void dynamicScene3();
@@ -18,7 +19,7 @@ public:
     string content;
     void show();
     void branch();
-    friend istream&operator>>(istream& fpStream, Scene& scene);
+    friend ifstream&operator>>(ifstream& fpStream, Scene& scene);
     explicit Scene(int sceneId);
 };
 

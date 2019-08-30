@@ -2,6 +2,10 @@
 // Created by cyx on 2019/8/27.
 //
 #include "Scene.h"
+#include "global.h"
+#include "Character.h"
+#include <windows.h>
+#include <iostream>
 extern Player player;
 /*
  * @brief 构造函数,初始化地图的id用于branch的判断

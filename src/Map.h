@@ -13,8 +13,6 @@
 #include <memory>
 #include "Item.h"
 #include "Character.h"
-#include "Monster.h"
-#include "NPC.h"
 #include "GameLoop.h"
 #include "global.h"
 
@@ -24,18 +22,7 @@ struct SCOORD:public COORD{
     bool operator<(const SCOORD &pos) const ;
     bool operator>(const SCOORD &pos) const ;
 };
-bool SCOORD::operator<(const SCOORD &pos) {
-    return this->X < pos.X || this->Y < pos.Y;
-}
-bool SCOORD::operator>(const SCOORD &pos) {
-    return !this->operator<(pos);
-}
-bool SCOORD::operator>(const SCOORD &pos) const {
-    return !this->operator<(pos);
-}
-bool SCOORD::operator<(const SCOORD &pos) const {
-    return this->X < pos.X || this->Y < pos.Y;
-}
+
 
 extern string mapPath;
 extern SCOORD uPos;
@@ -65,8 +52,6 @@ private:
     map<SCOORD, int>items;       //映射对应物品id
     map<SCOORD, string>npcs;    // 映射对应的NPC
     map<SCOORD, string>monsters;    // 映射对应的怪
-
-//    vector<Monsters>monsters; // 地图里的怪物
     string nameCN;
     string nameEN;
     map<SCOORD, int>roadTo;   //地图联通

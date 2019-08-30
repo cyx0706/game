@@ -4,18 +4,37 @@
 
 #ifndef GAME_ITEM_H
 #define GAME_ITEM_H
-
 #include <string>
+#include "global.h"
+
+using std::string;
 
 class Item{
 public:
     int id;
-    std::string nameCN;
-    std::string nameEN;
-    std::string description;
+    string nameCN;
+    string nameEN;
+    string description;
     int num;
     int boughtPrice;
     bool canDrop;
     bool canSell;
+};
+
+class Drug:public Item{
+
+};
+
+class Weapon: public Item{
+public:
+    Weapon()= default;
+};
+
+class Armor: public Item{
+public:
+    Armor()= default;
+    int ATK = 0;
+    int DEF = 0;
+    int Speed = 0;
 };
 #endif //GAME_ITEM_H

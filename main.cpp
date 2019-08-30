@@ -1,16 +1,27 @@
 #include <iostream>
 #include "/src/GameLoop.h"
+#include "/src/Package.h"
+#include "/src/Character.h"
 #include "/src/global.h"
+#include "/src/Client.h"
+#include "/src/Status.h"
+#include "/src/global.h"
+#include "/src/Map.h"
+
+
 Client client;
 string mapPath = R"(../data/map.txt)";
 HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;
-Player player;
+Package aPackage();
+Armor armor();
+Status status1();
+Weapon weapon();
+Player player(aPackage, armor, weapon, status1);
 vector<NPC>globalNPC;
 vector<Monster>globalMonster;
-// 命名空间？
-vector<int>battleBannedCommands = {sell, status, equipment, package, item, equip, takeoff, discard, talk, maps, help, mission, save};
+vector<int>battleBannedCommands = {};
 vector<int>talkBannedCommands = {};
 vector<int>commonBannedCommands = {};
 vector<int>shopBannedCommands = {};
@@ -20,5 +31,7 @@ int main() {
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));
     std::cout << "Hello, World!" << std::endl;
+    GameLoop::initGame();
+    GameLoop::mapLoop();
     return 0;
 }

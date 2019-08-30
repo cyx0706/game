@@ -7,6 +7,10 @@
 #include "Scene.h"
 #include <algorithm>
 #include <fstream>
+#include "Status.h"
+#include "Character.h"
+#include "global.h"
+#include "Client.h"
 
 /*
  * @brief 游戏的地图循环
@@ -16,7 +20,7 @@
 
 extern HANDLE hOut;
 extern vector<int>commonBannedCommands;
-extern enum CommandLists;
+enum CommandLists;
 extern Client client;
 extern Player player;
 extern vector<NPC>globalNPC;
@@ -92,6 +96,7 @@ void commandLoop(){
 // 初始化
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    mapNow->load(1);
 }
 // 游戏的主循环
 //void GameLoop::loop() {
@@ -115,7 +120,6 @@ void GameLoop::gameInterface(){
 }
 
 void GameLoop::gameStart() {
-    initGame();
     // 展示游戏的界面
     gameInterface();
     string input;
@@ -165,7 +169,7 @@ void GameLoop::battleLoop(const string& charId, bool isMonster) {
     bool enemyTurn = false;
     if (isMonster){
         //读取怪物信息
-        Monster monster;
+        Monster monster();
         // 需要强制转换
         character = reinterpret_cast<Character *>(&monster);
 
