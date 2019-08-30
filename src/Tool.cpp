@@ -3,8 +3,11 @@
 //
 
 #include <vector>
+#include <fstream>
+
 #include "Tool.h"
 #include "global.h"
+
 
 /*
  * @brief 按分隔符切片字符串，返回vector<string>
@@ -89,12 +92,18 @@ string Tool::clean(const string& str) {
 
     return cleanedStr;
 }
-
+/*
+ * @brief 从文件中读取键值对，读取到空行结束
+ *
+ * @param f 文件流 要读取的文件部分的开始
+ * @return 返回从文件中读取出来的键值对 map
+ */
 map<string, string> Tool::dataMap(ifstream& f) {
     map<string, string> data;
     string str;
 
     while (getline(f, str)) {
+        // 读到空行结束
         if (!str.empty()) {
             vector<string> keyValue = Tool::split(str);
 
@@ -107,6 +116,12 @@ map<string, string> Tool::dataMap(ifstream& f) {
     return data;
 }
 
+/*
+ * @brief 根据文本返回相应的布尔值
+ *
+ * @param str 字符串 "true" "false"
+ * @return "true" 返回布尔值 true 否则返回 false
+ */
 bool Tool::boolFromString(string &str) {
     if (str == "true") {
         return true;

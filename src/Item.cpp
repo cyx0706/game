@@ -8,7 +8,10 @@
 
 #include <map>
 #include <fstream>
-
+/*
+ * @brief 从文件中读取出 item 类的基本信息
+ * @param id item 对象对应的表示 id
+ */
 Item::Item(int id) {
     ifstream f(ITEMS_TXT_PATH);
     string str;
