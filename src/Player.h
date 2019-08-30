@@ -39,6 +39,7 @@ public:
     void showStatus();
     void playerMenu();
     void addSkill(Skill& skill);
+    virtual bool isDead();
     //构造函数
     Player();
 };

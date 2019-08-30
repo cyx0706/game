@@ -17,6 +17,8 @@ vector<int>shopBannedCommands = {};
 SCOORD uPos = {1, 1};
 int main() {
     // 做一些检查工作
+    // 随机数种子
+    srand(static_cast<unsigned int>(time(nullptr)));
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }

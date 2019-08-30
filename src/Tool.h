@@ -34,4 +34,11 @@ inline T fromString(const string &str){
     is >> v; // 从字符串输入流中读取变量v
     return v;
 }
+
+/*
+ * @brief 生成min到max之前的随机数
+ */
+int getRandom(int min, int max){
+    return (rand() % static_cast<int>(max + 1 - min) + min);
+}
 #endif //TEST_TOOL_H

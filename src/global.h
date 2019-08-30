@@ -11,7 +11,8 @@
 #include "Client.h"
 #include "Map.h"
 #include "Monster.h"
-
+#include <ctime>
+#include <string>
 using std::cout;
 using std::cin;
 using std::vector;
@@ -31,6 +32,10 @@ using std::make_unique;
 using std::smatch;
 using std::min;
 using std::max;
+using std::time;
+using std::srand;
+using std::transform;
+using std::substr;
 /*
  * 全局变量存到这里
  */

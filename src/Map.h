@@ -12,6 +12,7 @@
 #include <map>
 #include <memory>
 #include "Item.h"
+#include "Character.h"
 #include "Monster.h"
 #include "NPC.h"
 #include "GameLoop.h"

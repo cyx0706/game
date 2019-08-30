@@ -2,8 +2,8 @@
 // Created by rhc on 2019/8/26.
 //
 
-#ifndef MUD_CHARACTER_H
-#define MUD_CHARACTER_H
+#ifndef GAME_CHARACTER_H
+#define GAME_CHARACTER_H
 
 #include <iostream>
 #include <vector>
@@ -19,11 +19,11 @@ struct Location{
     int y;
 };
 
-using namespace std;
 
 class Character {
 public:
     //属性
+    string id;
     string nameEN;
     string nameCN;
     int fallingExp;
@@ -37,4 +37,4 @@ public:
     virtual bool isDead() = 0;
     virtual void showDescription() = 0;
 };
-#endif //MUD_CHARACTER_H
+#endif //GAME_CHARACTER_H

@@ -10,9 +10,9 @@
 
 class Monster : public Character{
 public:
-    Item fallingItem[10];
+    vector<Item>fallingItem;
     int fallingExp;
     int fallingMoney;
-    int missionTarget[10];
+    vector<int>missionTarget;
 };
 #endif //GAME_MONSTER_H

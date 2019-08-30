@@ -18,7 +18,8 @@ public:
     static void gameStart();
 //    static void loop();
     static void commandLoop();
-    static void battleLoop();
+    static void gameInterface();
+    static void battleLoop(const string& charId, bool isMonster = true);
 };
 
 #endif //GAME_GAMELOOP_H
