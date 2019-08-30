@@ -4,7 +4,10 @@
 #include "GameLoop.h"
 #include "Map.h"
 #include "Tool.h"
+#include "Scene.h"
 #include <algorithm>
+#include <fstream>
+
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
@@ -126,7 +129,10 @@ void GameLoop::gameStart() {
         }
 
         if (input == "newgame"){
-            // 调用场景
+            Scene scene(1);
+            ifstream fp;
+            fp.open("../src/scene1.txt");
+            fp >> scene; // 展示剧情
             mapLoop();
         }
         else if (input == "load"){
@@ -155,7 +161,8 @@ void GameLoop::gameStart() {
  */
 void GameLoop::battleLoop(const string& charId, bool isMonster) {
     Character *character = nullptr;
-    bool playerFirst = true;
+    bool playerTurn = true;
+    bool enemyTurn = false;
     if (isMonster){
         //读取怪物信息
         Monster monster;
@@ -167,52 +174,85 @@ void GameLoop::battleLoop(const string& charId, bool isMonster) {
         //不需要再读取了
         for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
             if ((*iter).id == charId){
-                // 为啥基类指针不能指向派生类
                 character = reinterpret_cast<Character *>(&(*iter));
                 break;
             }
         }
     }
     if (character->status.Speed > player.status.Speed){
-        playerFirst = false;
-    }
-    while (true){
-        if (playerFirst){
-            //调用command分析
-
+        playerTurn = false;
+        cout << "敌人的先制攻击, 造成了" << character->status.ATK - player.status.DEF << "点伤害" << endl;
+        if(player.isDead()){
+            // 死亡场景
+            return;
         }
         else{
-            int possible = getRandom(1, 100);
-            // 暴击
-            if (possible >= character->status.Critical){
-
-            }
-        }
-        if (player.isDead()){
-            // 调用死亡场景
-            break;
-        }
-        if (character->isDead()){
-            cout << "你击败了" << character->nameCN << "获得了胜利";
-            cout << "获得经验" << character->fallingExp << endl;
-            //  cout << "获得金钱" << character
-            // 判断掉落物品
-            // 升级判定
-             if(isMonster){
-                 auto temp = dynamic_cast<Monster*>(character);
-                 for (auto iter = temp->fallingItem.begin(); iter != temp->fallingItem.end() ; iter++) {
-                     cout << "获得" << (*iter).nameCN << endl;
-                     // 接口了?
-                     player.addItem(*iter);
-                     // 任务怪属性设定
-
-                 }
-             }
-             else{
-                 // 场景
-             }
-
+            cout << "玩家剩余血量:" << player.status.HP << endl;
         }
     }
+    int turn = 0; // 回合数
+    while (true){
+        // 玩家回合
+        turn += 1;
+        cout << "回合:" << turn << endl;
+        // 前置判断使回合可以跳过
+        if (playerTurn){
+            // 遍历buff减少一回合
+            cout << "玩家的回合:你的行动" << endl;
 
+            //调用command分析
+
+            // 下一次是敌人行动
+            playerTurn = false;
+            enemyTurn = true;
+
+            // 击败敌人
+            if (character->isDead()){
+                cout << "你击败了" << character->nameCN << "获得了胜利";
+                cout << "获得经验" << character->fallingExp << endl;
+                //  cout << "获得金钱" << character
+                // 判断掉落物品
+                // 升级判定
+                if(isMonster){
+                    auto temp = dynamic_cast<Monster*>(character);
+                    for (auto iter = temp->fallingItem.begin(); iter != temp->fallingItem.end() ; iter++) {
+                        cout << "获得" << (*iter).nameCN << endl;
+                        // 接口了?
+                        player.addItem(*iter);
+                        // 添加入击杀数目
+                        break;
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            else{
+                cout << character->nameCN << "剩余HP: " <<character->status.HP << endl;
+            }
+        }
+
+        if (enemyTurn){
+            int possible = getRandom(1, 100); // 暴击概率
+            int fluctuation = getRandom(90, 110); // 伤害的波动
+            int damage = int(character->status.ATK * fluctuation / 100);
+            // 暴击
+            if (possible >= character->status.Critical){
+                damage = int(damage * 1.5);
+            }
+            player.status.HP -= (damage - player.status.DEF);
+            if (player.isDead()){
+                // 调用死亡场景
+                break;
+            }
+            else{
+                cout << player.nameCN << "剩余HP: " << player.status.HP << endl;
+            }
+            // 下一次是玩家行动
+            playerTurn = true;
+            enemyTurn = false;
+        }
+    }
 }
+
+

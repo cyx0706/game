@@ -11,6 +11,7 @@
 #include "Armor.h"
 #include "Skill.h"
 #include "NPC.h"
+#include "Item.h"
 
 using namespace std;
 
@@ -39,6 +40,7 @@ public:
     void showStatus();
     void playerMenu();
     void addSkill(Skill& skill);
+    void addItem(Item &item);
     virtual bool isDead();
     //构造函数
     Player();
