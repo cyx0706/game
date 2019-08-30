@@ -19,6 +19,8 @@ class Tool {
 public:
     static vector<string> split(const string& str, char sep = ' ');
     static string clean(const string& str);
+    static map<string, string> dataMap(ifstream& f);
+    static bool boolFromString(string& str);
 };
 
 template <class T>
