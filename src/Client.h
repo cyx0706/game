@@ -8,8 +8,7 @@
 #include <string>
 #include <map>
 #include <vector>
-
-using namespace std;
+#include "global.h"
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
 
