@@ -10,9 +10,8 @@
 #include <map>
 #include <regex>
 
+#include "global.h"
 #include "Tool.h"
-
-using namespace std;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found

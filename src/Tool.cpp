@@ -2,11 +2,9 @@
 // Created by Leo on 2019-08-26.
 //
 
-#include "Tool.h"
-
 #include <vector>
-
-using namespace std;
+#include "Tool.h"
+#include "global.h"
 
 /*
  * @brief 按分隔符切片字符串，返回vector<string>
