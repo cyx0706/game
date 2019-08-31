@@ -9,6 +9,7 @@
 #include <iostream>
 
 void dynamicScene1();
+void dynamicScene2();
 void dynamicScene3();
 void dynamicScene4();
 void dynamicScene5();

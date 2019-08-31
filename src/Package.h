@@ -10,10 +10,11 @@
 #include "Character.h"
 #include "Item.h"
 #include <iostream>
+
 class Package {
 public:
     //属性
-    Package();
+    explicit Package();
     vector<Item> items;
     int maxItem;
     //方法
@@ -27,9 +28,11 @@ public:
 class Shop{
 public:
     Shop();
-    bool buy(int itemId, int number, int &money)
-    bool sell(int itemId, int number, int &money)
+    Shop(Shop &shop)= default;
+    bool buy(int itemId, int number, int &money);
+    bool sell(Item &item, int number, int &money);
     void shopMenu();
+    void save();
     Package aPackage;
 };
 

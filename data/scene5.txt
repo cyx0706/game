@@ -1,0 +1,20 @@
+[id] 5
+[content] 阅读日记
+[content] 这是一本很旧的日记了
+[content] 时间xxxx
+[content] 我终于离开了他那里，我要向他证明自己，证明自己能成为一个合格的宫廷魔术师
+[content] 时间xxxx
+[content] 我成功了，在我的帮助下，人类的王国建立了起来，明天我就起身去找他
+[content] 时间xxxx
+[content] 为什么，他说我做的不好，为什么，明明在我的辅助下这个王国正在逐渐壮大，我会证明给你看的
+[content] 时间xxxx
+[content] 宫廷政变发生了，贵族们扶持了傀儡皇帝，人类真的是自私的种族，我……
+[content] 时间xxxx
+[content] 人类的王都不行，既然如此我就自己成为王吧，我想邀请他，他却看不起我，这份屈辱，我迟早会还清的
+[content] 时间xxxx
+[content] 计划很完美，现在只需要一个强大的战斗力我的计划就能成功了
+[content] 时间xxxx
+[content] 尝试异世界召唤，召唤魂魄固定在我准备的肉体上，失败了，为什么
+[content] 时间xxxx
+[content] 成功了，这样就……
+[end]

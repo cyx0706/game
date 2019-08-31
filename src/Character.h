@@ -7,15 +7,15 @@
 
 #include <iostream>
 #include <vector>
-#include <wincon.h>
 #include "Package.h"
 #include "Status.h"
 #include "Item.h"
 #include "Skill.h"
 #include "global.h"
-class Player;
-class NPC;
-class Monster;
+//
+//class Player;
+//class NPC;
+//class Monster;
 struct Location{
     int mapId;
     int x;
@@ -26,12 +26,13 @@ struct Location{
 class Character {
 public:
     Character(Status status);
+    Character();
+    Status status;
     string id;
     string nameEN;
     string nameCN;
     int fallingExp;
     string description;
-    Status status;
     vector<Buff> buffs;
     Location mapLocation;
     char displayChar;
@@ -79,6 +80,7 @@ private:
 class Player : public Character {
 public:
     Player(Package& package, Armor armor, Weapon weapon, Status status);
+    Player();
     string talkTo;
     void levelUp();
 
@@ -103,7 +105,10 @@ public:
 
     void addItem(Item &item);
     void deleteItem(int itemId, int number);
+    void eraseItem(Item &item);
+
     virtual bool isDead();
+    void deadScene();
 
 private:
     //属性

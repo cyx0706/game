@@ -22,6 +22,7 @@ using std::stoi;
 using std::string;
 using std::endl;
 using std::ifstream;
+using std::ofstream;
 using std::pair;
 using std::ostringstream;
 using std::istringstream;

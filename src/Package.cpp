@@ -4,6 +4,10 @@
 #include "Package.h"
 #include "Item.h"
 #include <iostream>
+#include <fstream>
+#include <ostream>
+extern Player player;
+#define SHOP_FILE_PATH "../data/map.txt"
 /*
  * @brief 构造函数
  * 设置最大背包容量
@@ -82,16 +86,26 @@ bool Package::deleteItem(int itemId, int number) {
  * @return 文件流
  */
 istream& operator>>(istream &fpStream, Package &pack) {
-
+    string temp;
+    int itemId;
+    int number;
+    while (fpStream.peek() != EOF){
+        fpStream >> temp >> itemId >> number;
+        Item item(itemId, number);
+        pack.items.push_back(item);
+    }
+    return fpStream;
 }
+
 /*
  * @brief 读取文件初始化商店
  */
-// TODO:构造函数
 Shop::Shop() {
-
-//    this->aPackage
+    ifstream fp;
+    fp.open(SHOP_FILE_PATH);
+    fp >> this->aPackage;
 }
+
 /*
  * @brief 购买物品的接口
  *
@@ -117,4 +131,61 @@ bool Shop::buy(int itemId, int number, int &money) {
     cout << "没有该物品或物品数目不够" << endl;
     return false;
 }
+
+/*
+ * @brief 卖出物品
+ *
+ * @param item:物品的引用 number:要卖出的个数 money:玩家钱的引用
+ * @return 是否交易成功
+ */
+bool Shop::sell(Item &item, int number, int &money) {
+    if (item.canSell){
+        if (item.num > number){
+            item.num -= number;
+        }
+        else if(item.num == number){
+            // 消除物品
+            player.eraseItem(item);
+        }
+        else{
+            cout << "物品数目不够" << endl;
+            return false;
+        }
+        money += item.boughtPrice / 2 * number;
+        return true;
+    }
+    else{
+        cout << "物品不可被出售" << endl;
+        return false;
+    }
+}
+/*
+ * @brief 商店的菜单
+ *
+ */
+void Shop::shopMenu() {
+    cout << "商品:价格:数目" << endl;
+    for (auto iter = aPackage.items.begin();  iter!= aPackage.items.end() ; iter++) {
+        // 不限制购买数目
+        if ((*iter).num > 99){
+            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << "∞" << endl;
+        }
+        else{
+            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << (*iter).num << endl;
+        }
+    }
+    cout << "使用命令purchase和sell来进行交易" << endl;
+}
+
+/*
+ * @brief 保存商店的物品
+ */
+void Shop::save() {
+    ofstream fp;
+    fp.open(SHOP_FILE_PATH);
+    for (auto iter = aPackage.items.begin();  iter!=aPackage.items.end() ; iter++) {
+        fp << (*iter).id << (*iter).num << endl;
+    }
+}
+
 

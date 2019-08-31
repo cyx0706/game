@@ -32,12 +32,14 @@ class Drug: public Item{
 
 class Weapon: public Item{
 public:
-    Weapon()= default;
+    Weapon();
+    Weapon(Weapon &weapon)= default;
 };
 
 class Armor: public Item{
 public:
-    Armor()= default;
+    Armor();
+    Armor(Armor &armor)= default;
     int ATK = 0;
     int DEF = 0;
     int Speed = 0;
