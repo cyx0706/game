@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include <vector>
+#include <map>
 #include "Package.h"
 #include "Status.h"
 #include "Item.h"
@@ -47,6 +48,8 @@ public:
 //    Player(Package& package, Armor armor, Weapon weapon, Status status);
     Player();
     string talkTo;
+    void addMoney();
+    void addExp();
     void levelUp();
 
     bool equipArmor(string name);
@@ -64,7 +67,7 @@ public:
     void showStatus(); //显示人物属性和装备
     void playerMenu(); //提示命令
 
-    void addSkill(int skillId);
+    void addSkill(string skillId);
 
     void showKilledMonster();
     int getKilledMonster(string id);
@@ -106,6 +109,8 @@ public:
     virtual bool isDead();
 };
 
+
+
 class NPC : public Character{
 public:
     NPC(Status status, vector<int> quests, bool isVisible, bool battleStatus, bool shopStatus, bool bar,
@@ -119,6 +124,7 @@ public:
     void setVisibility(bool isVisible);
     bool getVisibility();
     virtual bool isDead();
+//    static map<string,  >
 private:
     Shop store;
     vector <int> questList;
