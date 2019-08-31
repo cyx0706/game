@@ -48,9 +48,9 @@ public:
 //    Player(Package& package, Armor armor, Weapon weapon, Status status);
     Player();
     string talkTo;
-    void addMoney();
-    void addExp();
-    void levelUp();
+    void addMoney(int addition);
+    void addExp(int addition);
+    bool levelUp();
 
     bool equipArmor(string name);
     bool equipWeapon(string weapon);
