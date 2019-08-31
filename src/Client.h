@@ -63,8 +63,8 @@ enum CommandLists {
 class Client {
 public:
     Client();
-    void base(string str, vector<int>& bannedCommands);
-    void executeCommand(vector<string> commands,  vector<int>& bannedCommands);
+    void base(string str, vector<int>& bannedCommands, int index);
+    void executeCommand(vector<string> commands,  vector<int>& bannedCommands, int index);
     static bool isBanned(CommandLists command, vector<int>& bannedCommands);
     static void commandHelp(string& command);
 private:

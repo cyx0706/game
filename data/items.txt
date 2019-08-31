@@ -1,31 +1,199 @@
 id 1
-nameCN 壹
-nameEN one
-description 这是一
+nameCN 剑
+nameEN sword
+description 一把普通的剑，好像是量产的类型
 boughtPrice 10
 canDrop true
 canSell true
 
 id 2
-nameCN 贰
-nameEN two
-description 这是二
-boughtPrice 20
-canDrop false
-canSell false
+nameCN 阐释者
+nameEN elucidatetor
+description 漆黑色的长剑，这个重量看起来是双手剑，据说有人单手挥动它。
+boughtPrice 10
+canDrop true
+canSell true
 
 id 3
-nameCN 叁
-nameEN three
-description 这是三
-boughtPrice 30
-canDrop false
+nameCN 逐暗者
+nameEN escaper
+description 某个黑衣剑士留下的武器
+boughtPrice 10
+canDrop true
 canSell true
 
 id 4
-nameCN 肆
-nameEN four
-description 这是四
-boughtPrice 40
+nameCN 村正
+nameEN muramasa
+description 把刀似乎还能唤起你记忆中玩的一款氪金手游的一个自称老朽的红发青年的样貌
+boughtPrice 10
 canDrop true
-canSell false
+canSell true
+
+id 5
+nameCN 全村最好的剑
+nameEN best-sword
+description 这把剑原来的持有者好像是叫做达拉崩吧斑得贝迪卜多比鲁翁
+boughtPrice 10
+canDrop true
+canSell true
+
+id 6
+nameCN 金色战斧
+nameEN gold-axe
+description 如何做一个法师？你先假装念咒，然后趁对方不注意一斧子抡上去
+boughtPrice 10
+canDrop true
+canSell true
+
+id 7
+nameCN 喵帕斯之剑
+nameEN miao-pa-si
+description 莲华捡到的一个树枝，好像蕴藏着巨大的力量
+boughtPrice 10
+canDrop true
+canSell true
+
+id 8
+nameCN 咖喱棒
+nameEN excalibur
+description 货真价实的圣剑啊！“笨蛋” 什么？“我每天的早晨是从一杯咖啡开始的” ？？？
+boughtPrice 10
+canDrop true
+canSell true
+
+id 9
+nameCN 全村最好的甲
+nameEN best-armor
+description 这个盔甲的原来持有者是……不想再说一遍了
+boughtPrice 10
+canDrop true
+canSell true
+
+id 10
+nameCN 恶鬼缠身
+nameEN AK-KI-TEN-SHIN
+description 据说使用这个帝具的人都死了
+boughtPrice 10
+canDrop true
+canSell true
+
+id 11
+nameCN 红披风
+nameEN red-cloak
+description 一位手持镰刀的美漫风格个女孩子留下来的
+boughtPrice 10
+canDrop true
+canSell true
+
+id 12
+nameCN 冒险者服装
+nameEN adventurer-cloth
+description 就是冒险者服装
+boughtPrice 10
+canDrop true
+canSell true
+
+id 13
+nameCN 小百花蛇草水
+nameEN SheCao-water
+description 崂山圣水
+boughtPrice 10
+canDrop true
+canSell true
+
+id 14
+nameCN 崂山阔乐
+nameEN LaoShan-cola
+description 群底层人员专属
+boughtPrice 10
+canDrop true
+canSell true
+
+id 15
+nameCN 劣化完全回复药
+nameEN HPdrug
+description 史傲天的商品都卖到这里来了？
+boughtPrice 10
+canDrop true
+canSell true
+
+id 16
+nameCN 隶帅博矿泉水
+nameEN LSB-water
+description ？！
+boughtPrice 10
+canDrop true
+canSell true
+
+id 17
+nameCN 兴奋剂
+nameEN dope
+description 没有兴奋剂的机枪兵莫得精髓
+boughtPrice 10
+canDrop true
+canSell true
+
+id 18
+nameCN 神圣手雷
+nameEN holly-hand-grenade
+description 哈利路亚！
+boughtPrice 10
+canDrop true
+canSell true
+
+id 19
+nameCN 鱼
+nameEN fish
+description 鱼，好大的鱼，虎纹鲨鱼
+boughtPrice 10
+canDrop true
+canSell true
+
+id 20
+nameCN 冒险者纹章
+nameEN pass-of-adventurous-guild
+description 把纹章扣到书上大喊：英雄连接！好像可以变身？
+boughtPrice 10
+canDrop true
+canSell true
+
+id 21
+nameCN 皇城通行证
+nameEN pass-of-imperial-city
+description 没有他门卫不会让你进入内城的
+boughtPrice 10
+canDrop true
+canSell true
+
+id 22
+nameCN 月光草
+nameEN moonlight-grass
+description 只会在明月照耀的森林里生长
+boughtPrice 10
+canDrop true
+canSell true
+
+id 23
+nameCN 愚者之锁
+nameEN chain-of-fool
+description 看到这个名字，你的肝隐隐作痛
+boughtPrice 10
+canDrop true
+canSell true
+
+id 24
+nameCN 兽皮
+nameEN fur
+description 影狼为什么会有兽皮？
+boughtPrice 10
+canDrop true
+canSell true
+
+id 25
+nameCN 蘑菇
+nameEN mushroom
+description 你菌鸽鸽什么时候骗过你了？？？
+boughtPrice 10
+canDrop true
+canSell true

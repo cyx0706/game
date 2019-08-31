@@ -11,6 +11,8 @@
 #include <ctime>
 #include <string>
 #include <regex>
+#include <map>
+
 using std::cout;
 using std::cin;
 using std::vector;

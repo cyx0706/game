@@ -138,7 +138,7 @@ bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
  *
  * @param commands 命令行输入的命令
  */
-void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommands) {
+void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommands, int index) {
     // 寻找是否在 commandMap 中有对应的命令
     // 如果没有对应的命令 执行 commandNotFound()
     // commandMap.find() 返回迭代器类型
@@ -227,7 +227,7 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
  *
  * @param str
  */
-void Client::base(string str, vector<int>& bannedCommands) {
+void Client::base(string str, vector<int>& bannedCommands, int index) {
         // 将前后空格去除，连续空格变为单个空格
         str = Tool::clean(str);
 
@@ -235,7 +235,7 @@ void Client::base(string str, vector<int>& bannedCommands) {
             vector commands = Tool::split(str, ' ');
 
             // 调用命令行输入命令对应的函数
-            executeCommand(commands, bannedCommands);
+            executeCommand(commands, bannedCommands, index);
         } else {
             cout << "empty command" << endl;
         }
