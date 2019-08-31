@@ -40,12 +40,30 @@ Item::Item(int id, int number) {
     f.close();
 }
 
+Item::Item() {
+    this->id = 0;
+    this->nameCN = "";
+    this->nameEN = "";
+    this->description = "";
+    this->num = 0;
+    this->boughtPrice = 0;
+    this->canDrop = false;
+    this->canSell = false;
+}
+
+void Item::showDescription() {
+    if (id != 0) {
+        cout << this->description << endl;
+    } else {
+        cout << "无" << endl;
+    }
+}
 
 
-Weapon::Weapon() :Item(0){
+Weapon::Weapon() :Item(){
 
 }
 
-Armor::Armor() :Item(0){
+Armor::Armor() :Item(){
 
 }

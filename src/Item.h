@@ -13,6 +13,7 @@
 
 class Item{
 public:
+    Item();
     explicit Item(int id, int number = 1);
     int id;
     string nameCN;
@@ -23,7 +24,7 @@ public:
     bool canDrop;
     bool canSell;
 public:
-    void showDescription();
+    virtual void showDescription();
 };
 
 class Drug: public Item{
