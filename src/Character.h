@@ -12,10 +12,10 @@
 #include "Item.h"
 #include "Skill.h"
 #include "global.h"
-
-class Player;
-class NPC;
-class Monster;
+//
+//class Player;
+//class NPC;
+//class Monster;
 struct Location{
     int mapId;
     int x;
@@ -26,6 +26,7 @@ struct Location{
 class Character {
 public:
     Character(Status status);
+    Character();
     Status status;
     string id;
     string nameEN;
@@ -79,7 +80,7 @@ private:
 class Player : public Character {
 public:
     Player(Package& package, Armor armor, Weapon weapon, Status status);
-    Player()= default;
+    Player();
     string talkTo;
     void levelUp();
 
@@ -105,7 +106,9 @@ public:
     void addItem(Item &item);
     void deleteItem(int itemId, int number);
     void eraseItem(Item &item);
+
     virtual bool isDead();
+    void deadScene();
 
 private:
     //属性

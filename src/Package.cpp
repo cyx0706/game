@@ -6,7 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <ostream>
-extern Player player();
+extern Player player;
 #define SHOP_FILE_PATH "../data/map.txt"
 /*
  * @brief 构造函数
@@ -164,7 +164,16 @@ bool Shop::sell(Item &item, int number, int &money) {
  *
  */
 void Shop::shopMenu() {
-    this->aPackage.showItems();
+    cout << "商品:价格:数目" << endl;
+    for (auto iter = aPackage.items.begin();  iter!= aPackage.items.end() ; iter++) {
+        // 不限制购买数目
+        if ((*iter).num > 99){
+            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << "∞" << endl;
+        }
+        else{
+            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << (*iter).num << endl;
+        }
+    }
     cout << "使用命令purchase和sell来进行交易" << endl;
 }
 

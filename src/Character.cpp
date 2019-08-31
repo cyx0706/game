@@ -17,6 +17,11 @@ Character::Character(Status status) :status(status){
 
 }
 
+Character::Character() {
+    Status status1;
+    this->status = status1;
+}
+
 
 
 NPC::NPC(Status status,
@@ -43,4 +48,8 @@ Player::Player(Package &package,
                Status status)
                : bag(package), armor(armor), weapon(weapon), Character(status){
 
+}
+
+Player::Player(): Character() {
+    this->weapon
 }

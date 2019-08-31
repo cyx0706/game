@@ -14,7 +14,7 @@
 class Package {
 public:
     //属性
-    Package();
+    explicit Package();
     vector<Item> items;
     int maxItem;
     //方法

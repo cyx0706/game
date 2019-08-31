@@ -1,0 +1,16 @@
+[sword] xx 2
+[elucidatetor] xx 1
+[escaper] xx 1
+[muramasa] xx 1
+[gold-axe] xx 1
+[miao-pa-si] xx 1
+[excalibur] xx 1
+[AK-KI-TEN-SHIN] xx 1
+[red-cloak] xx 2
+[adventurer-cloth] xx 5
+[SheCao-water] xx 1000
+[LaoShan-cola] xx 1000
+[HPdrug] xx 1000
+[LSB-water] xx 1000
+[holly-hand-grenade] xx 1000
+[fish] xx 1000
