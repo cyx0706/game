@@ -133,6 +133,12 @@ void GameLoop::gameStart() {
         }
 
         if (input == "newgame"){
+            // 提示输入用户的名字
+            cout << "请输入你的用户名:\b\b\b\b\b";
+            cin >> input;
+            player.nameCN = input;
+            player.nameEN = "None";
+
             Scene scene(1);
             ifstream fp;
             fp.open("../src/scene1.txt");

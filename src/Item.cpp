@@ -38,3 +38,13 @@ Item::Item(int id, int number) {
 
     f.close();
 }
+
+
+
+Weapon::Weapon() :Item(0){
+
+}
+
+Armor::Armor() :Item(0){
+
+}

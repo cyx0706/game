@@ -12,16 +12,16 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern vector<NPC>globalNPC;
 extern vector<Monster>globalMonster;
-
+#define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
     return this->X < pos.X || this->Y < pos.Y;
 }
 bool SCOORD::operator>(const SCOORD &pos) {
-    return !this->operator<(pos);
+    return !(this->operator<(pos));
 }
 bool SCOORD::operator>(const SCOORD &pos) const {
-    return !this->operator<(pos);
+    return !(this->operator<(pos));
 }
 bool SCOORD::operator<(const SCOORD &pos) const {
     return this->X < pos.X || this->Y < pos.Y;
@@ -234,7 +234,7 @@ void Map::load(int mapId) {
     regex r;
     r = R"(\((\d+),(\d+)\))";
     smatch group;
-    fp.open(mapPath);
+    fp.open(MAP_TXT_PATH);
     while (fp.peek() != EOF){
         getline(fp, sentence); // 文件流读入一行
        if (sentence == "---"){
