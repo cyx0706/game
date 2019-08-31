@@ -151,6 +151,7 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
             return;
         }
 
+        // 帮助命令的相似命令，提示使用正确的命令
         if (commands.size() == 2 && commands[1] == "-help") {
             cout << "use " << commands[0] << " -h or " << commands[0] << " --help" << endl;
 
@@ -223,9 +224,11 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
 }
 
 /*
- * @brief 命令行的 输出 接受
+ * @brief 命令行的 输出 接受 处理
  *
- * @param str
+ * @param str 输入的一行命令
+ * @param bannedCommands 被禁止的命令
+ * @param index 命令操作对象对应的索引位置
  */
 void Client::base(string str, vector<int>& bannedCommands, int index) {
         // 将前后空格去除，连续空格变为单个空格

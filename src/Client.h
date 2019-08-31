@@ -75,5 +75,4 @@ private:
     map<string, string> commandsMap;
 };
 
-
 #endif //TEST_CLIENT_H

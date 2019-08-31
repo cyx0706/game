@@ -24,7 +24,10 @@ class Item{
 public:
     Item();
     explicit Item(int id, int number = 1);
+    Item(Item& item) = default;
+
     virtual void showDescription();
+
 public:
     int id;
     string nameCN;
@@ -44,6 +47,7 @@ public:
     Drug();
     explicit Drug(int id, int number = 1);
     Drug(Drug& drug) = default;
+
 public:
     vector<Buff> buff;
     int HP;
@@ -60,6 +64,7 @@ public:
     Weapon();
     explicit Weapon(int id, int number = 1);
     Weapon(Weapon& weapon) = default;
+
 public:
     int ATK;
     int DEF;
