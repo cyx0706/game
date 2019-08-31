@@ -287,9 +287,9 @@ void NPC::talk(Player &player) {
         Mission *mission = player.getMission(this->id);
         if (mission != nullptr){
             int id = mission->id;
-            if(mission.isProcess){
+            if(mission->isProcess){
                 // 进行中时的对话
-                cout << talkContent[i][1] << endl;
+                cout << talkContent[id][1] << endl;
                 return;
             }
         }
