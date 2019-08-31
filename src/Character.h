@@ -13,6 +13,7 @@
 #include "Item.h"
 #include "Skill.h"
 #include "global.h"
+#include "Mission.h"
 //
 //class Player;
 //class NPC;
@@ -26,13 +27,14 @@ struct Location{
 
 class Character {
 public:
-    Character(Status status);
+    Character(Status status, string id, string nameCN,
+              string nameEN, string description,
+              Location location, char display);
     Character();
     Status status;
     string id;
     string nameEN;
     string nameCN;
-    int fallingExp;
     string description;
     vector<Buff> buffs;
     Location mapLocation;
@@ -50,7 +52,7 @@ public:
     string talkTo;
     void addMoney(int addition);
     void addExp(int addition);
-    bool levelUp();
+    void levelUp();
 
     bool equipArmor(string name);
     bool equipWeapon(string weapon);
@@ -60,9 +62,11 @@ public:
     void showDrugs();
     void showItems();
 
-    void addMission(int missionId);
+
+    bool addMission(Mission &mission);
     void showMissions();
     void showMission(int missionId);
+    Mission* getMission(string assignerId); // 返回任务
 
     void showStatus(); //显示人物属性和装备
     void playerMenu(); //提示命令
@@ -90,52 +94,50 @@ private:
     Package<Armor> armorBag;
     Package<Drug> drugBag;
     Package<Item> itemBag;
-    int experiencePoint = 0;
-    vector <int> quests;
-    int days = 0;
+    int experiencePoint;
+    vector <Mission&> quests;
+    int days;
     Weapon weapon;
     Armor armor;
-    int money = 0;
-    int Lv = 1;
+    int money;
+    int Lv;
     map<string, int>killedMonster;
 };
 
 class Monster : public Character {
 public:
-    Monster()= default;
+    Monster(string id);
     vector<Item>fallingItem;
     int fallingExp;
     int fallingMoney;
-    virtual bool isDead();
 };
-
 
 
 class NPC : public Character{
 public:
-    NPC(Status status, vector<int> quests, bool isVisible, bool battleStatus, bool shopStatus, bool bar,
-        Weapon weapon, Armor armor, Shop shop);
-    void shop();
+    NPC(string id); // 根据id读取文件构造
+    void NPCMenu();
     void assignQuest(Player& player);
-    void finishQuest(Player& player,int missionId);
-//    void changeLocation(COORD pos,int mapId);
-    void talk();
-    void assignRest(Player& player);
+    void finishQuest(Player& player);
+    void talk(Player &player);
+    void buy(int itemId, int number, int &money);
+    void sell(Item &item, int number, int &money);
+//    void assignRest(Player& player);
     void setVisibility(bool isVisible);
     bool getVisibility();
-    virtual bool isDead();
-//    static map<string,  >
+    bool isDead() override ;
+    void showDescription() override ;
+    map<int, string[]>talkContent; //不同任务的不同对话
+    bool forceBattleCheck(Player &player);
 private:
     Shop store;
-    vector <int> questList;
+    vector <Mission> questList;
     bool shopStatus;
     bool battleStatus;
-    Weapon weapon;
-    Armor armor;
+    bool missionStatus;
     bool bar;
     bool isVisible;
     //方法
-
 };
 
 
