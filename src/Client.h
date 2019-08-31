@@ -13,30 +13,34 @@
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
 
-/*
- * @brief 所有的命令 并 对应一个数字
- */
-enum CommandLists {
-    attack = 1,
-    skill,
-    flee,
-    purchase,
-    sell,
-    status,
-    equipment,
-    package,
-    item,
-    equip,
-    takeoff,
-    discard,
-    talk,
-    fight,
-    slaughter,
-    maps,
-    help,
-    mission,
-    save,
-};
+namespace CMD {
+    /*
+     * @brief 所有的命令 并 对应一个数字
+     */
+    enum CommandLists {
+        attack = 1,
+        skill,
+        flee,
+        purchase,
+        sell,
+        status,
+        equipment,
+        package,
+        item,
+        equip,
+        takeoff,
+        discard,
+        talk,
+        fight,
+        slaughter,
+        maps,
+        help,
+        mission,
+        save,
+        };
+}
+
+using namespace CMD;
 
 /*
  * @brief 命令行类

@@ -7,6 +7,8 @@
 
 #include "global.h"
 class Skill{
-
+public:
+    Skill();
+    Skill(int id);
 };
 #endif //GAME_SKILL_H
