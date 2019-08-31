@@ -23,6 +23,7 @@ public:
 
 class Buff : public Status{
 public:
+    Buff(int id);
     Buff()= default;
     //属性
     string name;

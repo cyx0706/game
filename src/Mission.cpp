@@ -13,10 +13,41 @@
 
 extern Player player;
 
+/*
+ * @brief 从文件中读取 Mission 类的基本信息 构造相应的对象
+ *
+ * @param id Mission 对象对应的 id
+ *
+ * mission.txt 文件内容 (大致格式):
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ * id
+ * nameEN
+ * nameCN
+ * bonusMoney
+ * bonusExperiencePoint
+ * assigner
+ * __ __
+ * __ __
+ * __ __
+ *
+ * __ __ 代表 任务完成所需的物品
+ * 第一个 __ 为 对应物品的 id
+ * 第二个 __ 为 对应物品要求的数量
+ *
+ * 分别对应 Mission 类的各个属性
+ * 所有键值对必须存在
+ * * * * * * * * * * * * * * * * * * * * * * * * *
+ * 属性
+ * isAccepted
+ * isFinished
+ * isProcess
+ * 需要从存档中读取
+ */
 Mission::Mission(int id) {
     ifstream f(MISSION_TXT_PATH);
     string str;
 
+    // 找到对应 id 处
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -25,6 +56,7 @@ Mission::Mission(int id) {
             }
         }
     }
+    // 将 对应 id 行到下一个空行之间的内容读取为键值对
     map<string, string> data = Tool::dataMap(f);
 
     this->id = id;
@@ -32,26 +64,22 @@ Mission::Mission(int id) {
     this->nameEN = data["nameEN"];
     this->bonusMoney = fromString<int>(data["bonusMoney"]);
     this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
+    this->assigner = data["assigner"];
 
     f.close();
-
-//    f.open(MISSION_TXT_PATH);
-//    while (getline(f, str)) {
-//        if (!str.empty()) {
-//            vector<string> idLine = Tool::split(str);
-//            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
-//                break;
-//            }
-//        }
-//    }
 
     // TODO 从存档中读出
     this->isAccepted = true;
     this->isFinished = false;
+    this->isProcess = false;
 
+    // 提取任务完成所需的物品 物品id 与 物品数量 的键值对，存入 requiredItem
     for (const auto& one : data) {
+        // 剔除 map 中其他的键值对 id nameCN nameEN bonusMoney bonusExperiencePoint assigner
         if (one.first == "id" ||
-        one.first == "nameCN" || one.first == "nameEN" || one.first == "bonusMoney") {
+        one.first == "nameCN" || one.first == "nameEN" ||
+        one.first == "bonusMoney" || one.first == "bonusExperiencePoint" ||
+        one.first == "assigner") {
             continue;
         } else {
             this->requiredItem.insert(pair(fromString<int>(one.first), fromString<int>(one.second)));
@@ -84,7 +112,8 @@ void Mission::checkFinished() {
     // 任务结算
     cout << "任务完成" << endl;
     this->isFinished = true;
-    // TODO 增加经验 增加金钱
-
+    // 玩家 增加金钱 和 经验
+    player.addMoney(this->bonusMoney);
+    player.addExp(this->bonusExperiencePoint);
 }
 

@@ -12,19 +12,25 @@
 
 static const string MISSION_TXT_PATH = "../data/mission"; // NOLINT
 
+/*
+ * @brief 任务类
+ */
 class Mission {
 public:
     explicit Mission(int id);
+
     void checkFinished();
+
 public:
     int id;
     string nameEN;
     string nameCN;
     bool isAccepted;
     bool isFinished;
-    // vector<Item> bonusItem;
+    bool isProcess;
     int bonusMoney;
     int bonusExperiencePoint;
+    string assigner;
     map<int, int> requiredItem;
 };
 #endif //GAME_MISSION_H
