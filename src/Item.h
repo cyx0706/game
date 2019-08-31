@@ -4,10 +4,12 @@
 
 #ifndef GAME_ITEM_H
 #define GAME_ITEM_H
+
 #include <string>
+
 #include "global.h"
+
 #define ITEMS_TXT_PATH "../data/items.txt"
-using std::string;
 
 class Item{
 public:
@@ -20,10 +22,11 @@ public:
     int boughtPrice;
     bool canDrop;
     bool canSell;
+public:
     void showDescription();
 };
 
-class Drug:public Item{
+class Drug: public Item{
 
 };
 
@@ -39,4 +42,5 @@ public:
     int DEF = 0;
     int Speed = 0;
 };
+
 #endif //GAME_ITEM_H

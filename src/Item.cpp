@@ -3,11 +3,13 @@
 //
 
 #include "Item.h"
-#include "Tool.h"
-#include "global.h"
 
 #include <map>
 #include <fstream>
+
+#include "Tool.h"
+#include "global.h"
+
 /*
  * @brief 从文件中读取出 item 类的基本信息
  * @param id item 对象对应的表示 id
@@ -24,7 +26,6 @@ Item::Item(int id, int number) {
             }
         }
     }
-
     map<string, string> data = Tool::dataMap(f);
 
     this->id = id;

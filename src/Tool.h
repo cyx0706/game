@@ -9,6 +9,8 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <map>
+
 #include "global.h"
 
 /*

@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <fstream>
+#include <map>
 
 #include "Tool.h"
 #include "global.h"
@@ -92,6 +93,7 @@ string Tool::clean(const string& str) {
 
     return cleanedStr;
 }
+
 /*
  * @brief 从文件中读取键值对，读取到空行结束
  *
