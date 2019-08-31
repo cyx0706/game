@@ -5,17 +5,25 @@
 #ifndef GAME_MISSION_H
 #define GAME_MISSION_H
 
+#include <string>
+
+#include "Item.h"
 #include "global.h"
-class Mission{
+
+static const string MISSION_TXT_PATH = "../data/mission"; // NOLINT
+
+class Mission {
+public:
+    explicit Mission(int id);
+    void checkFinished();
 public:
     int id;
     string nameEN;
     string nameCN;
     bool isAccepted;
     bool isFinished;
-    vector<Item>bonusItem;
+    // vector<Item> bonusItem;
     int bonusMoney;
-    map<string, int>requiredItem;
-    void checkFinished();
+    map<int, int> requiredItem;
 };
 #endif //GAME_MISSION_H
