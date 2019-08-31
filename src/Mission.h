@@ -24,6 +24,7 @@ public:
     bool isFinished;
     // vector<Item> bonusItem;
     int bonusMoney;
+    int bonusExperiencePoint;
     map<int, int> requiredItem;
 };
 #endif //GAME_MISSION_H
