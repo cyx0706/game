@@ -25,6 +25,7 @@ extern Player player;
  * nameCN
  * bonusMoney
  * bonusExperiencePoint
+ * assigner
  * __ __
  * __ __
  * __ __
@@ -63,6 +64,7 @@ Mission::Mission(int id) {
     this->nameEN = data["nameEN"];
     this->bonusMoney = fromString<int>(data["bonusMoney"]);
     this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
+    this->assigner = data["assigner"];
 
     f.close();
 
@@ -73,10 +75,11 @@ Mission::Mission(int id) {
 
     // 提取任务完成所需的物品 物品id 与 物品数量 的键值对，存入 requiredItem
     for (const auto& one : data) {
-        // 剔除 map 中其他的键值对 id nameCN nameEN bonusMoney bonusExperiencePoint
+        // 剔除 map 中其他的键值对 id nameCN nameEN bonusMoney bonusExperiencePoint assigner
         if (one.first == "id" ||
         one.first == "nameCN" || one.first == "nameEN" ||
-        one.first == "bonusMoney" || one.first == "bonusExperiencePoint") {
+        one.first == "bonusMoney" || one.first == "bonusExperiencePoint" ||
+        one.first == "assigner") {
             continue;
         } else {
             this->requiredItem.insert(pair(fromString<int>(one.first), fromString<int>(one.second)));

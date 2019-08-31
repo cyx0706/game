@@ -30,6 +30,7 @@ public:
     bool isProcess;
     int bonusMoney;
     int bonusExperiencePoint;
+    string assigner;
     map<int, int> requiredItem;
 };
 #endif //GAME_MISSION_H
