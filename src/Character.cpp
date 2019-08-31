@@ -51,5 +51,6 @@ Player::Player(Package &package,
 }
 
 Player::Player(): Character() {
-    this->weapon
+    this->weapon = Weapon();
+    this->armor = Armor();
 }

@@ -4,19 +4,19 @@
 
 #ifndef GAME_PACKAGE_H
 #define GAME_PACKAGE_H
+#include <iostream>
 #include "global.h"
 #include <iostream>
 #include <vector>
-#include "Character.h"
 #include "Item.h"
-#include <iostream>
 
+template <class T>
 class Package {
 public:
     //属性
-    explicit Package();
-    vector<Item> items;
-    int maxItem;
+    explicit Package(int max = 25);
+    vector<T> items;
+    int maxItem; // 每个背包的最大大小
     //方法
     bool addItem(int itemId, int number);
     void showItems();
@@ -29,11 +29,14 @@ class Shop{
 public:
     Shop();
     Shop(Shop &shop)= default;
+
     bool buy(int itemId, int number, int &money);
     bool sell(Item &item, int number, int &money);
     void shopMenu();
     void save();
-    Package aPackage;
+    Package<Weapon> weaponPackage;
+    Package<Armor> armorPackage;
+    Package<Drug> drugPackage;
 };
 
 

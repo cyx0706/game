@@ -3,6 +3,7 @@
 //
 #include "Package.h"
 #include "Item.h"
+#include "Character.h"
 #include <iostream>
 #include <fstream>
 #include <ostream>
@@ -12,15 +13,17 @@ extern Player player;
  * @brief 构造函数
  * 设置最大背包容量
  */
-Package::Package() {
-    this->maxItem = 50;
+template <class T>
+Package<T>::Package(int max) {
+    this->maxItem = max;
 }
 /*
  * @brief 新加入一个物品
  *
  * @param itemId: 指定物品的id number: 指定数目
  */
-bool Package::addItem(int itemId, int number) {
+template <class T>
+bool Package<T>::addItem(int itemId, int number) {
     if (items.size() >= this->maxItem){
         return false;
     }
@@ -38,7 +41,8 @@ bool Package::addItem(int itemId, int number) {
 /*
  * @brief 展示背包的物品
  */
-void Package::showItems() {
+template <class T>
+void Package<T>::showItems() {
     for (auto iter = this->items.begin();  iter != this->items.end() ; iter++) {
         cout << "展示背包的所有物品" << endl;
         (*iter).showDescription();
@@ -49,7 +53,8 @@ void Package::showItems() {
  *
  * @param itemId:指定物品的id
  */
-void Package::showItem(int itemId) {
+template <class T>
+void Package<T>::showItem(int itemId) {
     for (auto iter = this->items.begin(); iter != this->items.end(); iter++) {
         if ((*iter).id == itemId){
             cout << "展示id为" << itemId << "的物品信息" << endl;
@@ -64,7 +69,8 @@ void Package::showItem(int itemId) {
  *
  * @param itemId: 指定物品的id number: 指定数目
  */
-bool Package::deleteItem(int itemId, int number) {
+template <class T>
+bool Package<T>::deleteItem(int itemId, int number) {
     for (auto iter = this->items.begin(); iter != this->items.end(); iter++) {
         if((*iter).id == itemId){
             if ((*iter).num > number){
@@ -82,17 +88,20 @@ bool Package::deleteItem(int itemId, int number) {
 /*
  * @brief 重载>>便于读入Package类
  *
- * @param fpStream:文件流的引用 pack:类的引用
+ * @param fpStream:文件流的引用 pack:类的模板引用
  * @return 文件流
  */
-istream& operator>>(istream &fpStream, Package &pack) {
+template <class T>
+istream& operator>>(istream &fpStream, Package<T> &pack) {
     string temp;
     int itemId;
     int number;
     while (fpStream.peek() != EOF){
         fpStream >> temp >> itemId >> number;
-        Item item(itemId, number);
-        pack.items.push_back(item);
+        if (temp == typeid(T).name()){
+            T item(itemId, number);
+            pack.items.push_back(item);
+        }
     }
     return fpStream;
 }
@@ -103,7 +112,10 @@ istream& operator>>(istream &fpStream, Package &pack) {
 Shop::Shop() {
     ifstream fp;
     fp.open(SHOP_FILE_PATH);
-    fp >> this->aPackage;
+    fp >> this->weaponPackage;
+    fp >> this->armorPackage;
+    fp >> this->drugPackage;
+    fp.close();
 }
 
 /*
@@ -113,24 +125,76 @@ Shop::Shop() {
  * @return 是否购买成功
  */
 bool Shop::buy(int itemId, int number, int &money) {
-    for (auto iter = aPackage.items.begin();  iter!= aPackage.items.end() ; iter++) {
-        if((*iter).id == itemId && (*iter).num >= number){
-            int price = (*iter).boughtPrice * number;
-            if (money >= price){
-                money -= price;
-                aPackage.deleteItem(itemId, number);
-                cout << "欢迎下次光临" << endl;
-                return true;
-            }
-            else{
-                cout << "余额不足" << endl;
-                break;
+    int division = itemId / 100;
+    int price = 0;
+    //武器
+    if (division == 0){
+        for (auto iter = weaponPackage.items.begin();  iter != weaponPackage.items.end() ; iter++) {
+            if ((*iter).id == itemId){
+                price = (*iter).boughtPrice * number;
+                if (money >= price){
+                    if (weaponPackage.deleteItem(itemId, number)){
+                        return true;
+                    }
+                    else{
+                        cout << "剩余个数不足" << endl;
+                        return false;
+                    }
+                }
+                else{
+                    cout << "余额不足" << endl;
+                    return false;
+                }
             }
         }
     }
-    cout << "没有该物品或物品数目不够" << endl;
+    // 防具
+    else if (division == 1){
+        for (auto iter = armorPackage.items.begin();  iter != armorPackage.items.end() ; iter++) {
+            if ((*iter).id == itemId){
+                price = (*iter).boughtPrice * number;
+                if (money >= price){
+                    if (armorPackage.deleteItem(itemId, number)){
+                        return true;
+                    }
+                    else{
+                        cout << "剩余个数不足" << endl;
+                        return false;
+                    }
+                }
+                else{
+                    cout << "余额不足" << endl;
+                    return false;
+                }
+            }
+        }
+    }
+    // 药物
+    else if(division == 2){
+        for (auto iter = drugPackage.items.begin();  iter != drugPackage.items.end() ; iter++) {
+            if ((*iter).id == itemId){
+                price = (*iter).boughtPrice * number;
+                if (money >= price){
+                    if (drugPackage.deleteItem(itemId, number)){
+                        return true;
+                    }
+                    else{
+                        cout << "剩余个数不足" << endl;
+                        return false;
+                    }
+                }
+                else{
+                    cout << "余额不足" << endl;
+                    return false;
+                }
+            }
+        }
+    }
+    else{
+        return false;
+    }
     return false;
-}
+ }
 
 /*
  * @brief 卖出物品
@@ -139,40 +203,59 @@ bool Shop::buy(int itemId, int number, int &money) {
  * @return 是否交易成功
  */
 bool Shop::sell(Item &item, int number, int &money) {
-    if (item.canSell){
-        if (item.num > number){
-            item.num -= number;
-        }
-        else if(item.num == number){
-            // 消除物品
-            player.eraseItem(item);
-        }
-        else{
-            cout << "物品数目不够" << endl;
-            return false;
-        }
-        money += item.boughtPrice / 2 * number;
-        return true;
-    }
-    else{
-        cout << "物品不可被出售" << endl;
+    if (!item.canSell){
+        cout << "无法卖出" << endl;
         return false;
     }
+    if (item.num > number){
+        item.num -= number;
+    }
+    else if(item.num == number){
+        // 消除物品
+        player.eraseItem(item.id);
+    }
+    else{
+        cout << "物品数目不够" << endl;
+        return false;
+    }
+    money += item.boughtPrice / 2 * number;
+    return true;
 }
+
 /*
  * @brief 商店的菜单
  *
  */
 void Shop::shopMenu() {
-    cout << "商品:价格:数目" << endl;
-    for (auto iter = aPackage.items.begin();  iter!= aPackage.items.end() ; iter++) {
-        // 不限制购买数目
-        if ((*iter).num > 99){
-            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << "∞" << endl;
-        }
-        else{
-            cout << (*iter).nameCN << ":" << (*iter).boughtPrice << ":" << (*iter).num << endl;
-        }
+    cout << "武器" << endl
+         << "英文名:名称:价格:数目" << endl;
+    cout << "------------------------------" << endl;
+    for (auto iter = weaponPackage.items.begin();  iter!= weaponPackage.items.end() ; iter++) {
+        cout << (*iter).nameEN << " : "
+             << (*iter).nameCN << " : "
+             << (*iter).boughtPrice << " : "
+             << (*iter).num << endl;
+
+    }
+    cout << "防具" << endl
+         << "英文名:名称:价格:数目" << endl;
+    cout << "------------------------------" << endl;
+    for (auto iter = armorPackage.items.begin();  iter!= armorPackage.items.end() ; iter++) {
+        cout << (*iter).nameEN << " : "
+             << (*iter).nameCN << " : "
+             << (*iter).boughtPrice << " : "
+             << (*iter).num << endl;
+
+    }
+    cout << "药物" << endl
+         << "英文名:名称:价格:数目" << endl;
+    cout << "------------------------------" << endl;
+    for (auto iter = drugPackage.items.begin();  iter!= drugPackage.items.end() ; iter++) {
+        cout << (*iter).nameEN << " : "
+             << (*iter).nameCN << " : "
+             << (*iter).boughtPrice << " : "
+             << "∞" << endl;
+
     }
     cout << "使用命令purchase和sell来进行交易" << endl;
 }
@@ -183,9 +266,22 @@ void Shop::shopMenu() {
 void Shop::save() {
     ofstream fp;
     fp.open(SHOP_FILE_PATH);
-    for (auto iter = aPackage.items.begin();  iter!=aPackage.items.end() ; iter++) {
-        fp << (*iter).id << (*iter).num << endl;
+    for (auto iter = weaponPackage.items.begin();  iter!=weaponPackage.items.end() ; iter++) {
+        fp << "Weapon"  << " "
+           << (*iter).id << " "
+           << (*iter).num << endl;
     }
+    for (auto iter = armorPackage.items.begin(); iter != armorPackage.items.end() ; iter++) {
+        fp << "Armor"  << " "
+           << (*iter).id << " "
+           << (*iter).num << endl;
+    }
+    for (auto iter = drugPackage.items.begin(); iter != drugPackage.items.end() ; iter++) {
+        fp << "Drug"  << " "
+           << (*iter).id << " "
+           << (*iter).num << endl;
+    }
+    fp.close();
 }
 
 

@@ -87,7 +87,7 @@ void commandLoop(){
             return; // 返回地图循环
         }
         else{
-            client.base(input, commonBannedCommands);
+            client.base(input, commonBannedCommands, 0);
         }
 
 

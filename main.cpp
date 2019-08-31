@@ -1,18 +1,18 @@
 
-#include "src\\GameLoop.h"
-#include "src\\Package.h"
-#include "src\\Character.h"
-#include "src\\Client.h"
-#include "src\\Status.h"
-#include "src\\global.h"
-#include "src\\Map.h"
+#include "src/GameLoop.h"
+#include "src/Package.h"
+#include "src/Character.h"
+#include "src/Client.h"
+#include "src/Status.h"
+#include "src/global.h"
+#include "src/Map.h"
 
 Client client;
-Package playerPackage;
-Armor armor;
-Status playerStatus;
-Weapon weapon;
-Player player(playerPackage, armor, weapon,  playerStatus);
+//Package playerPackage;
+//Armor armor;
+//Status playerStatus;
+//Weapon weapon;
+Player player;
 HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;

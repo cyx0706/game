@@ -5,10 +5,34 @@
 #include <vector>
 #include <fstream>
 #include <map>
-
+#include <string>
+#include <iostream>
+#include <sstream>
 #include "Tool.h"
 #include "global.h"
 
+/*
+ * @brief 生成min到max之前的随机数
+ */
+int getRandom(int min, int max){
+    return (rand() % static_cast<int>(max + 1 - min) + min);
+}
+
+template <class T>
+string toString(const T &v){
+    ostringstream os; // 创建字符串输出流
+    os << v; // 将变量写入字符串流
+    return os.str(); // 返回输出流生成的字符串
+}
+
+
+template <class T>
+inline T fromString(const string &str){
+    istringstream is(str); // 创建字符串输入流
+    T v;
+    is >> v; // 从字符串输入流中读取变量v
+    return v;
+}
 
 /*
  * @brief 按分隔符切片字符串，返回vector<string>
@@ -125,10 +149,6 @@ map<string, string> Tool::dataMap(ifstream& f) {
  * @return "true" 返回布尔值 true 否则返回 false
  */
 bool Tool::boolFromString(string &str) {
-    if (str == "true") {
-        return true;
-    } else {
-        return false;
-    }
+    return str == "true";
 }
 
