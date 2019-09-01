@@ -5,6 +5,9 @@
 #ifndef GAME_TEMPLATEHEADER_H
 #define GAME_TEMPLATEHEADER_H
 
+#include <string>
+#include <iostream>
+#include <sstream>
 #include "global.h"
 
 template <class T>
@@ -144,7 +147,7 @@ string toString(const T &v){
 
 
 template <class T>
-T fromString(const string &str){
+T fromString(const string& str){
     istringstream is(str); // 创建字符串输入流
     T v;
     is >> v; // 从字符串输入流中读取变量v

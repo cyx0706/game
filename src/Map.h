@@ -23,7 +23,6 @@ struct SCOORD:public COORD{
 };
 
 
-extern SCOORD uPos;
 class Map{
 public:
     friend class GameLoop;
@@ -38,7 +37,7 @@ public:
     void clean(SCOORD clPos); // 清除
     int checkEvent(); // 检查事件
     void load(int mapId); // 载入地图
-    unique_ptr<Map> nextMap(int mapId);
+    void nextMap(int mapId);
     void showDescription();
     void checkSpecialScene();
 private:

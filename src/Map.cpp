@@ -9,10 +9,12 @@
 #include "Map.h"
 #include "Tool.h"
 #include "global.h"
+#include "templateHeader.h"
 extern unique_ptr<Map>mapNow;
 extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
+extern SCOORD uPos;
 //extern vector<NPC>globalNPC;
 //extern vector<Monster>globalMonster;
 #define MAP_TXT_PATH "../data/map.txt"
@@ -176,11 +178,12 @@ void Map::initChar(char playerChar/* ='P '*/) {
  * @param mapId:要生成地图的id
  * @return 返回下一张地图的指针
  */
-unique_ptr<Map> Map::nextMap(int mapId) {
-    auto mapNext = make_unique<Map>();
-    mapNext->load(mapId);          // 读取地图
-    mapNext->initPos = road[uPos]; // 设置出生地点
-    return mapNext;
+void Map::nextMap(int mapId) {
+    SCOORD pos = this->road[uPos];
+    mapNow = make_unique<Map>();
+    mapNow->load(mapId);          // 读取地图
+    mapNow->initPos = pos; // 设置出生地点
+//    return mapNow;
 }
 
 /*
@@ -190,8 +193,19 @@ unique_ptr<Map> Map::nextMap(int mapId) {
  * @return 是否到达
  */
 bool Map::checkBottomMapTransition() {
-    for (int i = 0; i < doorPosTop.size(); i++) {
-        if (uPos.Y == doorPosTop[i]){
+    for (int i = 0; i < doorPosBottom.size(); i++) {
+        if (uPos.X == doorPosBottom[i]){
+            system("cls");
+            cout << "Waiting......";
+            Sleep(2000);
+            system("cls");
+            // 生成指针并读取数据
+            mapNow->nextMap(mapNow->roadTo[uPos]);
+            // 绘制地图
+            mapNow->initMap();
+            uPos.X = mapNow->initPos.X;
+            uPos.Y = mapNow->initPos.Y;
+            mapNow->checkSpecialScene();
             return true;
         }
     }
@@ -206,8 +220,20 @@ bool Map::checkBottomMapTransition() {
  * @return 是否到达
  */
 bool Map::checkTopMapTransition() {
-    for (int i = 0; i < doorPosBottom.size(); i++) {
-        if (uPos.X == doorPosBottom[i]){
+    for (int i = 0; i < doorPosTop.size(); i++) {
+        if (uPos.X == doorPosTop[i]){
+            system("cls");
+            cout << "Waiting......";
+            Sleep(2000);
+            system("cls");
+            // 生成指针并读取数据
+            mapNow->nextMap(mapNow->roadTo[uPos]);
+            // 绘制地图
+            mapNow->initMap();
+            // 修改玩家位置
+            uPos.X = mapNow->initPos.X;
+            uPos.Y = mapNow->initPos.Y;
+            mapNow->checkSpecialScene();
             return true;
         }
     }
@@ -227,15 +253,19 @@ void Map::load(int mapId) {
     string sentence;
     //声明正则匹配点
     regex r;
-    r = R"(\((\d+),(\d+)\))";
+    r = R"(\{(\d+),(\d+)\})";
     smatch group;
     fp.open(MAP_TXT_PATH);
+    for (int turn = 0; turn < (mapId-1)*14; turn++) {
+        getline(fp, sentence);
+    }
     while (fp.peek() != EOF){
         getline(fp, sentence); // 文件流读入一行
        if (sentence == "---"){
            getline(fp, sentence); // 读出id
            index = sentence.find_first_of(' ') + 1; // 向后一位
-           id = int(sentence[index]);
+           // ASCII字符和int型差48
+           id = int(sentence[index]) - 48;
            if (mapId == id){
                // 读后面的数据
                mapNow->id = id;
@@ -279,7 +309,7 @@ void Map::load(int mapId) {
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index); // 获取后续的字符串
                regex DoorRegex;
-               DoorRegex = R"((\d+):(\d+):(\d+)\((\d+),(\d+)\))";
+               DoorRegex = R"((\d+):(\d+):\{(\d+),(\d+)\})";
                if(foo != "None"){
                    regex_match(foo, group, DoorRegex);
                    short door = short(stoi(group[1]));
@@ -294,15 +324,14 @@ void Map::load(int mapId) {
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index); // 获取后续的字符串
                if(foo != "None"){
-                   vector<string>doors;
                    temp = Tool::split(foo, ' ');
                    for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                       regex_match(foo, group, DoorRegex);
+                       regex_match(*iter, group, DoorRegex);
                        short door = short(stoi(group[1]));
                        int nextMapId = stoi(group[2]);
                        SCOORD pos = {short(stoi(group[3])), short(stoi(group[4]))};
-                       mapNow->roadTo.insert(make_pair(SCOORD {door, 1}, nextMapId));
-                       mapNow->road.insert(make_pair(SCOORD {door, 1}, pos));
+                       mapNow->roadTo.insert(make_pair(SCOORD {door, 18}, nextMapId));
+                       mapNow->road.insert(make_pair(SCOORD {door, 18}, pos));
                        mapNow->doorPosBottom.push_back(door);
                    }
                }
@@ -310,21 +339,22 @@ void Map::load(int mapId) {
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
-               temp = Tool::split(foo, ',');
+               temp = Tool::split(foo, ' ');
                for (auto iter = temp.begin(); iter < temp.end(); iter++) {
                    regex_match(*iter, group, r);
                    SCOORD pos = {short(stoi(group[1])), short(stoi(group[2]))};
                    mapNow->barrier.push_back(pos);
                }
-
+               //npc monster映射的匹配正则式
                regex mapRegex;
-               mapRegex = R"((.{5}):\((\d+),(\d+)\))";
+               mapRegex = R"((.{5}):\{(\d+),(\d+)\})";
+
                //读取怪物
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
                if (foo != "None"){
-                   temp = Tool::split(foo, ',');
+                   temp = Tool::split(foo, ' ');
                    for (auto iter = temp.begin(); iter < temp.end(); iter++) {
                        regex_match(*iter, group, mapRegex);
                        SCOORD pos = {short(stoi(group[2])), short(stoi(group[3]))};
@@ -336,7 +366,7 @@ void Map::load(int mapId) {
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
                if (foo != "None"){
-                   temp = Tool::split(foo, ',');
+                   temp = Tool::split(foo, ' ');
                    for (auto iter = temp.begin(); iter < temp.end(); iter++) {
                        regex_match(*iter, group, mapRegex);
                        SCOORD pos = {short(stoi(group[2])), short(stoi(group[3]))};
@@ -347,9 +377,9 @@ void Map::load(int mapId) {
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
-               if (foo == "None"){
-
-               }
+//               if (foo == "None"){
+//
+//               }
            }
            else{
                continue;
@@ -490,7 +520,6 @@ void Map::showDescription() {
  */
 
 void Map::checkSpecialScene() {
-    cout << "特殊检查" << endl;
 
 }
 

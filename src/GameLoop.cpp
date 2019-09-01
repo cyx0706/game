@@ -22,21 +22,22 @@ extern unique_ptr<Map>mapNow;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 //extern vector<Monster>globalMonster;
 extern CONSOLE_CURSOR_INFO cursorInfo;
-
+extern SCOORD uPos;
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
  */
 void GameLoop::mapLoop() {
+    GetConsoleCursorInfo(hOut, &cursorInfo); //获取控制台光标信息
+    cursorInfo.bVisible = false;             //隐藏控制台光标
+    SetConsoleCursorInfo(hOut, &cursorInfo); //设置控制台光标状态
     mapNow->initMap();
     mapNow->print();
     char input;
-    while(true)
-    {
-        if(kbhit())
-        {
+    while(true){
+        if(kbhit()){
             mapNow->clean(uPos);//清除原有输出
-            input = getchar();
+            input = getch();
             // 输入Esc转换为命令行模式,返回true通知主调函数
             if (input == ESC){
                 system("cls"); // 清空屏幕
@@ -49,17 +50,6 @@ void GameLoop::mapLoop() {
             }
             else{
                 mapNow->move(input);
-                // 移动到下一章地图
-                if (mapNow->checkTopMapTransition()||mapNow->checkBottomMapTransition()){
-                    system("cls");
-                    cout << "Waiting......";
-                    system("cls");
-                    // 生成指针并读取数据
-                    mapNow = mapNow->nextMap(mapNow->roadTo[uPos]);
-                    // 绘制地图
-                    mapNow->initMap();
-                    mapNow->checkSpecialScene();
-                }
                 mapNow->print();
             }
         }
@@ -94,6 +84,7 @@ void GameLoop::commandLoop() {
 // 初始化
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    mapNow = make_unique<Map>();
     mapNow->load(1);
 }
 // 游戏的主循环
