@@ -9,6 +9,10 @@
 class Skill{
 public:
     Skill();
-    Skill(int id);
+    Skill(string id);
+    vector <Buff> buffs;
+    string description;
+    int HP;
+    int MP;
 };
 #endif //GAME_SKILL_H
