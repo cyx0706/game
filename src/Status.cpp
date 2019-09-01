@@ -1,11 +1,10 @@
-#include <fstream>
-#include "Status.h"
-#include "Tool.h"
-
 //
 // Created by cyx on 2019/8/31.
 //
-
+#include <fstream>
+#include "Status.h"
+#include "Tool.h"
+#include "templateHeader.h"
 
 Status::Status(int HP, int MP, int ATK, int PHY, int DEF, int CRITICAL, int SPEED) {
     this->HP = HP;
@@ -47,14 +46,14 @@ Buff::Buff(string id):Status() {
 
     this->name = data["name"];
     this->description = data["description"];
-    this->duration = Tool::fromStringTo<int>(data["duration"]);
-    this->MP = Tool::fromStringTo<int>(data["MP"]);
-    this->HP = Tool::fromStringTo<int>(data["HP"]);
-    this->Phy = Tool::fromStringTo<int>(data["Phy"]);
-    this->ATK = Tool::fromStringTo<int>(data["ATK"]);
-    this->Speed = Tool::fromStringTo<int>(data["Speed"]);
-    this->Critical = Tool::fromStringTo<int>(data["Critical"]);
-    this->DEF = Tool::fromStringTo<int>(data["DEF"]);
+    this->duration = fromString<int>(data["duration"]);
+    this->MP = fromString<int>(data["MP"]);
+    this->HP = fromString<int>(data["HP"]);
+    this->Phy = fromString<int>(data["Phy"]);
+    this->ATK = fromString<int>(data["ATK"]);
+    this->Speed = fromString<int>(data["Speed"]);
+    this->Critical = fromString<int>(data["Critical"]);
+    this->DEF = fromString<int>(data["DEF"]);
     f.close();
 }
 

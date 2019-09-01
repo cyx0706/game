@@ -16,7 +16,7 @@ Player player;
 HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;
-
+unique_ptr<Map>mapNow;
 //vector<NPC>globalNPC(16);
 vector<int>battleBannedCommands = {};
 vector<int>talkBannedCommands = {};

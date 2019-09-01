@@ -17,9 +17,10 @@ extern vector<int>commonBannedCommands;
 using CMD::CommandLists;
 extern Client client;
 extern Player player;
-extern vector<NPC>globalNPC;
+extern unique_ptr<Map>mapNow;
+//extern vector<NPC>globalNPC;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
-extern vector<Monster>globalMonster;
+//extern vector<Monster>globalMonster;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 
 /*

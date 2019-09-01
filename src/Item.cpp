@@ -10,7 +10,7 @@
 #include "Status.h"
 #include "Tool.h"
 #include "global.h"
-
+#include "templateHeader.h"
 /*
  * @brief 无参的构造函数 用于物品栏的占位 即为空
  */
@@ -59,7 +59,7 @@ Item::Item(int id, int number) {
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -72,7 +72,7 @@ Item::Item(int id, int number) {
     this->nameEN = data["nameEN"];
     this->description = data["description"];
     this->num = number;
-    this->boughtPrice = Tool::fromStringTo<int>(data["boughtPrice"]);
+    this->boughtPrice = fromString<int>(data["boughtPrice"]);
     this->canDrop = Tool::boolFromString(data["canDrop"]);
     this->canSell = Tool::boolFromString(data["canSell"]);
 
@@ -128,7 +128,7 @@ Drug::Drug(int id, int number) : Item(id, number){
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -136,9 +136,9 @@ Drug::Drug(int id, int number) : Item(id, number){
     // 将 对应 id 行到下一个空行之间的内容读取为键值对
     map<string, string> data = Tool::dataMap(f);
 
-    this->HP = Tool::fromStringTo<int>(data["HP"]);
-    this->MP = Tool::fromStringTo<int>(data["MP"]);
-    this->Phy = Tool::fromStringTo<int>(data["Phy"]);
+    this->HP = fromString<int>(data["HP"]);
+    this->MP = fromString<int>(data["MP"]);
+    this->Phy = fromString<int>(data["Phy"]);
     this->playerTarget = Tool::boolFromString(data["playerTarget"]);
 
     f.close();
@@ -150,7 +150,7 @@ Drug::Drug(int id, int number) : Item(id, number){
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -209,7 +209,7 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -217,9 +217,9 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
     // 将 对应 id 行到下一个空行之间的内容读取为键值对
     map<string, string> data = Tool::dataMap(f);
 
-    this->ATK = Tool::fromStringTo<int>(data["ATK"]);
-    this->DEF = Tool::fromStringTo<int>(data["DEF"]);
-    this->Speed = Tool::fromStringTo<int>(data["Speed"]);
+    this->ATK = fromString<int>(data["ATK"]);
+    this->DEF = fromString<int>(data["DEF"]);
+    this->Speed = fromString<int>(data["Speed"]);
 
     f.close();
 }
@@ -258,7 +258,7 @@ Armor::Armor(int id, int number) : Item(id, number) {
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -266,9 +266,9 @@ Armor::Armor(int id, int number) : Item(id, number) {
     // 将 对应 id 行到下一个空行之间的内容读取为键值对
     map<string, string> data = Tool::dataMap(f);
 
-    this->ATK = Tool::fromStringTo<int>(data["ATK"]);
-    this->DEF = Tool::fromStringTo<int>(data["DEF"]);
-    this->Speed = Tool::fromStringTo<int>(data["Speed"]);
+    this->ATK = fromString<int>(data["ATK"]);
+    this->DEF = fromString<int>(data["DEF"]);
+    this->Speed = fromString<int>(data["Speed"]);
 
     f.close();
 }

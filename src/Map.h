@@ -3,17 +3,16 @@
 //
 #ifndef GAME_MAP_H
 #define GAME_MAP_H
-
-#include <iostream>
+extern "C"{
 #include <windows.h>
 #include <conio.h>
+}
 #include <algorithm>
 #include <vector>
 #include <map>
-#include <memory>
+
 #include "Item.h"
 #include "Character.h"
-#include "GameLoop.h"
 #include "global.h"
 
 struct SCOORD:public COORD{
@@ -24,14 +23,13 @@ struct SCOORD:public COORD{
 };
 
 
-extern string mapPath;
 extern SCOORD uPos;
 class Map{
 public:
     friend class GameLoop;
     int id;  //根据这个在文件里查找
     char edgeSign;
-    SCOORD initPos;  // 记录用户的初始化位置
+    COORD initPos;  // 记录用户的初始化位置
 
     void initMap();
     void move(int key); // 用户移动来调用这个
@@ -62,5 +60,5 @@ private:
     void initBarrier();
 };
 
-unique_ptr<Map>mapNow;
+
 #endif //GAME_MAP_H

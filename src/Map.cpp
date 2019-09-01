@@ -3,12 +3,14 @@
 //
 #include <fstream>
 #include <regex>
+#include <memory>
+#include <algorithm>
+#include <istream>
 #include "Map.h"
 #include "Tool.h"
 #include "global.h"
-
-extern HANDLE hOut;
 extern unique_ptr<Map>mapNow;
+extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 //extern vector<NPC>globalNPC;
@@ -260,7 +262,7 @@ void Map::load(int mapId) {
                sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
                for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                   mapNow->edgeLeft.push_back(Tool::fromStringTo<short>(*iter)); // string转int
+                   mapNow->edgeLeft.push_back(fromString<short>(*iter)); // string转int
                }
 
                // 读取右边界
@@ -268,9 +270,9 @@ void Map::load(int mapId) {
                index = sentence.find_first_of(' ') + 1;
                sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
-//               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-//                   mapNow->edgeRight.push_back(Tool::fromStringTo<short>(*iter)); // string转int
-//               }
+               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+                   mapNow->edgeRight.push_back(fromString<short>(*iter)); // string转int
+               }
                string foo;
                // 读取顶部门
                getline(fp, sentence);
@@ -488,6 +490,7 @@ void Map::showDescription() {
  */
 
 void Map::checkSpecialScene() {
+    cout << "特殊检查" << endl;
 
 }
 
