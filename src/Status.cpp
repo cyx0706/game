@@ -15,6 +15,15 @@ Status::Status(int HP, int MP, int ATK, int PHY, int DEF, int CRITICAL, int SPEE
     this->MP = MP;
     this->Phy = PHY;
 }
+Status::Status() {
+    this->HP = 0;
+    this->MP = 0;
+    this->DEF = 0;
+    this->ATK = 0;
+    this->Speed = 0;
+    this->Phy = 0;
+    this->Critical = 0;
+}
 
 Buff::Buff():Status() {
     description = "";

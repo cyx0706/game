@@ -11,9 +11,10 @@ static const string Buff_TXT_PATH = "../data/buff.txt";
 
 class Status {
 public:
-    explicit Status(int HP = 100, int MP = 100, int ATK = 10, int PHY = 4,
+    explicit Status(int HP, int MP, int ATK = 15, int PHY = 4,
                     int DEF = 2, int CRITICAL = 10, int SPEED = 5);
     //属性
+    Status();
     int HP; //生命值，为0时死亡
     int MP; //魔法值，使用技能时消耗
     int Phy; //体力值，影响可行动次数，最大值10
