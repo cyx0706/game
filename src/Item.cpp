@@ -166,7 +166,7 @@ Drug::Drug(int id, int number) : Item(id, number){
 
                 // 构造 Buff 对象，存入 buff (vector<Buff>) 中
                 for (const auto& one: line) {
-                    this->buff.emplace_back(Tool::fromStringTo<int>(one));
+                    this->buff.emplace_back(one);
                 }
             }
         }

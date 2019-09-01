@@ -1,7 +1,6 @@
 #include <fstream>
 #include "Status.h"
 #include "Tool.h"
-#include "Tool.cpp"
 
 //
 // Created by cyx on 2019/8/31.
@@ -18,19 +17,19 @@ Status::Status(int HP, int MP, int ATK, int PHY, int DEF, int CRITICAL, int SPEE
     this->Phy = PHY;
 }
 
-Buff::Buff() {
+Buff::Buff():Status() {
     description = "";
     name = "";
-    duration = {};
+    duration = 0;
 }
 
-Buff::Buff(string name, string description, int duration) {
+Buff::Buff(string name, string description, int duration):Status() {
     this->duration = duration;
     this->name = name;
     this->description = description;
 }
 
-Buff::Buff(string id) {
+Buff::Buff(string id):Status() {
     ifstream f(Buff_TXT_PATH);
     string str;
 
@@ -48,27 +47,17 @@ Buff::Buff(string id) {
 
     this->name = data["name"];
     this->description = data["description"];
-    this->duration = fromString<int>(data["duration"]);
-    this->MP = fromString<int>(data["MP"]);
-    this->HP = fromString<int>(data["HP"]);
-    this->Phy = fromString<int>(data["Phy"]);
-    this->ATK = fromString<int>(data["ATK"]);
-    this->Speed = fromString<int>(data["Speed"]);
-    this->Critical = fromString<int>(data["Critical"]);
-    this->DEF = fromString<int>(data["DEF"]);
-
+    this->duration = Tool::fromStringTo<int>(data["duration"]);
+    this->MP = Tool::fromStringTo<int>(data["MP"]);
+    this->HP = Tool::fromStringTo<int>(data["HP"]);
+    this->Phy = Tool::fromStringTo<int>(data["Phy"]);
+    this->ATK = Tool::fromStringTo<int>(data["ATK"]);
+    this->Speed = Tool::fromStringTo<int>(data["Speed"]);
+    this->Critical = Tool::fromStringTo<int>(data["Critical"]);
+    this->DEF = Tool::fromStringTo<int>(data["DEF"]);
     f.close();
 }
 
 void Buff::showDescription() {
 
 }
-
-int main(){
-    Buff pos("B02");
-    cout << pos.name <<endl;
-    cout <<pos.description << endl;
-    cout << pos.ATK <<endl;
-    return 0;
-}
-
