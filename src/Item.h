@@ -69,7 +69,6 @@ public:
     int ATK;
     int DEF;
     int Speed;
-    Skill skill;
 };
 
 /*

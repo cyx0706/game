@@ -33,10 +33,26 @@ bool Package<T>::addItem(int itemId, int number) {
                 (*iter).num += number;
             }
         }
-        Item item(itemId, number);
+        T item(itemId, number);
         this->items.push_back(item);
         return true;
     }
+}
+/*
+ * @brief 删除整个物品
+ *
+ * @param itemId:id
+ */
+template <class T>
+bool Package<T>::deleteItem(int itemId) {
+    for (auto iter = items.begin(); iter != items.end() ; iter++) {
+        if ((*iter).id == itemId){
+            items.erase(iter);
+            return true;
+        }
+    }
+    cout << "未找到" << endl;
+    return false;
 }
 /*
  * @brief 展示背包的物品

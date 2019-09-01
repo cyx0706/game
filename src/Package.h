@@ -22,7 +22,8 @@ public:
     void showItems();
     void showItem(int itemId);
     bool deleteItem(int itemId, int number);
-    friend istream& operator>>(istream& fpStream, Package &pack);
+    bool deleteItem(int itemId);
+    friend istream& operator>>(istream& fpStream, Package<T> &pack);
 };
 
 class Shop{

@@ -54,8 +54,8 @@ public:
     void addExp(int addition);
     void levelUp();
 
-    bool equipArmor(string name);
-    bool equipWeapon(string weapon);
+    bool equipArmor(string &name);
+    bool equipWeapon(string &name);
 
     void showArmors();
     void showWeapons();
@@ -71,22 +71,21 @@ public:
     void showStatus(); //显示人物属性和装备
     void playerMenu(); //提示命令
 
-    void addSkill(string skillId);
 
-    void showKilledMonster();
-    int getKilledMonster(string id);
-    void addKilledMonster();
+//    void showKilledMonster();
+//    int getKilledMonster(string id);
+//    void addKilledMonster();
 
     void addItem(int itemId, int number = 1);
     void deleteItem(int itemId, int number = 1);
     void eraseItem(int itemId);
     int getItem(int itemId);
 
-    virtual bool isDead();
+    bool isDead() override ;
     void deadScene(); // 死亡场景
 
-    void save();
-    void load();
+//    void save();
+//    void load();
 
 private:
     //属性

@@ -182,7 +182,6 @@ Weapon::Weapon() : Item(){
     this->ATK = 0;
     this->DEF = 0;
     this->Speed = 0;
-    this->skill = Skill();
 }
 
 /*
@@ -197,7 +196,6 @@ Weapon::Weapon() : Item(){
  * ATK
  * DEF
  * Speed
- * skill
  *
  * 分别对应 Weapon 类的各个属性
  * 所有键值对必须存在
@@ -222,7 +220,6 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
     this->ATK = fromString<int>(data["ATK"]);
     this->DEF = fromString<int>(data["DEF"]);
     this->Speed = fromString<int>(data["Speed"]);
-    this->skill = Skill(fromString<int>(data["skill"]));
 
     f.close();
 }
