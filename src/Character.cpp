@@ -27,7 +27,9 @@ Character::Character(Status status,
                      string nameEN,
                      string description,
                      Location location,
-                     char display) {
+                     char display,
+                     int fallingExp,
+                     int fallingMoney) {
     this->status = status;
     this->id = std::move(id);
     this->nameEN = std::move(nameEN);
@@ -35,6 +37,8 @@ Character::Character(Status status,
     this->description = std::move(description);
     this->mapLocation = location;
     this->displayChar = display;
+    this->fallingExp = fallingExp;
+    this->fallingMoney = fallingMoney;
 }
 
 /*
@@ -47,6 +51,8 @@ Character::Character() {
     this->status = status1;
     this->nameCN = "";
     this->nameEN = "";
+    this->fallingMoney = 0;
+    this->fallingExp = 0;
     this->mapLocation = {1, 1, 1};
     this->description = "";
     this->displayChar = '\0';
@@ -91,10 +97,10 @@ Player::Player() :Character(){
     this->weapon = Weapon();
     this->armor = Armor();
     // 初始化一下背包
-    this->weaponBag = Package<Weapon>();
-    this->armorBag = Package<Armor>();
-    this->drugBag = Package<Drug>();
-    this->itemBag = Package<Item>();
+//    this->weaponBag = Package<Weapon>();
+//    this->armorBag = Package<Armor>();
+//    this->drugBag = Package<Drug>();
+//    this->itemBag = Package<Item>();
 }
 
 /*
@@ -312,7 +318,7 @@ void Player::showMission(int missionId) {
 Mission* Player::getMission(string assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
         if ((*iter).assigner == assignerId){
-            return &(*iter)
+            return &(*iter);
         }
     }
     cout << "未找到指定任务" << endl;
@@ -480,6 +486,10 @@ void Player::deadScene() {
 NPC::NPC(string id):Character() {
     this->id = std::move(id);
     //TODO:读取文件初始化
+    this->shopStatus = false;
+    this->battleStatus = false;
+    this->missionStatus = false;
+    this->isVisible = true;
 }
 
 /*

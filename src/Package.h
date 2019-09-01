@@ -5,16 +5,15 @@
 #ifndef GAME_PACKAGE_H
 #define GAME_PACKAGE_H
 #include <iostream>
-#include "global.h"
-#include <iostream>
 #include <vector>
 #include "Item.h"
-
+#include "global.h"
 template <class T>
 class Package {
 public:
     //属性
     explicit Package(int max = 25);
+    Package(Package &aPackage)= default;
     vector<T> items;
     int maxItem; // 每个背包的最大大小
     //方法
@@ -23,7 +22,6 @@ public:
     void showItem(int itemId);
     bool deleteItem(int itemId, int number);
     bool deleteItem(int itemId);
-    friend istream& operator>>(istream& fpStream, Package<T> &pack);
 };
 
 class Shop{

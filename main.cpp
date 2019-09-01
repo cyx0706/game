@@ -17,15 +17,13 @@ HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;
 
-vector<NPC>globalNPC;
-vector<Monster>globalMonster;
+//vector<NPC>globalNPC(16);
 vector<int>battleBannedCommands = {};
 vector<int>talkBannedCommands = {};
 vector<int>commonBannedCommands = {};
 vector<int>shopBannedCommands = {};
 SCOORD uPos = {1, 1};
 int main() {
-
     // 做一些检查工作
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));

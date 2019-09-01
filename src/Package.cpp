@@ -7,6 +7,7 @@
 #include <iostream>
 #include <fstream>
 #include <ostream>
+#include "global.h"
 extern Player player;
 #define SHOP_FILE_PATH "../data/map.txt"
 /*

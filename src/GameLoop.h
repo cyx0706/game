@@ -7,6 +7,7 @@
 
 
 #include "global.h"
+#include "Character.h"
 #define SPACE 32
 #define ESC 27
 
@@ -19,7 +20,7 @@ public:
 //    static void loop();
     static void commandLoop();
     static void gameInterface();
-    static void battleLoop(const string& charId, bool isMonster = true);
+    static void battleLoop(Character &character);
 };
 
 #endif //GAME_GAMELOOP_H

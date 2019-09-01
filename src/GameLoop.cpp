@@ -12,15 +12,9 @@
 #include "global.h"
 #include "Client.h"
 
-/*
- * @brief 游戏的地图循环
- * 需要初始化完成后才能调用
- */
-
-
 extern HANDLE hOut;
 extern vector<int>commonBannedCommands;
-enum CommandLists;
+using CMD::CommandLists;
 extern Client client;
 extern Player player;
 extern vector<NPC>globalNPC;
@@ -28,6 +22,10 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern vector<Monster>globalMonster;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 
+/*
+ * @brief 游戏的地图循环
+ * 需要初始化完成后才能调用
+ */
 void GameLoop::mapLoop() {
     mapNow->initMap();
     mapNow->print();
@@ -71,9 +69,9 @@ void GameLoop::mapLoop() {
  * @brief 命令行循环
  * 输入esc命令切换,在mapLoop里被调用
  */
-void commandLoop(){
+void GameLoop::commandLoop() {
     string input;
-    while (TRUE){
+    while (true){
         int index = 0;
         getline(cin, input);
         string s = input;
@@ -89,10 +87,9 @@ void commandLoop(){
         else{
             client.base(input, commonBannedCommands, 0);
         }
-
-
     }
 }
+
 // 初始化
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -167,31 +164,14 @@ void GameLoop::gameStart() {
 /*
  * @brief 战斗循环直到一方死亡结束
  *
- * @param 战斗对象id的引用
+ * @param 战斗对象character
  */
-void GameLoop::battleLoop(const string& charId, bool isMonster) {
-    Character *character = nullptr;
+void GameLoop::battleLoop(Character &character) {
     bool playerTurn = true;
     bool enemyTurn = false;
-    if (isMonster){
-        //读取怪物信息
-        Monster monster();
-        // 需要强制转换
-        character = reinterpret_cast<Character *>(&monster);
-
-    }
-    else{
-        //不需要再读取了
-        for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
-            if ((*iter).id == charId){
-                character = reinterpret_cast<Character *>(&(*iter));
-                break;
-            }
-        }
-    }
-    if (character->status.Speed > player.status.Speed){
+    if (character.status.Speed > player.status.Speed){
         playerTurn = false;
-        cout << "敌人的先制攻击, 造成了" << character->status.ATK - player.status.DEF << "点伤害" << endl;
+        cout << "敌人的先制攻击, 造成了" << character.status.ATK - player.status.DEF << "点伤害" << endl;
         if(player.isDead()){
             // 死亡场景
             return;
@@ -202,10 +182,10 @@ void GameLoop::battleLoop(const string& charId, bool isMonster) {
     }
     int turn = 0; // 回合数
     while (true){
-        // 玩家回合
         turn += 1;
         cout << "回合:" << turn << endl;
         // 前置判断使回合可以跳过
+        // 玩家回合
         if (playerTurn){
             // 遍历buff减少一回合
             cout << "玩家的回合:你的行动" << endl;
@@ -217,37 +197,33 @@ void GameLoop::battleLoop(const string& charId, bool isMonster) {
             enemyTurn = true;
 
             // 击败敌人
-            if (character->isDead()){
-                cout << "你击败了" << character->nameCN << "获得了胜利";
-                cout << "获得经验" << character->fallingExp << endl;
-                //  cout << "获得金钱" << character
+            if (character.isDead()){
+                cout << "你击败了" << character.nameCN << "获得了胜利";
+                cout << "获得经验" << character.fallingExp << endl;
+                cout << "获得金钱" << character.fallingMoney << endl;
+                player.addExp(character.fallingExp);
+                player.addMoney(character.fallingMoney);
                 // 判断掉落物品
-                // 升级判定
-                if(isMonster){
-                    auto temp = dynamic_cast<Monster*>(character);
-                    for (auto iter = temp->fallingItem.begin(); iter != temp->fallingItem.end() ; iter++) {
-                        cout << "获得" << (*iter).nameCN << endl;
-                        // 接口了?
-                        player.addItem(*iter);
-                        // 添加入击杀数目
-                        break;
-                    }
+                auto *monster = dynamic_cast<Monster*>(&character);
+                // 转换失败时为空指针
+                if(monster){
+                   for(auto iter = monster->fallingItem.begin(); iter!=monster->fallingItem.end(); iter++){
+                       cout << "怪物掉落了" << (*iter).nameCN << endl;
+                       player.addItem((*iter).id, (*iter).num);
+                   }
                 }
-                else{
-                    break;
-                }
+                break;
             }
             else{
-                cout << character->nameCN << "剩余HP: " <<character->status.HP << endl;
+                cout << character.nameCN << "剩余HP: " <<character.status.HP << endl;
             }
         }
-
         if (enemyTurn){
             int possible = getRandom(1, 100); // 暴击概率
             int fluctuation = getRandom(90, 110); // 伤害的波动
-            int damage = int(character->status.ATK * fluctuation / 100);
+            int damage = int(character.status.ATK * fluctuation / 100);
             // 暴击
-            if (possible >= character->status.Critical){
+            if (possible >= character.status.Critical){
                 damage = int(damage * 1.5);
             }
             player.status.HP -= (damage - player.status.DEF);
@@ -264,5 +240,7 @@ void GameLoop::battleLoop(const string& charId, bool isMonster) {
         }
     }
 }
+
+
 
 

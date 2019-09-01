@@ -20,7 +20,7 @@ public:
     string content;
     void show();
     void branch();
-    friend ifstream&operator>>(ifstream& fpStream, Scene& scene);
+    friend istream& operator>>(istream &fpStream, Scene &scene);
     explicit Scene(int sceneId);
 };
 

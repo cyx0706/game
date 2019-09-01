@@ -51,7 +51,7 @@ Mission::Mission(int id) {
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
+            if (idLine[0] == "id" && Tool::fromStringTo<int>(idLine[1]) == id) {
                 break;
             }
         }
@@ -62,8 +62,8 @@ Mission::Mission(int id) {
     this->id = id;
     this->nameCN = data["nameCN"];
     this->nameEN = data["nameEN"];
-    this->bonusMoney = fromString<int>(data["bonusMoney"]);
-    this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
+    this->bonusMoney = Tool::fromStringTo<int>(data["bonusMoney"]);
+    this->bonusExperiencePoint = Tool::fromStringTo<int>(data["bonusExperiencePoint"]);
     this->assigner = data["assigner"];
 
     f.close();
@@ -82,7 +82,7 @@ Mission::Mission(int id) {
         one.first == "assigner") {
             continue;
         } else {
-            this->requiredItem.insert(pair(fromString<int>(one.first), fromString<int>(one.second)));
+            this->requiredItem.insert(pair(Tool::fromStringTo<int>(one.first), Tool::fromStringTo<int>(one.second)));
         }
     }
 }

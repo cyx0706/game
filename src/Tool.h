@@ -23,13 +23,11 @@ public:
     static string clean(const string& str);
     static map<string, string> dataMap(ifstream& f);
     static bool boolFromString(string& str);
+    template <class T>
+    static string toString(const T &v);
+    template <class T>
+    static T fromStringTo(const string &str);
 };
-
-template <class T>
-string toString(const T &v);
-
-template <class T>
-T fromString(const string &str);
 
 int getRandom(int min, int max);
 #endif //GAME_TOOL_H

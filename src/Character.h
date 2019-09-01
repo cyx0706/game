@@ -29,13 +29,16 @@ class Character {
 public:
     Character(Status status, string id, string nameCN,
               string nameEN, string description,
-              Location location, char display);
+              Location location, char display,
+              int fallingExp = 100, int fallingMoney = 50);
     Character();
     Status status;
     string id;
     string nameEN;
     string nameCN;
     string description;
+    int fallingExp;
+    int fallingMoney;
     vector<Buff> buffs;
     Location mapLocation;
     char displayChar;
@@ -94,7 +97,7 @@ private:
     Package<Drug> drugBag;
     Package<Item> itemBag;
     int experiencePoint;
-    vector <Mission&> quests;
+    vector <Mission> quests;
     int days;
     Weapon weapon;
     Armor armor;
@@ -105,16 +108,15 @@ private:
 
 class Monster : public Character {
 public:
-    Monster(string id);
+    explicit Monster(string id);
     vector<Item>fallingItem;
-    int fallingExp;
-    int fallingMoney;
 };
 
 
 class NPC : public Character{
 public:
-    NPC(string id); // 根据id读取文件构造
+    explicit NPC(string id); // 根据id读取文件构造
+    NPC(NPC& npc) = default;
     void NPCMenu();
     void assignQuest(Player& player);
     void finishQuest(Player& player);
@@ -126,7 +128,7 @@ public:
     bool getVisibility();
     bool isDead() override ;
     void showDescription() override ;
-    map<int, string[]>talkContent; //不同任务的不同对话
+    map<int, string[3]>talkContent; //不同任务的不同对话
     bool forceBattleCheck(Player &player);
 private:
     Shop store;

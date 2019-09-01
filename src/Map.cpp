@@ -1,17 +1,18 @@
 //
 // Created by cyx on 2019/8/27.
 //
-#include "Map.h"
-#include "Tool.h"
 #include <fstream>
 #include <regex>
+#include "Map.h"
+#include "Tool.h"
+#include "global.h"
 
 extern HANDLE hOut;
 extern unique_ptr<Map>mapNow;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
-extern vector<NPC>globalNPC;
-extern vector<Monster>globalMonster;
+//extern vector<NPC>globalNPC;
+//extern vector<Monster>globalMonster;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
@@ -130,37 +131,29 @@ void Map::initBarrier() {
     short xLeft = 0;
     short xRight = 0;
     short y = 0;
-    // 画NPC
-    CHAR_INFO chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
-    for (auto iter = globalNPC.begin(); iter != globalNPC.end(); iter++) {
-        if (!((*iter).mapLocation.mapId == this->id)){
-            continue;
+    // 画NPC和Monster
+    CHAR_INFO chFill;   //定义剪切区域填充字符
+    for (auto iter= this->barrier.begin();  iter!=this->barrier.end() ; iter++) {
+        auto m = npcs.find(*iter);
+        if (m!=npcs.end()){
+            // 找到了,是个npc
+            //TODO:全局NPC里找一下看看是不是不显示
+            chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
         }
-        else{
-            xLeft = short((*iter).mapLocation.x - 1);
-            xRight = short((*iter).mapLocation.x);
-            y = short((*iter).mapLocation.y);
-            SMALL_RECT CutScr = {xLeft, y, xRight, y};
-            COORD cutPos = {xRight, y};
-            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
+        m = monsters.find(*iter);
+        if(m!=monsters.end()){
+            // 画Monster
+            chFill = {'M',  screenInfo.wAttributes};
         }
-    }
-    // 画Monster
-    chFill = {'M',  screenInfo.wAttributes};
-    for (auto iter = globalMonster.begin(); iter != globalMonster.end() ; iter++) {
-        if (!((*iter).mapLocation.mapId == this->id)){
-            continue;
-        }
-        else{
-            xLeft = short((*iter).mapLocation.x - 1);
-            xRight = short((*iter).mapLocation.x);
-            y = short((*iter).mapLocation.y);
-            SMALL_RECT CutScr = {xLeft, y, xRight, y};
-            COORD cutPos = {xRight, y};
-            ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
-        }
+        xLeft = short((*iter).X - 1);
+        xRight = short((*iter).X);
+        y = short((*iter).Y);
+        SMALL_RECT CutScr = {xLeft, y, xRight, y};
+        COORD cutPos = {xRight, y};
+        ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
     }
     SetConsoleTextAttribute(hOut, 0x0f);
+
     // 画item
 }
 
@@ -256,21 +249,28 @@ void Map::load(int mapId) {
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                mapNow->edgeSign = char(sentence[index]);
+
                //读取初始位置,在外面会设定,这里无所谓
                getline(fp, sentence);
                mapNow->initPos = {1, 1};
+
                //读取左边界
                getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
                for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                   mapNow->edgeLeft.push_back(fromString<short>(*iter)); // string转int
+                   mapNow->edgeLeft.push_back(Tool::fromStringTo<short>(*iter)); // string转int
                }
+
                // 读取右边界
                getline(fp, sentence);
+               index = sentence.find_first_of(' ') + 1;
+               sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
-               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                   mapNow->edgeRight.push_back(fromString<short>(*iter)); // string转int
-               }
+//               for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+//                   mapNow->edgeRight.push_back(Tool::fromStringTo<short>(*iter)); // string转int
+//               }
                string foo;
                // 读取顶部门
                getline(fp, sentence);

@@ -19,7 +19,7 @@ int getRandom(int min, int max){
 }
 
 template <class T>
-string toString(const T &v){
+string Tool::toString(const T &v){
     ostringstream os; // 创建字符串输出流
     os << v; // 将变量写入字符串流
     return os.str(); // 返回输出流生成的字符串
@@ -27,7 +27,7 @@ string toString(const T &v){
 
 
 template <class T>
-inline T fromString(const string &str){
+T Tool::fromStringTo(const string &str){
     istringstream is(str); // 创建字符串输入流
     T v;
     is >> v; // 从字符串输入流中读取变量v
