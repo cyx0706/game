@@ -7,6 +7,8 @@
 
 #include "global.h"
 
+static const string Buff_TXT_PATH = "../data/buff.txt";
+
 class Status {
 public:
     explicit Status(int HP = 100, int MP = 100, int ATK = 10, int PHY = 4,
@@ -23,8 +25,12 @@ public:
 
 class Buff : public Status{
 public:
-    Buff(int id);
-    Buff()= default;
+    Buff(string id);
+
+    Buff();
+
+    Buff(string name, string description, int duration);
+
     //属性
     string name;
     string description;
