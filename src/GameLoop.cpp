@@ -50,6 +50,10 @@ void GameLoop::mapLoop() {
                     string barrierType = "item";
                     mapNow->deleteBarrier(uPos, barrierType);
                 }
+                if (branch == 0){
+                    string barrierType = "monster";
+                    mapNow->deleteBarrier(uPos, barrierType);
+                }
                 mapNow->print();
             }
             else{

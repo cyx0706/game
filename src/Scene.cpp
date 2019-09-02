@@ -133,7 +133,9 @@ void dynamicScene3(){
                         "【系统提示】：失去王国通行证，获得冒险者纹章\n"
                         "【系统提示】：无法再回到王国内城，但冒险者协会可以提供休息\n"
                         "【系统提示】：获得100g\n";
-                //TODO:处理物品
+                player.addMoney(100);
+                player.addItem(301);
+                player.deleteItem(302);
                 break;
             }
             else{

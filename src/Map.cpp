@@ -6,6 +6,7 @@
 #include <memory>
 #include <algorithm>
 #include <istream>
+#include "GameLoop.h"
 #include "Map.h"
 #include "Tool.h"
 #include "global.h"
@@ -560,8 +561,11 @@ int Map::checkEvent() {
             }
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
-                //TODO:初始化一个Monster
+                //TODO:提示消息和哪个Monster对战
                 MessageBox(nullptr, "和monster发生战斗", "提示", MB_OK);
+                Monster aMonster(monsters[barrier[i]]);
+                GameLoop::battleLoop(aMonster);
+
                 return 0;
             }
         }
