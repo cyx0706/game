@@ -542,7 +542,13 @@ int Map::checkEvent() {
                 // 构造item
                 Item pickedItem(itemId, 1);
                 player.addItem(itemId, 1);
-                //TODO:显示问题待解决
+                string tips = "发现物品" + pickedItem.nameCN;
+                char t[30];
+                int j = 0;
+                for (; j < 30; j++) {
+                    t[j] = tips[j];
+                }
+                t[j++] = '\0';
                 MessageBox(nullptr, "发现物品", "提示", MB_OK);
                 return 2;
             }
