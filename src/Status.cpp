@@ -29,7 +29,7 @@ void Status::saveStatus(string owner) {
     ofstream of;
     of.open(SAVE_STATUS_PATH);
     map<string,string> m_map;
-    //ä¿å­˜playerçš„å•é¡¹å±æ€§
+    //±£´æplayerµÄµ¥ÏîÊôĞÔ
     m_map["owner"] = owner;
     m_map["HP"] = std::to_string(HP);
     m_map["MP"] = std::to_string(MP);
@@ -88,7 +88,7 @@ Buff::Buff(string id):Status() {
     ifstream f(Buff_TXT_PATH);
     string str;
 
-    // ï¿½Òµï¿½ï¿½ï¿½Ó¦ id ï¿½ï¿½
+    // ?????? id ??
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -97,7 +97,7 @@ Buff::Buff(string id):Status() {
             }
         }
     }
-    // ï¿½ï¿½ ï¿½ï¿½Ó¦ id ï¿½Ğµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¶ï¿½È¡Îªï¿½ï¿½Öµï¿½ï¿½
+    // ?? ??? id ?§Ö??????????????????????????
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];
@@ -121,7 +121,7 @@ void Buff::saveBuff(string owner) {
     ofstream of;
     of.open(SAVE_BUFF_PATH);
     map<string,string> m_map;
-    //ä¿å­˜playerçš„å•é¡¹å±æ€§
+    //±£´æplayerµÄµ¥ÏîÊôĞÔ
     m_map["owner"] = owner;
     m_map["name"] = name;
     m_map["description"] = description;
@@ -147,7 +147,7 @@ void Buff::loadBuff(string owner) {
     ifstream f(SAVE_BUFF_PATH);
     string str;
 
-    // ï¿½Òµï¿½ï¿½ï¿½Ó¦ id ï¿½ï¿½
+    // ?????? id ??
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -156,7 +156,7 @@ void Buff::loadBuff(string owner) {
             }
         }
     }
-    // ï¿½ï¿½ ï¿½ï¿½Ó¦ id ï¿½Ğµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¶ï¿½È¡Îªï¿½ï¿½Öµï¿½ï¿½
+    // ?? ??? id ?§Ö??????????????????????????
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];
