@@ -1,0 +1,7 @@
+id MY-01
+nameEN Goblin
+nameCN ∏Á≤º¡÷
+description null
+fallingExp 100
+fallingMoney 100
+displayChar a

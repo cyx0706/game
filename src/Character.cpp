@@ -4,22 +4,24 @@
 #include "Character.h"
 
 #include <utility>
+#include <fstream>
 #include "Item.h"
 #include "Status.h"
+#include "Tool.h"
 
-// ----------------------Character¿‡----------------------
+// ----------------------Character??----------------------
 
 /*
- * @brief ÕÍ’˚µƒππ‘Ï∫Ø ˝
+ * @brief ???????????
  *
- * @param status:◊¥Ã¨
- *        id:±Í ∂
- *        nameCN:÷–Œƒ√˚
- *        nameEN:”¢Œƒ√˚
- *        fallingExp:µÙ¬‰æ≠—È
- *        description:√Ë ˆ
- *        location:Œª÷√
- *        display:µÿÕº…œµƒœ‘ æ
+ * @param status:??
+ *        id:???
+ *        nameCN:??????
+ *        nameEN:?????
+ *        fallingExp:???‰æ≠??
+ *        description:????
+ *        location:Œª??
+ *        display:?????????
  */
 Character::Character(Status status,
                      string id,
@@ -42,8 +44,8 @@ Character::Character(Status status,
 }
 
 /*
- * @brief ºÚ“◊µƒππ‘Ï∫Ø ˝
- * À˘”–µƒ≥ı ºªØŒ™ø’
+ * @brief ??????????
+ * ???–µ????????
  *
  */
 Character::Character() {
@@ -59,44 +61,64 @@ Character::Character() {
 }
 
 /*
- * @brief ≈–∂œ «∑ÒÀ¿Õˆ
+ * @brief ?–∂????????
  *
- * @return ∑µªÿbool¿‡–Õ, true±Ì æÀ¿Õˆ
+ * @return ????bool????, true???????
  */
 bool Character::isDead() {
     return (this->status.HP < 0);
 }
 
 /*
- * @brief ’π æ–≈œ¢
+ * @brief ?????
  *
  */
 void Character::showDescription() {
     cout << this->description << endl;
 }
 
-// ---------------------Monster¿‡-----------------------
+// ---------------------Monster??-----------------------
 
 Monster::Monster(string id) :Character(){
-    // TODO:∂¡»°Œƒº˛≥ı ºªØ
+    // TODO:???????????
     this->id = std::move(id);
+    ifstream f(READ_MONSTER_PATH);
+    string str;
+
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "id" && idLine[1] == id) {
+                break;
+            }
+        }
+    }
+    map<string, string> data = Tool::dataMap(f);
+
+    this->nameCN = data["nameCN"];
+    this->description = data["description"];
+    this->nameEN = data["nameEN"];
+    this->fallingMoney = fromString<int>(data["fallingMoney"]);
+    this->fallingExp = fromString<int>(data["fallingExp"]);
+    //this->displayChar = data["displayChar"];
+    f.close();
 }
 
 
-// --------------------Player¿‡-------------------------
+// --------------------Player??-------------------------
 
 /*
- * @brief ππ‘Ï∫Ø ˝
+ * @brief ??????
  */
 Player::Player() :Character(){
-    this->id = "PY-00"; // πÃ∂®µƒid
+    this->id = "PY-00"; // ?????id
     this->experiencePoint = 0;
     this->days = 0;
     this->money = 0;
     this->Lv = 1;
     this->weapon = Weapon();
     this->armor = Armor();
-    // ≥ı ºªØ“ªœ¬±≥∞¸
+    // ???????¬±???
 //    this->weaponBag = Package<Weapon>();
 //    this->armorBag = Package<Armor>();
 //    this->drugBag = Package<Drug>();
@@ -104,64 +126,64 @@ Player::Player() :Character(){
 }
 
 /*
- * @brief ‘ˆº”ÕÊº“µƒ«Æ
+ * @brief ?????????
  *
- * @param addition:‘ˆº” ˝∂Ó
+ * @param addition:????????
  */
 void Player::addMoney(int addition) {
     if (money < 100000){
         money += addition;
     }
     else{
-        cout << "Ω«ÆµΩ¥Ô…œœﬁ" << endl;
+        cout << "???????????" << endl;
     }
 }
 
 /*
- * @brief ‘ˆº”æ≠—È,À≥±„ºÏ≤È «∑Ò…˝º∂¡À
+ * @brief ???????,??????????????
  *
- * @param addition:‘ˆº” ˝∂Ó
+ * @param addition:????????
  */
 void Player::addExp(int addition) {
     if(Lv > 20){
-        cout << "¬˙º∂Œﬁ∑®‘ˆº”æ≠—È" << endl;
+        cout << "??????????????" << endl;
         return;
     }
     experiencePoint += addition;
     levelUp();
-    cout << "µ±«∞µ»º∂" << Lv << endl;
+    cout << "??????" << Lv << endl;
 }
 /*
- * @brief …˝º∂∫Ø ˝
- * æ≠—È–Ë«Û∞¥œﬂ–‘‘ˆ≥§
- * @return  «∑Ò…˝º∂
+ * @brief ????????
+ * ????????????????
+ * @return ???????
  */
 void Player::levelUp() {
     int nextLvExp = 100 * (Lv + 1);
     while (experiencePoint > nextLvExp){
         experiencePoint -= nextLvExp;
-        cout << nameCN << "…˝º∂¡À" << endl;
+        cout << nameCN << "??????" << endl;
         Lv += 1;
         if (Lv == 3){
-            // —ßœ∞–¬µƒººƒ‹
-            cout << "—ßª·¡À–¬µƒººƒ‹" << endl;
+            // ????????
+            cout << "???????????" << endl;
         }
         nextLvExp = 100 * (Lv + 1);
     }
-    cout << " £”‡ " << nextLvExp - experiencePoint << " æ≠—È…˝µΩœ¬“ªº∂" << endl;
+    cout << "??? " << nextLvExp - experiencePoint << " ?????????????" << endl;
 }
 /*
- * @brief ◊∞±∏∑¿æﬂ
- * –∂œ¬∑¿æﬂæÕ «◊∞±∏ø’∑¿æﬂ
- * @param √¸¡Ó––¥´»Îµƒ◊÷∑˚¥Æname
- * µ±name=None ±±Ì æ–∂œ¬∑¿æﬂ
+ * @brief ???????
+ * –∂?¬∑??????????????
+ * @param ?????–¥?????????name
+ * ??name=None????–∂?¬∑???
  */
 bool Player::equipArmor(string &name) {
     Armor oldArmor = this->armor;
-    // –∂œ¬◊∞±∏
+    // –∂?????
     if( name == "None"){
         if (oldArmor.id == 0){
-            cout << "µ±«∞√ª”–◊∞±∏" << endl;
+            cout << "?????????" << endl;
             return false;
         }
         armorBag.addItem(oldArmor.id, 1);
@@ -169,35 +191,35 @@ bool Player::equipArmor(string &name) {
         this->status.DEF -= oldArmor.DEF;
         this->status.ATK -= oldArmor.ATK;
         this->armor = Armor();
-        cout << "–∂œ¬¡À" << oldArmor.nameCN << endl;
+        cout << "–∂????" << oldArmor.nameCN << endl;
         return true;
     }
     for (auto iter = armorBag.items.begin(); iter != armorBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->armor = *iter;
             armorBag.deleteItem((*iter).id, 1);
-            // ¥¶¿Ìº”≥…
+            // ??????
             this->status.ATK += ((*iter).ATK - oldArmor.ATK);
             this->status.DEF += ((*iter).DEF - oldArmor.DEF);
             this->status.Speed += ((*iter).Speed - oldArmor.Speed);
-            cout << "∑¿æﬂ" << (*iter).nameCN << "◊∞±∏≥…π¶" << endl;
+            cout << "????" << (*iter).nameCN << "??????" << endl;
             return true;
         }
     }
-    cout << "Œﬁ∏√◊∞±∏" << endl;
+    cout << "??????" << endl;
     return false;
 }
 
 /*
- * @brief ◊∞±∏Œ‰∆˜
- * –∂œ¬Œ‰∆˜æÕ «◊∞±∏ø’Œ‰∆˜
- * @param √¸¡Ó––¥´»Îµƒ◊÷∑˚¥Æname
+ * @brief ???????
+ * –∂???????????????????
+ * @param ?????–¥?????????name
  */
 bool Player::equipWeapon(string& name) {
     Weapon oldWeapon = this->weapon;
     if (name == "None"){
         if (oldWeapon.id == 0){
-            cout << "µ±«∞√ª”–◊∞±∏" << endl;
+            cout << "?????????" << endl;
             return false;
         }
         weaponBag.addItem(oldWeapon.id, 1);
@@ -205,115 +227,115 @@ bool Player::equipWeapon(string& name) {
         this->status.DEF -= oldWeapon.DEF;
         this->status.Speed -= oldWeapon.Speed;
         this->weapon = Weapon();
-        cout << "–∂œ¬¡À" << oldWeapon.nameCN << endl;
+        cout << "–∂????" << oldWeapon.nameCN << endl;
         return true;
     }
     for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->weapon = *iter;
             weaponBag.deleteItem((*iter).id, 1);
-            // ¥¶¿Ìº”≥…
+            // ??????
             this->status.ATK += ((*iter).ATK - oldWeapon.ATK);
             this->status.DEF += ((*iter).DEF - oldWeapon.DEF);
             this->status.Speed += ((*iter).Speed - oldWeapon.Speed);
-            cout << "Œ‰∆˜" << (*iter).nameCN << "◊∞±∏≥…π¶" << endl;
+            cout << "????" << (*iter).nameCN << "??????" << endl;
             return true;
         }
     }
-    cout << "Œﬁ∏√◊∞±∏" << endl;
+    cout << "??????" << endl;
     return false;
 }
 
 /*
- * @brief ’π æ∑¿æﬂ±≥∞¸
+ * @brief ?????????
  */
 void Player::showArmors() {
-    cout << "ÕÊº“µƒ∑¿æﬂ±≥∞¸" << endl;
+    cout << "??????????" << endl;
     armorBag.showItems();
 }
 
 /*
- * @brief ’π æŒ‰∆˜±≥∞¸
+ * @brief ??????????
  */
 void Player::showWeapons() {
-    cout << "ÕÊº“µƒŒ‰∆˜±≥∞¸" << endl;
+    cout << "????????????" << endl;
     weaponBag.showItems();
 }
 /*
- * @brief ’π æ“©ŒÔ±≥∞¸
+ * @brief ???????
  */
 void Player::showDrugs() {
-    cout << "ÕÊº“µƒ“©ŒÔ" << endl;
+    cout << "???????" << endl;
     drugBag.showItems();
 }
 /*
- * @brief ’π æŒÔ∆∑±≥∞¸
+ * @brief ?????????
  */
 void Player::showItems() {
-    cout << "ÕÊº“µƒµ¿æﬂ" << endl;
+    cout << "???????" << endl;
     itemBag.showItems();
 }
 /*
- * @brief Ω” ‹»ŒŒÒ,Õ¨ ±ºÏ≤È «∑Ò“—æ≠Ω” ‹π˝∏√»ŒŒÒ
+ * @brief ????????,??????????????????????
  *
- * @param mission:»ŒŒÒµƒ“˝”√
- * @return  «∑ÒΩ” ‹≥…π¶
+ * @param mission:?????????
+ * @return ????????
  */
 bool Player::addMission(Mission &mission) {
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
         if ((*iter).id == mission.id){
-            cout << "»ŒŒÒΩ¯––÷–" << endl;
+            cout << "?????????" << endl;
             return false;
         }
     }
     quests.push_back(mission);
-    cout << "Ω” ‹»ŒŒÒ≥…π¶" << endl;
+    cout << "??????????" << endl;
     return true;
 }
 /*
- * @brief Ã· æ»ŒŒÒ–≈œ¢
+ * @brief ??????????
  */
 void Player::showMissions() {
     if(quests.empty()){
-        cout << "√ª”–Ω”»Œ∫Œ»ŒŒÒ" << endl;
+        cout << "??–Ω??Œ∫?????" << endl;
         return;
     }
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
-        cout << "»ŒŒÒ" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-        cout << "Ω¯∂»:";
+        cout << "????" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
+        cout << "????:";
         if ((*iter).isProcess){
-            cout << "Ω¯––÷–" << endl;
+            cout << "??????" << endl;
         }
         if((*iter).isFinished){
-            cout << "ÕÍ≥…" << endl;
+            cout << "???" << endl;
         }
     }
 }
 /*
- * @brief ’π æµ•∏ˆ»ŒŒÒµƒœÍœ∏µƒ–≈œ¢
+ * @brief ???????????????????
  *
- * @param missionId: »ŒŒÒµƒid
+ * @param missionId: ?????id
  */
 void Player::showMission(int missionId) {
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
         if ((*iter).id == missionId){
-            cout << "»ŒŒÒ" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-            cout << "Ω¯∂»:";
+            cout << "????" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
+            cout << "????:";
             if ((*iter).isProcess){
-                cout << "Ω¯––÷–" << endl;
-                //TODO:»ŒŒÒµƒ√Ë ˆ
+                cout << "??????" << endl;
+                //TODO:?????????
             }
             if((*iter).isFinished){
-                cout << "ÕÍ≥…" << endl;
+                cout << "???" << endl;
             }
 
         }
     }
 }
 /*
- * @brief ªÒ»°»ŒŒÒ
+ * @brief ???????
  *
- * @param assigner: ŒØÕ–»Àµƒid
+ * @param assigner: ??????id
  */
 Mission* Player::getMission(string assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
@@ -321,34 +343,34 @@ Mission* Player::getMission(string assignerId) {
             return &(*iter);
         }
     }
-    cout << "Œ¥’“µΩ÷∏∂®»ŒŒÒ" << endl;
+    cout << "Œ¥??????????" << endl;
     return nullptr;
 }
 /*
- * @brief ’π æÕÊº“µƒ–≈œ¢
+ * @brief ?????????
  */
 void Player::showStatus() {
-    cout << "ÕÊº“–’√˚:" << this->nameCN << endl;
-    cout << "µ»º∂:" << this->Lv << endl;
-    cout << "…˙√¸:" << this->status.HP;
-    cout << "∑®¡¶÷µ:" << this->status.MP;
-    cout << "ÀŸ∂»:" << this->status.Speed;
-    cout << "∑¿”˘:" << this->status.DEF;
-    cout << "π•ª˜:" << this->status.ATK << endl;
+    cout << "???????:" << this->nameCN << endl;
+    cout << "???:" << this->Lv << endl;
+    cout << "????:" << this->status.HP;
+    cout << "?????:" << this->status.MP;
+    cout << "???:" << this->status.Speed;
+    cout << "????:" << this->status.DEF;
+    cout << "????:" << this->status.ATK << endl;
 }
 
 /*
- * @brief ∏ˆ»À–≈œ¢√Ê∞Â
+ * @brief ??????????
  */
 void Player::playerMenu() {
-    cout << "ÕÊº“≤Àµ•" << endl;
-    cout << "ƒ„ø…“‘ π”√œ¬√Êµƒ√¸¡Ó≤Èø¥∏ˆ»Àµƒ–≈œ¢" << endl;
+    cout << "?????" << endl;
+    cout << "??????????????????????????" << endl;
 }
 
 /*
- * @brief ÃÌº”ŒÔ∆∑
- * ∏˘æ›id∑÷¿‡ÃÌº”
- * @param itemId:ŒÔ∆∑µƒid number:“™ÃÌº”µƒ∏ˆ ˝
+ * @brief ??????
+ * ????id???????
+ * @param itemId:?????id number:????????
  */
 void Player::addItem(int itemId, int number) {
     int division = itemId / 100;
@@ -365,13 +387,13 @@ void Player::addItem(int itemId, int number) {
         itemBag.addItem(itemId, number);
     }
     else{
-        cout << "¥ÌŒÛµƒid" << endl;
+        cout << "?????id" << endl;
     }
 }
 /*
- * @brief ∏˘æ›id∑÷¿‡…æ≥˝
+ * @brief ????id???????
  *
- * @param itemId:ŒÔ∆∑id number:“™…æ≥˝µƒ∏ˆ ˝
+ * @param itemId:???id number:?????????
  */
 void Player::deleteItem(int itemId, int number) {
     int division = itemId / 100;
@@ -388,13 +410,13 @@ void Player::deleteItem(int itemId, int number) {
         itemBag.deleteItem(itemId, number);
     }
     else{
-        cout << "¥ÌŒÛµƒid" << endl;
+        cout << "?????id" << endl;
     }
 }
 /*
- * @brief ÕÍ»´…æ≥˝ƒ≥∏ˆŒÔ∆∑
- * ”√”⁄√¸¡Ó––µƒ∂™∆˙√¸¡Ó
- * @param itemId: ŒÔ∆∑µƒid
+ * @brief ????????????
+ * ?????????–µ????????
+ * @param itemId: ?????id
  */
 void Player::eraseItem(int itemId) {
     int division = itemId / 100;
@@ -411,14 +433,14 @@ void Player::eraseItem(int itemId) {
         itemBag.deleteItem(itemId);
     }
     else{
-        cout << "¥ÌŒÛµƒid" << endl;
+        cout << "?????id" << endl;
     }
 }
 /*
- * @brief ”√”⁄ªÒ»°÷∏∂®idŒÔ∆∑µƒ∏ˆ ˝
+ * @brief ?????????id????????
  *
- * @param itemId: ŒÔ∆∑µƒid
- * @return ŒÔ∆∑µƒ∏ˆ ˝,0±Ì æ√ª”–
+ * @param itemId: ?????id
+ * @return ????????,0??????
  */
 int Player::getItem(int itemId) {
     int division = itemId / 100;
@@ -451,20 +473,20 @@ int Player::getItem(int itemId) {
         }
     }
     else{
-        cout << "¥ÌŒÛµƒid" << endl;
+        cout << "?????id" << endl;
     }
     return 0;
 }
 /*
- * @brief ≈–∂œ «∑ÒÀ¿Õˆ
- * ø…“‘øº¬«¿©’π“ª–©∂´Œ˜
- * @return  «∑ÒÀ¿Õˆ
+ * @brief ?–∂????????
+ * ???????????–©????
+ * @return ???????
  */
 bool Player::isDead() {
     if (this->status.HP <= 0){
         char input;
-        cout << "ƒ„¥¶”⁄±ÙÀ¿◊¥Ã¨" << endl;
-        cout << "“™∏¥ªÓ¬(y/n):";
+        cout << "?????????" << endl;
+        cout << "???????(y/n):";
         cin >> input;
         if (input == 'y'){
             this->status.HP += 100;
@@ -478,14 +500,55 @@ bool Player::isDead() {
 }
 
 void Player::deadScene() {
-    cout << "ƒ„À¿¡À" << endl;
-    cout << "≤À" << endl;
+    cout << "??????" << endl;
+    cout << "??" << endl;
 }
-// -----------------------NPC¿‡-----------------------
+
+void Player::save() {
+    ofstream of;
+    of.open(SAVE_TXT_PATH);
+    map<string,string> m_map;
+    //‰øùÂ≠òplayerÁöÑÂçïÈ°πÂ±ûÊÄß
+    m_map["type"] = "attribute";
+    m_map["id"] = id;
+    m_map["fallingExp"] = std::to_string(fallingExp);
+    m_map["fallingMoney"] = std::to_string(fallingMoney);
+    m_map["displayChar"] = displayChar;
+    m_map["experiencePoint"] = std::to_string(experiencePoint);
+    m_map["days"] = std::to_string(days);
+    m_map["money"] = std::to_string(money);
+    m_map["Lv"] = std::to_string(Lv);
+    auto iter = m_map.begin();
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    //‰øùÂ≠òplayerÁöÑlocation
+    m_map["type"] = "location";
+    m_map["mapId"] = std::to_string(mapLocation.mapId);
+    m_map["x"] = std::to_string(mapLocation.x);
+    m_map["y"] = std::to_string(mapLocation.y);
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    of.close();
+    //‰øùÂ≠òplayerÁöÑStatus
+    status.saveStatus("player");
+    //Â≠òbuff
+    for (int (i) = 0; (i) < buffs.size(); ++(i)) {
+        buffs[i].saveStatus("player");
+    }
+    //Â≠òbuff
+
+}
+// -----------------------NPC??-----------------------
 
 NPC::NPC(string id):Character() {
     this->id = std::move(id);
-    //TODO:∂¡»°Œƒº˛≥ı ºªØ
+    //TODO:???????????
     this->shopStatus = false;
     this->battleStatus = false;
     this->missionStatus = false;
@@ -493,48 +556,48 @@ NPC::NPC(string id):Character() {
 }
 
 /*
- * @brief ”√ªß≤Àµ•
+ * @brief ??????
  */
 void NPC::NPCMenu() {
     cout << this->nameCN << ":" << endl;
     if (this->bar){
-        cout << "ƒ„ø…“‘‘⁄’‚¿Ô–›œ¢" << endl;
+        cout << "??????????????" << endl;
     }
     if (this->shopStatus){
-        cout << "ø…“‘Ωª“◊" << endl;
+        cout << "???????" << endl;
     }
     if (this->missionStatus){
-        cout << "ø…“‘Ω”»ŒŒÒ" << endl;
+        cout << "?????????" << endl;
     }
 }
 
 /*
- * @brief ∫ÕnpcΩª“◊µƒ∫Ø ˝,–Ë“™Ã·«∞ºÏ≤È «∑Òø…“‘Ωª“◊
+ * @brief ??npc????????,??????????????????
  *
- * @param itemId:ŒÔ∆∑id number:π∫¬Ú∏ˆ ˝ money:ÕÊº“µƒ«Æ
+ * @param itemId:???id number:??????? money:?????
  */
 void NPC::buy(int itemId, int number, int &money) {
     if (!this->shopStatus){
-        cout << "Œﬁ∑®Ωª“◊" << endl;
+        cout << "???????" << endl;
     }
     this->store.buy(itemId, number, money);
 }
 
 /*
- * @brief ¬Ù≥ˆŒÔ∆∑µƒ∫Ø ˝
+ * @brief ????????????
  *
- * @param itemId:ŒÔ∆∑id number:π∫¬Ú∏ˆ ˝ money:ÕÊº“µƒ«Æ
+ * @param itemId:???id number:??????? money:?????
  */
 void NPC::sell(Item &item, int number, int &money) {
     if (!this->shopStatus){
-        cout << "Œﬁ∑®Ωª“◊" << endl;
+        cout << "???????" << endl;
     }
     this->store.sell(item, number, money);
 }
 
 /*
- * @brief ≈–∂œ «∑ÒÀ¿Õˆ
- * »Áπ˚À¿Õˆ÷√Œ™≤ªø…º˚
+ * @brief ?–∂????????
+ * ???????????????
  */
 bool NPC::isDead() {
     if (this->status.HP <= 0){
@@ -545,111 +608,111 @@ bool NPC::isDead() {
 }
 
 /*
- * @brief ∂‡Ã¨µƒ’π æ√Ë ˆ
+ * @brief ???????????
  */
 void NPC::showDescription() {
     cout << "NPC:" << this->nameCN << "(" << this->nameEN << ")";
 }
 
 /*
- * @brief Ω” ‹»ŒŒÒ, ºÏ≤Ènpc»ŒŒÒ¡–±Ìµƒµ⁄“ª∏ˆ «∑Ò±ªΩ” ‹
+ * @brief ????????, ???npc?????–±????????????
  *
- * @param player ÕÊº“µƒ“˝”√
+ * @param player ????????
  */
 void NPC::assignQuest(Player &player) {
     if (!missionStatus){
-        cout << "Œﬁ∑®∑¢≤º»ŒŒÒ" << endl;
+        cout << "???????????" << endl;
         return;
     }
     for (unsigned int i = 0; i < questList.size(); i++) {
-        //µ⁄“ª∏ˆŒ¥Ω” ‹µƒ»ŒŒÒ
+        //?????Œ¥?????????
         if(!questList[i].isAccepted){
             if (!player.addMission(questList[i])){
-                cout << "»ŒŒÒΩ” ‹π˝¡À" << endl;
+                cout << "??????????" << endl;
                 return;
             }
             else{
-                // Ω”»ŒŒÒ ±µƒ∂‘ª∞
+                // ???????????
                 cout << talkContent[questList[i].id][0] << endl;
-                cout << "Ω” ‹¡À»ŒŒÒ" << endl;
+                cout << "??????????" << endl;
                 return;
             }
         }
     }
-    cout << "√ª”–»ŒŒÒø…“‘Ω”¡À" << endl;
+    cout << "?????????????" << endl;
 }
 
 /*
- * @brief Ã·Ωª»ŒŒÒ
+ * @brief ??????
  *
- * @param player:ÕÊº“µƒ“˝”√
+ * @param player:????????
  */
 void NPC::finishQuest(Player &player) {
     if (!missionStatus){
-        cout << "Œﬁ∑®Ã·Ωª»ŒŒÒ" << endl;
+        cout << "?????????" << endl;
     }
-    // ªÒ»°»ŒŒÒ
+    // ???????
     Mission* acceptedMission = player.getMission(this->id);
-    // ≈–∂œ «∑ÒªÒ»°≥…π¶
+    // ?–∂?????????
     if (acceptedMission == nullptr){
-        cout << "√ª”–“™Ã·Ωªµƒ»ŒŒÒ" << endl;
+        cout << "????????????" << endl;
     }
     else{
-        // ºÏ≤È «∑Òø…“‘Ã·Ωª
-        // »Ùø…“‘‘Ú“™–ﬁ∏ƒ»ŒŒÒ Ù–‘Œ™ÕÍ≥…
-        // ”…”⁄“˝”√Õ¨ ±–ﬁ∏ƒ¡Ànpcµƒ»ŒŒÒµƒ Ù–‘
+        // ???????????
+        // ????????????????????????
+        // ???????????????npc???????????
         acceptedMission->checkFinished();
     }
 }
 
 /*
- * @brief …Ë÷√npc «∑Ò‘⁄µÿÕº…œ“˛≤ÿ
+ * @brief ????npc?????????????
  */
 void NPC::setVisibility(bool isVisible) {
     this->isVisible = isVisible;
 }
 
 /*
- * @brief ªÒ»°npc «∑Ò“˛≤ÿ
- * µÿÕº∫Ø ˝–Ë“™µ˜”√
+ * @brief ???npc???????
+ * ??????????????
  */
 bool NPC::getVisibility() {
     return this->isVisible;
 }
 
 /*
- * @brief ∫ÕNPCµƒ∂‘ª∞
- * ≤ªÕ¨»ŒŒÒµƒΩ¯––Ω◊∂Œµƒ∂‘ª∞≤ªÕ¨
+ * @brief ??NPC????
+ * ??????????–Ω?Œµ??????
  */
 void NPC::talk(Player &player) {
-    // ø…“‘∑¢»ŒŒÒµƒ≤≈”–≤ªÕ¨µƒ∂‘ª∞
+    // ????????????–≤??????
     if (missionStatus){
         Mission *mission = player.getMission(this->id);
         if (mission != nullptr){
             int id = mission->id;
             if(mission->isProcess){
-                // Ω¯––÷– ±µƒ∂‘ª∞
+                // ???????????
                 cout << talkContent[id][1] << endl;
                 return;
             }
         }
     }
-    // ∆Ω ±Ã∏ª∞
+    // ?????
     cout << talkContent[0][0] << endl;
 }
 
 /*
- * @brief ”√”⁄ºÏ≤È «∑ÒŒﬁ∑®∂‘ª∞÷±Ω”Ω¯»Î’Ω∂∑
+ * @brief ????????????????????????
  *
- * @param player:ÕÊº“µƒ“˝”√
- * @return  «∑Òª·∑¢…˙’Ω∂∑
+ * @param player:????????
+ * @return ?????????
  */
 bool NPC::forceBattleCheck(Player &player) {
-    // ”µ”–ª ≥«Õ®––÷§
+    // ??–ª??????
     if (player.getItem(302) != 0){
-        // ºÏ≤Ènpc’Ω∂∑◊¥Ã¨
+        // ???npc?????
         if (this->battleStatus){
-            cout << "√ª”– ≤√¥∫√Àµµƒ" << endl;
+            cout << "??????????" << endl;
             return true;
         }
     }
