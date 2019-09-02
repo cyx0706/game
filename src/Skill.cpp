@@ -38,3 +38,12 @@ Skill::Skill(string id) {
     f.close();
 }
 
+Skill::Skill() {
+    name = "";
+    ATK = 0;
+    HP = 0;
+    MP = 0;
+    description = "";
+    buff = Buff();
+}
+
