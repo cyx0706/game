@@ -14,6 +14,10 @@
 #include "Skill.h"
 #include "global.h"
 #include "Mission.h"
+
+static const string SAVE_TXT_PATH = "../data/savePlayerAttribute.txt";
+string READ_MONSTER_PATH = "../data/monsters.txt";
+
 //
 //class Player;
 //class NPC;
@@ -87,7 +91,7 @@ public:
     bool isDead() override ;
     void deadScene(); // À¿Õˆ≥°æ∞
 
-//    void save();
+    void save();
 //    void load();
 
 private:

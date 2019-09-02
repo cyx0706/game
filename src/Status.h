@@ -8,6 +8,8 @@
 #include "global.h"
 
 static const string Buff_TXT_PATH = "../data/buff.txt";
+string SAVE_STATUS_PATH = "../data/saveStatus.txt";
+string SAVE_BUFF_PATH = "../data/saveBuff.txt";
 
 class Status {
 public:
@@ -22,6 +24,9 @@ public:
     int Speed;
     int Critical;
     int DEF; //防御力
+    //方法
+    void saveStatus(string owner);
+    void loadStatus(string owner);
 };
 
 class Buff : public Status{
@@ -38,6 +43,8 @@ public:
     int duration;
     //方法
     void showDescription();
+    void saveBuff(string owner);
+    void loadBuff(string owner);
 };
 
 #endif //GAME_STATUS_H

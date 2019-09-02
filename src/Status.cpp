@@ -25,6 +25,53 @@ Status::Status() {
     this->Critical = 0;
 }
 
+void Status::saveStatus(string owner) {
+    ofstream of;
+    of.open(SAVE_STATUS_PATH);
+    map<string,string> m_map;
+    //ä¿å­˜playerçš„å•é¡¹å±æ€§
+    m_map["owner"] = owner;
+    m_map["HP"] = std::to_string(HP);
+    m_map["MP"] = std::to_string(MP);
+    m_map["Phy"] = std::to_string(Phy);
+    m_map["ATK"] = std::to_string(ATK);
+    m_map["Speed"] = std::to_string(Speed);
+    m_map["Critical"] = std::to_string(Critical);
+    m_map["DEF"] = std::to_string(DEF);
+    auto iter = m_map.begin();
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    of.close();
+}
+
+void Status::loadStatus(string owner) {
+    ifstream f(SAVE_STATUS_PATH);
+    string str;
+
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "owner" && idLine[1] == owner) {
+                break;
+            }
+        }
+    }
+
+    map<string, string> data = Tool::dataMap(f);
+
+    this->MP = fromString<int>(data["MP"]);
+    this->HP = fromString<int>(data["HP"]);
+    this->Phy = fromString<int>(data["Phy"]);
+    this->ATK = fromString<int>(data["ATK"]);
+    this->Speed = fromString<int>(data["Speed"]);
+    this->Critical = fromString<int>(data["Critical"]);
+    this->DEF = fromString<int>(data["DEF"]);
+    f.close();
+}
+
 Buff::Buff():Status() {
     description = "";
     name = "";
@@ -41,7 +88,7 @@ Buff::Buff(string id):Status() {
     ifstream f(Buff_TXT_PATH);
     string str;
 
-    // ÕÒµ½¶ÔÓ¦ id ´¦
+    // ï¿½Òµï¿½ï¿½ï¿½Ó¦ id ï¿½ï¿½
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -50,7 +97,7 @@ Buff::Buff(string id):Status() {
             }
         }
     }
-    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
+    // ï¿½ï¿½ ï¿½ï¿½Ó¦ id ï¿½Ğµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¶ï¿½È¡Îªï¿½ï¿½Öµï¿½ï¿½
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];
@@ -68,4 +115,59 @@ Buff::Buff(string id):Status() {
 
 void Buff::showDescription() {
 
+}
+
+void Buff::saveBuff(string owner) {
+    ofstream of;
+    of.open(SAVE_BUFF_PATH);
+    map<string,string> m_map;
+    //ä¿å­˜playerçš„å•é¡¹å±æ€§
+    m_map["owner"] = owner;
+    m_map["name"] = name;
+    m_map["description"] = description;
+    m_map["duration"] = std::to_string(duration);
+    m_map["owner"] = owner;
+    m_map["HP"] = std::to_string(HP);
+    m_map["MP"] = std::to_string(MP);
+    m_map["Phy"] = std::to_string(Phy);
+    m_map["ATK"] = std::to_string(ATK);
+    m_map["Speed"] = std::to_string(Speed);
+    m_map["Critical"] = std::to_string(Critical);
+    m_map["DEF"] = std::to_string(DEF);
+    auto iter = m_map.begin();
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    of.close();
+}
+
+void Buff::loadBuff(string owner) {
+    ifstream f(SAVE_BUFF_PATH);
+    string str;
+
+    // ï¿½Òµï¿½ï¿½ï¿½Ó¦ id ï¿½ï¿½
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "owner" && idLine[1] == owner) {
+                break;
+            }
+        }
+    }
+    // ï¿½ï¿½ ï¿½ï¿½Ó¦ id ï¿½Ğµï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¶ï¿½È¡Îªï¿½ï¿½Öµï¿½ï¿½
+    map<string, string> data = Tool::dataMap(f);
+
+    this->name = data["name"];
+    this->description = data["description"];
+    this->duration = fromString<int>(data["duration"]);
+    this->MP = fromString<int>(data["MP"]);
+    this->HP = fromString<int>(data["HP"]);
+    this->Phy = fromString<int>(data["Phy"]);
+    this->ATK = fromString<int>(data["ATK"]);
+    this->Speed = fromString<int>(data["Speed"]);
+    this->Critical = fromString<int>(data["Critical"]);
+    this->DEF = fromString<int>(data["DEF"]);
+    f.close();
 }
