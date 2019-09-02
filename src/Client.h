@@ -15,7 +15,7 @@ static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
 
 namespace CMD {
     /*
-     * @brief æ‰€æœ‰çš„å‘½ä»¤ å¹¶ å¯¹åº”ä¸€ä¸ªæ•°å­—
+     * @brief ËùÓĞµÄÃüÁî ²¢ ¶ÔÓ¦Ò»¸öÊı×Ö
      */
     enum CommandLists {
         attack = 1,
@@ -43,9 +43,9 @@ namespace CMD {
 using namespace CMD;
 
 /*
- * @brief å‘½ä»¤è¡Œç±»
+ * @brief ÃüÁîĞĞÀà
  *
- * @note ç”¨æ³•
+ * @note ÓÃ·¨
  * @code
  * auto client = new Client();
  *
@@ -53,14 +53,14 @@ using namespace CMD;
  * getline(cin, str);
  *
  * vector<string> bannedCommands;
- * // æ·»åŠ  ç¦æ­¢å‘½ä»¤åˆ° bannedCommands ä¸­ï¼Œè‹¥æ²¡æœ‰ä¸ºç©º
+ * // Ìí¼Ó ½ûÖ¹ÃüÁîµ½ bannedCommands ÖĞ£¬ÈôÃ»ÓĞÎª¿Õ
  *
  * while(true) {
  *     client->base(str, bannedCommands);
  *
  *     getline(cin, str);
  *
- *     // æ·»åŠ  å¾ªç¯ç»“æŸæ¡ä»¶
+ *     // Ìí¼Ó Ñ­»·½áÊøÌõ¼ş
  * }
  * @endcode
  */

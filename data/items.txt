@@ -1,133 +1,133 @@
 id 1
-nameCN å‰‘
+nameCN ½£
 nameEN sword
-description ä¸€æŠŠæ™®é€šçš„å‰‘ï¼Œå¥½åƒæ˜¯é‡äº§çš„ç±»å‹
+description Ò»°ÑÆÕÍ¨µÄ½££¬ºÃÏñÊÇÁ¿²úµÄÀàĞÍ
 boughtPrice 10
 canDrop true
 canSell true
 
 id 2
-nameCN é˜é‡Šè€…
+nameCN ²ûÊÍÕß
 nameEN elucidatetor
-description æ¼†é»‘è‰²çš„é•¿å‰‘ï¼Œè¿™ä¸ªé‡é‡çœ‹èµ·æ¥æ˜¯åŒæ‰‹å‰‘ï¼Œæ®è¯´æœ‰äººå•æ‰‹æŒ¥åŠ¨å®ƒã€‚
+description ÆáºÚÉ«µÄ³¤½££¬Õâ¸öÖØÁ¿¿´ÆğÀ´ÊÇË«ÊÖ½££¬¾İËµÓĞÈËµ¥ÊÖ»Ó¶¯Ëü¡£
 boughtPrice 10
 canDrop true
 canSell true
 
 id 3
-nameCN é€æš—è€…
+nameCN Öğ°µÕß
 nameEN escaper
-description æŸä¸ªé»‘è¡£å‰‘å£«ç•™ä¸‹çš„æ­¦å™¨
+description Ä³¸öºÚÒÂ½£Ê¿ÁôÏÂµÄÎäÆ÷
 boughtPrice 10
 canDrop true
 canSell true
 
 id 4
-nameCN æ‘æ­£
+nameCN ´åÕı
 nameEN muramasa
-description æŠŠåˆ€ä¼¼ä¹è¿˜èƒ½å”¤èµ·ä½ è®°å¿†ä¸­ç©çš„ä¸€æ¬¾æ°ªé‡‘æ‰‹æ¸¸çš„ä¸€ä¸ªè‡ªç§°è€æœ½çš„çº¢å‘é’å¹´çš„æ ·è²Œ
+description °Ñµ¶ËÆºõ»¹ÄÜ»½ÆğÄã¼ÇÒäÖĞÍæµÄÒ»¿îë´½ğÊÖÓÎµÄÒ»¸ö×Ô³ÆÀÏĞàµÄºì·¢ÇàÄêµÄÑùÃ²
 boughtPrice 10
 canDrop true
 canSell true
 
 id 5
-nameCN å…¨æ‘æœ€å¥½çš„å‰‘
+nameCN È«´å×îºÃµÄ½£
 nameEN best-sword
-description è¿™æŠŠå‰‘åŸæ¥çš„æŒæœ‰è€…å¥½åƒæ˜¯å«åšè¾¾æ‹‰å´©å§æ–‘å¾—è´è¿ªåœå¤šæ¯”é²ç¿
+description Õâ°Ñ½£Ô­À´µÄ³ÖÓĞÕßºÃÏñÊÇ½Ğ×ö´ïÀ­±À°É°ßµÃ±´µÏ²·¶à±ÈÂ³ÎÌ
 boughtPrice 10
 canDrop true
 canSell true
 
 id 6
-nameCN é‡‘è‰²æˆ˜æ–§
+nameCN ½ğÉ«Õ½¸«
 nameEN gold-axe
-description å¦‚ä½•åšä¸€ä¸ªæ³•å¸ˆï¼Ÿä½ å…ˆå‡è£…å¿µå’’ï¼Œç„¶åè¶å¯¹æ–¹ä¸æ³¨æ„ä¸€æ–§å­æŠ¡ä¸Šå»
+description ÈçºÎ×öÒ»¸ö·¨Ê¦£¿ÄãÏÈ¼Ù×°ÄîÖä£¬È»ºó³Ã¶Ô·½²»×¢ÒâÒ»¸«×ÓÂÕÉÏÈ¥
 boughtPrice 10
 canDrop true
 canSell true
 
 id 7
-nameCN å–µå¸•æ–¯ä¹‹å‰‘
+nameCN ß÷ÅÁË¹Ö®½£
 nameEN miao-pa-si
-description è²åæ¡åˆ°çš„ä¸€ä¸ªæ ‘æï¼Œå¥½åƒè•´è—ç€å·¨å¤§çš„åŠ›é‡
+description Á«»ª¼ñµ½µÄÒ»¸öÊ÷Ö¦£¬ºÃÏñÔÌ²Ø×Å¾Ş´óµÄÁ¦Á¿
 boughtPrice 10
 canDrop true
 canSell true
 
 id 8
-nameCN å’–å–±æ£’
+nameCN ¿§à¬°ô
 nameEN excalibur
-description è´§çœŸä»·å®çš„åœ£å‰‘å•Šï¼â€œç¬¨è›‹â€ ä»€ä¹ˆï¼Ÿâ€œæˆ‘æ¯å¤©çš„æ—©æ™¨æ˜¯ä»ä¸€æ¯å’–å•¡å¼€å§‹çš„â€ ï¼Ÿï¼Ÿï¼Ÿ
+description »õÕæ¼ÛÊµµÄÊ¥½£°¡£¡¡°±¿µ°¡± Ê²Ã´£¿¡°ÎÒÃ¿ÌìµÄÔç³¿ÊÇ´ÓÒ»±­¿§·È¿ªÊ¼µÄ¡± £¿£¿£¿
 boughtPrice 10
 canDrop true
 canSell true
 
 id 101
-nameCN å…¨æ‘æœ€å¥½çš„ç”²
+nameCN È«´å×îºÃµÄ¼×
 nameEN best-armor
-description è¿™ä¸ªç›”ç”²çš„åŸæ¥æŒæœ‰è€…æ˜¯â€¦â€¦ä¸æƒ³å†è¯´ä¸€éäº†
+description Õâ¸ö¿ø¼×µÄÔ­À´³ÖÓĞÕßÊÇ¡­¡­²»ÏëÔÙËµÒ»±éÁË
 boughtPrice 10
 canDrop true
 canSell true
 
 id 102
-nameCN æ¶é¬¼ç¼ èº«
+nameCN ¶ñ¹í²øÉí
 nameEN AK-KI-TEN-SHIN
-description æ®è¯´ä½¿ç”¨è¿™ä¸ªå¸å…·çš„äººéƒ½æ­»äº†
+description ¾İËµÊ¹ÓÃÕâ¸öµÛ¾ßµÄÈË¶¼ËÀÁË
 boughtPrice 10
 canDrop true
 canSell true
 
 id 103
-nameCN çº¢æŠ«é£
+nameCN ºìÅû·ç
 nameEN red-cloak
-description ä¸€ä½æ‰‹æŒé•°åˆ€çš„ç¾æ¼«é£æ ¼ä¸ªå¥³å­©å­ç•™ä¸‹æ¥çš„
+description Ò»Î»ÊÖ³ÖÁ­µ¶µÄÃÀÂş·ç¸ñ¸öÅ®º¢×ÓÁôÏÂÀ´µÄ
 boughtPrice 10
 canDrop true
 canSell true
 
 id 104
-nameCN å†’é™©è€…æœè£…
+nameCN Ã°ÏÕÕß·ş×°
 nameEN adventurer-cloth
-description å°±æ˜¯å†’é™©è€…æœè£…
+description ¾ÍÊÇÃ°ÏÕÕß·ş×°
 boughtPrice 10
 canDrop true
 canSell true
 
 id 201
-nameCN å°ç™¾èŠ±è›‡è‰æ°´
+nameCN Ğ¡°Ù»¨Éß²İË®
 nameEN SheCao-water
-description å´‚å±±åœ£æ°´
+description áÀÉ½Ê¥Ë®
 boughtPrice 10
 canDrop true
 canSell true
 
 id 202
-nameCN å´‚å±±é˜”ä¹
+nameCN áÀÉ½À«ÀÖ
 nameEN LaoShan-cola
-description ç¾¤åº•å±‚äººå‘˜ä¸“å±
+description Èºµ×²ãÈËÔ±×¨Êô
 boughtPrice 10
 canDrop true
 canSell true
 
 id 203
-nameCN åŠ£åŒ–å®Œå…¨å›å¤è¯
+nameCN ÁÓ»¯ÍêÈ«»Ø¸´Ò©
 nameEN HPdrug
-description å²å‚²å¤©çš„å•†å“éƒ½å–åˆ°è¿™é‡Œæ¥äº†ï¼Ÿ
+description Ê·°ÁÌìµÄÉÌÆ·¶¼Âôµ½ÕâÀïÀ´ÁË£¿
 boughtPrice 10
 canDrop true
 canSell true
 
 id 204
-nameCN éš¶å¸…åšçŸ¿æ³‰æ°´
+nameCN Á¥Ë§²©¿óÈªË®
 nameEN LSB-water
-description ï¼Ÿï¼
+description £¿£¡
 boughtPrice 10
 canDrop true
 canSell true
 
 id 205
-nameCN å…´å¥‹å‰‚
+nameCN ĞË·Ü¼Á
 nameEN dope
 description emmmmmmm
 boughtPrice 10
@@ -135,65 +135,65 @@ canDrop true
 canSell true
 
 id 206
-nameCN ç¥åœ£æ‰‹é›·
+nameCN ÉñÊ¥ÊÖÀ×
 nameEN holly-hand-grenade
-description å“ˆåˆ©è·¯äºšï¼
+description ¹şÀûÂ·ÑÇ£¡
 boughtPrice 10
 canDrop true
 canSell true
 
 id 207
-nameCN é±¼
+nameCN Óã
 nameEN fish
-description é±¼ï¼Œå¥½å¤§çš„é±¼ï¼Œè™çº¹é²¨é±¼
+description Óã£¬ºÃ´óµÄÓã£¬»¢ÎÆöèÓã
 boughtPrice 10
 canDrop true
 canSell true
 
 id 301
-nameCN å†’é™©è€…çº¹ç« 
+nameCN Ã°ÏÕÕßÎÆÕÂ
 nameEN pass-of-adventurous-guild
-description æŠŠçº¹ç« æ‰£åˆ°ä¹¦ä¸Šå¤§å–Šï¼šè‹±é›„è¿æ¥ï¼å¥½åƒå¯ä»¥å˜èº«ï¼Ÿ
+description °ÑÎÆÕÂ¿Ûµ½ÊéÉÏ´óº°£ºÓ¢ĞÛÁ¬½Ó£¡ºÃÏñ¿ÉÒÔ±äÉí£¿
 boughtPrice 10
 canDrop true
 canSell true
 
 id 302
-nameCN çš‡åŸé€šè¡Œè¯
+nameCN »Ê³ÇÍ¨ĞĞÖ¤
 nameEN pass-of-imperial-city
-description æ²¡æœ‰ä»–é—¨å«ä¸ä¼šè®©ä½ è¿›å…¥å†…åŸçš„
+description Ã»ÓĞËûÃÅÎÀ²»»áÈÃÄã½øÈëÄÚ³ÇµÄ
 boughtPrice 10
 canDrop true
 canSell true
 
 id 303
-nameCN æœˆå…‰è‰
+nameCN ÔÂ¹â²İ
 nameEN moonlight-grass
-description åªä¼šåœ¨æ˜æœˆç…§è€€çš„æ£®æ—é‡Œç”Ÿé•¿
+description Ö»»áÔÚÃ÷ÔÂÕÕÒ«µÄÉ­ÁÖÀïÉú³¤
 boughtPrice 10
 canDrop true
 canSell true
 
 id 304
-nameCN æ„šè€…ä¹‹é”
+nameCN ÓŞÕßÖ®Ëø
 nameEN chain-of-fool
-description çœ‹åˆ°è¿™ä¸ªåå­—ï¼Œä½ çš„è‚éšéšä½œç—›
+description ¿´µ½Õâ¸öÃû×Ö£¬ÄãµÄ¸ÎÒşÒş×÷Í´
 boughtPrice 10
 canDrop true
 canSell true
 
 id 305
-nameCN å…½çš®
+nameCN ÊŞÆ¤
 nameEN fur
-description å½±ç‹¼ä¸ºä»€ä¹ˆä¼šæœ‰å…½çš®ï¼Ÿ
+description Ó°ÀÇÎªÊ²Ã´»áÓĞÊŞÆ¤£¿
 boughtPrice 10
 canDrop true
 canSell true
 
 id 306
-nameCN è˜‘è‡
+nameCN Ä¢¹½
 nameEN mushroom
-description ä½ èŒé¸½é¸½ä»€ä¹ˆæ—¶å€™éª—è¿‡ä½ äº†ï¼Ÿï¼Ÿï¼Ÿ
+description Äã¾ú¸ë¸ëÊ²Ã´Ê±ºòÆ­¹ıÄãÁË£¿£¿£¿
 boughtPrice 10
 canDrop true
 canSell true

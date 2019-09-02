@@ -14,11 +14,11 @@
 extern Player player;
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å– Mission ç±»çš„åŸºæœ¬ä¿¡æ¯ æ„é€ ç›¸åº”çš„å¯¹è±¡
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡ Mission ÀàµÄ»ù±¾ĞÅÏ¢ ¹¹ÔìÏàÓ¦µÄ¶ÔÏó
  *
- * @param id Mission å¯¹è±¡å¯¹åº”çš„ id
+ * @param id Mission ¶ÔÏó¶ÔÓ¦µÄ id
  *
- * mission.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * mission.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * * *
  * id
  * nameEN
@@ -30,24 +30,24 @@ extern Player player;
  * __ __
  * __ __
  *
- * __ __ ä»£è¡¨ ä»»åŠ¡å®Œæˆæ‰€éœ€çš„ç‰©å“
- * ç¬¬ä¸€ä¸ª __ ä¸º å¯¹åº”ç‰©å“çš„ id
- * ç¬¬äºŒä¸ª __ ä¸º å¯¹åº”ç‰©å“è¦æ±‚çš„æ•°é‡
+ * __ __ ´ú±í ÈÎÎñÍê³ÉËùĞèµÄÎïÆ·
+ * µÚÒ»¸ö __ Îª ¶ÔÓ¦ÎïÆ·µÄ id
+ * µÚ¶ş¸ö __ Îª ¶ÔÓ¦ÎïÆ·ÒªÇóµÄÊıÁ¿
  *
- * åˆ†åˆ«å¯¹åº” Mission ç±»çš„å„ä¸ªå±æ€§
- * æ‰€æœ‰é”®å€¼å¯¹å¿…é¡»å­˜åœ¨
+ * ·Ö±ğ¶ÔÓ¦ Mission ÀàµÄ¸÷¸öÊôĞÔ
+ * ËùÓĞ¼üÖµ¶Ô±ØĞë´æÔÚ
  * * * * * * * * * * * * * * * * * * * * * * * * *
- * å±æ€§
+ * ÊôĞÔ
  * isAccepted
  * isFinished
  * isProcess
- * éœ€è¦ä»å­˜æ¡£ä¸­è¯»å–
+ * ĞèÒª´Ó´æµµÖĞ¶ÁÈ¡
  */
 Mission::Mission(int id) {
     ifstream f(MISSION_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -56,7 +56,7 @@ Mission::Mission(int id) {
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->id = id;
@@ -68,14 +68,14 @@ Mission::Mission(int id) {
 
     f.close();
 
-    // TODO ä»å­˜æ¡£ä¸­è¯»å‡º
+    // TODO ´Ó´æµµÖĞ¶Á³ö
     this->isAccepted = true;
     this->isFinished = false;
     this->isProcess = false;
 
-    // æå–ä»»åŠ¡å®Œæˆæ‰€éœ€çš„ç‰©å“ ç‰©å“id ä¸ ç‰©å“æ•°é‡ çš„é”®å€¼å¯¹ï¼Œå­˜å…¥ requiredItem
+    // ÌáÈ¡ÈÎÎñÍê³ÉËùĞèµÄÎïÆ· ÎïÆ·id Óë ÎïÆ·ÊıÁ¿ µÄ¼üÖµ¶Ô£¬´æÈë requiredItem
     for (const auto& one : data) {
-        // å‰”é™¤ map ä¸­å…¶ä»–çš„é”®å€¼å¯¹ id nameCN nameEN bonusMoney bonusExperiencePoint assigner
+        // ÌŞ³ı map ÖĞÆäËûµÄ¼üÖµ¶Ô id nameCN nameEN bonusMoney bonusExperiencePoint assigner
         if (one.first == "id" ||
         one.first == "nameCN" || one.first == "nameEN" ||
         one.first == "bonusMoney" || one.first == "bonusExperiencePoint" ||
@@ -88,31 +88,31 @@ Mission::Mission(int id) {
 }
 
 /*
- * @brief æ£€æŸ¥æ˜¯å¦èƒ½å®Œæˆä»»åŠ¡
- * æ£€æŸ¥ç©å®¶èƒŒåŒ…çš„ç‰©å“ ä¸ ä»»åŠ¡å®Œæˆéœ€è¦çš„ç‰©å“ è¿›è¡Œå¯¹æ¯”
- * è‹¥ æœªè¾¾åˆ°ä»»åŠ¡å®Œæˆæ¡ä»¶ è¾“å‡º"ä»»åŠ¡æœªå®Œæˆ" ä¸åšä»»ä½•å¤„ç†
- * è‹¥ å·²è¾¾åˆ°ä»»åŠ¡å®Œæˆæ¡ä»¶ è¾“å‡º"ä»»åŠ¡å®Œæˆ  "  ä»ç©å®¶èƒŒåŒ…ä¸­å‡å» ä»»åŠ¡æ‰€éœ€ç‰©å“çš„ç›¸åº”æ•°é‡
- *                                    ç»™ç©å®¶å¢åŠ  ç»éªŒ å’Œ é‡‘é’±
+ * @brief ¼ì²éÊÇ·ñÄÜÍê³ÉÈÎÎñ
+ * ¼ì²éÍæ¼Ò±³°üµÄÎïÆ· Óë ÈÎÎñÍê³ÉĞèÒªµÄÎïÆ· ½øĞĞ¶Ô±È
+ * Èô Î´´ïµ½ÈÎÎñÍê³ÉÌõ¼ş Êä³ö"ÈÎÎñÎ´Íê³É" ²»×öÈÎºÎ´¦Àí
+ * Èô ÒÑ´ïµ½ÈÎÎñÍê³ÉÌõ¼ş Êä³ö"ÈÎÎñÍê³É  "  ´ÓÍæ¼Ò±³°üÖĞ¼õÈ¥ ÈÎÎñËùĞèÎïÆ·µÄÏàÓ¦ÊıÁ¿
+ *                                    ¸øÍæ¼ÒÔö¼Ó ¾­Ñé ºÍ ½ğÇ®
  */
 void Mission::checkFinished() {
-    // éå† ä»»åŠ¡æ‰€éœ€çš„ç›¸åº”ç‰©å“ æ¯”è¾ƒ ç©å®¶èƒŒåŒ…ä¸­ç°æœ‰çš„æ•°é‡
+    // ±éÀú ÈÎÎñËùĞèµÄÏàÓ¦ÎïÆ· ±È½Ï Íæ¼Ò±³°üÖĞÏÖÓĞµÄÊıÁ¿
     for (const auto& one : this->requiredItem) {
-        // å¦‚æœ ç©å®¶èƒŒåŒ…é‡Œå¯¹åº”ç‰©å“çš„æ•°é‡å°‘äºæ‰€éœ€çš„æ•°é‡ è¾“å‡º"ä»»åŠ¡æœªå®Œæˆ" return
+        // Èç¹û Íæ¼Ò±³°üÀï¶ÔÓ¦ÎïÆ·µÄÊıÁ¿ÉÙÓÚËùĞèµÄÊıÁ¿ Êä³ö"ÈÎÎñÎ´Íê³É" return
         if (player.getItem(one.first) < one.second) {
-            cout << "ä»»åŠ¡æœªå®Œæˆ" << endl;
+            cout << "ÈÎÎñÎ´Íê³É" << endl;
             return;
         }
     }
 
-    // å‡å»ç©å®¶èƒŒåŒ…ä¸­ç›¸åº”çš„ç‰©å“æ•°é‡
+    // ¼õÈ¥Íæ¼Ò±³°üÖĞÏàÓ¦µÄÎïÆ·ÊıÁ¿
     for (const auto& one : this->requiredItem) {
         player.deleteItem(one.first, one.second);
     }
 
-    // ä»»åŠ¡ç»“ç®—
-    cout << "ä»»åŠ¡å®Œæˆ" << endl;
+    // ÈÎÎñ½áËã
+    cout << "ÈÎÎñÍê³É" << endl;
     this->isFinished = true;
-    // ç©å®¶ å¢åŠ é‡‘é’± å’Œ ç»éªŒ
+    // Íæ¼Ò Ôö¼Ó½ğÇ® ºÍ ¾­Ñé
     player.addMoney(this->bonusMoney);
     player.addExp(this->bonusExperiencePoint);
 }

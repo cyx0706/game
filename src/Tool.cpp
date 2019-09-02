@@ -12,24 +12,24 @@
 #include "global.h"
 
 /*
- * @brief ç”Ÿæˆminåˆ°maxä¹‹å‰çš„éšæœºæ•°
+ * @brief Éú³Éminµ½maxÖ®Ç°µÄËæ»úÊı
  */
 int getRandom(int min, int max){
     return (rand() % static_cast<int>(max + 1 - min) + min);
 }
 
 /*
- * @brief æŒ‰åˆ†éš”ç¬¦åˆ‡ç‰‡å­—ç¬¦ä¸²ï¼Œè¿”å›vector<string>
+ * @brief °´·Ö¸ô·ûÇĞÆ¬×Ö·û´®£¬·µ»Øvector<string>
  *
- * @param str å¾…å¤„ç†çš„å­—ç¬¦ä¸²
- * @param sep åˆ†éš”ç¬¦
- * @return è¿”å›å¤„ç†åçš„å­—ç¬¦ä¸²
+ * @param str ´ı´¦ÀíµÄ×Ö·û´®
+ * @param sep ·Ö¸ô·û
+ * @return ·µ»Ø´¦ÀíºóµÄ×Ö·û´®
  */
 vector<string> Tool::split(const string& str, const char sep){
     vector<string> splitStr;
     int length = str.length();
 
-    // ç¬¬ä¸€ä¸ªä¸æ˜¯åˆ†éš”ç¬¦ sep å­—ç¬¦çš„ä½ç½®
+    // µÚÒ»¸ö²»ÊÇ·Ö¸ô·û sep ×Ö·ûµÄÎ»ÖÃ
     int start = 0;
     for (int i = 0; i < length; i++){
         if (str[i] != sep){
@@ -41,14 +41,14 @@ vector<string> Tool::split(const string& str, const char sep){
     int index = start;
     for (int i = index; i < length; ){
         if (str[i] == sep){
-            // ä» index å¤„å¼€å§‹ æ‹·è´ i - index é•¿åº¦ä¸ªå­—ç¬¦ è¿”å›å­—ç¬¦ä¸²
+            // ´Ó index ´¦¿ªÊ¼ ¿½±´ i - index ³¤¶È¸ö×Ö·û ·µ»Ø×Ö·û´®
             splitStr.push_back(str.substr(index, i - index));
             index = i + 1;
         }
 
         i++;
 
-        // æœ€åä¸€ä¸ªå­—ç¬¦ä¸²ï¼Œæ¨å…¥ vector ä¸­
+        // ×îºóÒ»¸ö×Ö·û´®£¬ÍÆÈë vector ÖĞ
         if (i == length && index < i){
             splitStr.push_back(str.substr(index, i - index));
         }
@@ -58,15 +58,15 @@ vector<string> Tool::split(const string& str, const char sep){
 }
 
 /*
- * @brief å¤„ç†å­—ç¬¦ä¸²ï¼Œå°†å‰åç©ºæ ¼å»é™¤ï¼Œè¿ç»­ç©ºæ ¼å˜ä¸ºå•ä¸ªç©ºæ ¼
+ * @brief ´¦Àí×Ö·û´®£¬½«Ç°ºó¿Õ¸ñÈ¥³ı£¬Á¬Ğø¿Õ¸ñ±äÎªµ¥¸ö¿Õ¸ñ
  *
- * @param str å¾…å¤„ç†çš„å­—ç¬¦ä¸²
- * @return è¿”å›å¤„ç†åçš„å­—ç¬¦ä¸²
+ * @param str ´ı´¦ÀíµÄ×Ö·û´®
+ * @return ·µ»Ø´¦ÀíºóµÄ×Ö·û´®
  */
 string Tool::clean(const string& str) {
     string cleanedStr = str;
 
-    // å‰”é™¤å­—ç¬¦ä¸²å‰éƒ¨çš„ç©ºæ ¼
+    // ÌŞ³ı×Ö·û´®Ç°²¿µÄ¿Õ¸ñ
     for (int i = 0; i < (int)cleanedStr.length(); i++){
         if (cleanedStr[i] != ' '){
             cleanedStr = cleanedStr.substr(i, (int)cleanedStr.length() - i + 1);
@@ -74,7 +74,7 @@ string Tool::clean(const string& str) {
         }
     }
 
-    // å‰”é™¤å­—ç¬¦ä¸²å°¾éƒ¨çš„ç©ºæ ¼
+    // ÌŞ³ı×Ö·û´®Î²²¿µÄ¿Õ¸ñ
     for (int i = (int)cleanedStr.length() - 1; i >= 0; i--){
         if (cleanedStr[i] != ' '){
             cleanedStr = cleanedStr.substr(0, i + 1);
@@ -82,17 +82,17 @@ string Tool::clean(const string& str) {
         }
     }
 
-    // å‰”é™¤ä¸­é—´éƒ¨åˆ†çš„è¿ç»­ç©ºæ ¼
+    // ÌŞ³ıÖĞ¼ä²¿·ÖµÄÁ¬Ğø¿Õ¸ñ
     for (int i = 0; i < (int)cleanedStr.length() - 1; i++){
-        // æ‰¾åˆ°ä¸­é—´éƒ¨åˆ†çš„é¦–ä¸ªç©ºæ ¼çš„ä½ç½®
+        // ÕÒµ½ÖĞ¼ä²¿·ÖµÄÊ×¸ö¿Õ¸ñµÄÎ»ÖÃ
         if (cleanedStr[i] == ' '){
-            // æ‰¾åˆ°é¦–ä¸ªç©ºæ ¼åé¦–ä¸ªä¸æ˜¯ç©ºæ ¼çš„ä½ç½®
+            // ÕÒµ½Ê×¸ö¿Õ¸ñºóÊ×¸ö²»ÊÇ¿Õ¸ñµÄÎ»ÖÃ
             int end = i;
             while (cleanedStr[end] == ' '){
                 end++;
             }
 
-            // åˆ¤æ–­æ˜¯å¦æ˜¯å•ä¸ªç©ºæ ¼
+            // ÅĞ¶ÏÊÇ·ñÊÇµ¥¸ö¿Õ¸ñ
             if (end - i != 1){
                 cleanedStr =  cleanedStr.substr(0, i + 1) + cleanedStr.substr(end);
             }
@@ -103,17 +103,17 @@ string Tool::clean(const string& str) {
 }
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–é”®å€¼å¯¹ï¼Œè¯»å–åˆ°ç©ºè¡Œç»“æŸ
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡¼üÖµ¶Ô£¬¶ÁÈ¡µ½¿ÕĞĞ½áÊø
  *
- * @param f æ–‡ä»¶æµ è¦è¯»å–çš„æ–‡ä»¶éƒ¨åˆ†çš„å¼€å§‹
- * @return è¿”å›ä»æ–‡ä»¶ä¸­è¯»å–å‡ºæ¥çš„é”®å€¼å¯¹ map
+ * @param f ÎÄ¼şÁ÷ Òª¶ÁÈ¡µÄÎÄ¼ş²¿·ÖµÄ¿ªÊ¼
+ * @return ·µ»Ø´ÓÎÄ¼şÖĞ¶ÁÈ¡³öÀ´µÄ¼üÖµ¶Ô map
  */
 map<string, string> Tool::dataMap(ifstream& f) {
     map<string, string> data;
     string str;
 
     while (getline(f, str)) {
-        // è¯»åˆ°ç©ºè¡Œç»“æŸ
+        // ¶Áµ½¿ÕĞĞ½áÊø
         if (!str.empty()) {
             vector<string> keyValue = Tool::split(str);
 
@@ -127,10 +127,10 @@ map<string, string> Tool::dataMap(ifstream& f) {
 }
 
 /*
- * @brief æ ¹æ®æ–‡æœ¬è¿”å›ç›¸åº”çš„å¸ƒå°”å€¼
+ * @brief ¸ù¾İÎÄ±¾·µ»ØÏàÓ¦µÄ²¼¶ûÖµ
  *
- * @param str å­—ç¬¦ä¸² "true" "false"
- * @return "true" è¿”å›å¸ƒå°”å€¼ true å¦åˆ™è¿”å› false
+ * @param str ×Ö·û´® "true" "false"
+ * @return "true" ·µ»Ø²¼¶ûÖµ true ·ñÔò·µ»Ø false
  */
 bool Tool::boolFromString(string &str) {
     return str == "true";

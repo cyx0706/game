@@ -7,19 +7,19 @@
 #include "Item.h"
 #include "Status.h"
 
-// ----------------------Characterç±»----------------------
+// ----------------------CharacterÀà----------------------
 
 /*
- * @brief å®Œæ•´çš„æ„é€ å‡½æ•°
+ * @brief ÍêÕûµÄ¹¹Ôìº¯Êı
  *
- * @param status:çŠ¶æ€
- *        id:æ ‡è¯†
- *        nameCN:ä¸­æ–‡å
- *        nameEN:è‹±æ–‡å
- *        fallingExp:æ‰è½ç»éªŒ
- *        description:æè¿°
- *        location:ä½ç½®
- *        display:åœ°å›¾ä¸Šçš„æ˜¾ç¤º
+ * @param status:×´Ì¬
+ *        id:±êÊ¶
+ *        nameCN:ÖĞÎÄÃû
+ *        nameEN:Ó¢ÎÄÃû
+ *        fallingExp:µôÂä¾­Ñé
+ *        description:ÃèÊö
+ *        location:Î»ÖÃ
+ *        display:µØÍ¼ÉÏµÄÏÔÊ¾
  */
 Character::Character(Status status,
                      string id,
@@ -42,8 +42,8 @@ Character::Character(Status status,
 }
 
 /*
- * @brief ç®€æ˜“çš„æ„é€ å‡½æ•°
- * æ‰€æœ‰çš„åˆå§‹åŒ–ä¸ºç©º
+ * @brief ¼òÒ×µÄ¹¹Ôìº¯Êı
+ * ËùÓĞµÄ³õÊ¼»¯Îª¿Õ
  *
  */
 Character::Character() {
@@ -59,44 +59,44 @@ Character::Character() {
 }
 
 /*
- * @brief åˆ¤æ–­æ˜¯å¦æ­»äº¡
+ * @brief ÅĞ¶ÏÊÇ·ñËÀÍö
  *
- * @return è¿”å›boolç±»å‹, trueè¡¨ç¤ºæ­»äº¡
+ * @return ·µ»ØboolÀàĞÍ, true±íÊ¾ËÀÍö
  */
 bool Character::isDead() {
     return (this->status.HP < 0);
 }
 
 /*
- * @brief å±•ç¤ºä¿¡æ¯
+ * @brief Õ¹Ê¾ĞÅÏ¢
  *
  */
 void Character::showDescription() {
     cout << this->description << endl;
 }
 
-// ---------------------Monsterç±»-----------------------
+// ---------------------MonsterÀà-----------------------
 
 Monster::Monster(string id) :Character(){
-    // TODO:è¯»å–æ–‡ä»¶åˆå§‹åŒ–
+    // TODO:¶ÁÈ¡ÎÄ¼ş³õÊ¼»¯
     this->id = std::move(id);
 }
 
 
-// --------------------Playerç±»-------------------------
+// --------------------PlayerÀà-------------------------
 
 /*
- * @brief æ„é€ å‡½æ•°
+ * @brief ¹¹Ôìº¯Êı
  */
 Player::Player() :Character(){
-    this->id = "PY-00"; // å›ºå®šçš„id
+    this->id = "PY-00"; // ¹Ì¶¨µÄid
     this->experiencePoint = 0;
     this->days = 0;
     this->money = 0;
     this->Lv = 1;
     this->weapon = Weapon();
     this->armor = Armor();
-    // åˆå§‹åŒ–ä¸€ä¸‹èƒŒåŒ…
+    // ³õÊ¼»¯Ò»ÏÂ±³°ü
 //    this->weaponBag = Package<Weapon>();
 //    this->armorBag = Package<Armor>();
 //    this->drugBag = Package<Drug>();
@@ -104,64 +104,64 @@ Player::Player() :Character(){
 }
 
 /*
- * @brief å¢åŠ ç©å®¶çš„é’±
+ * @brief Ôö¼ÓÍæ¼ÒµÄÇ®
  *
- * @param addition:å¢åŠ æ•°é¢
+ * @param addition:Ôö¼ÓÊı¶î
  */
 void Player::addMoney(int addition) {
     if (money < 100000){
         money += addition;
     }
     else{
-        cout << "é‡‘é’±åˆ°è¾¾ä¸Šé™" << endl;
+        cout << "½ğÇ®µ½´ïÉÏÏŞ" << endl;
     }
 }
 
 /*
- * @brief å¢åŠ ç»éªŒ,é¡ºä¾¿æ£€æŸ¥æ˜¯å¦å‡çº§äº†
+ * @brief Ôö¼Ó¾­Ñé,Ë³±ã¼ì²éÊÇ·ñÉı¼¶ÁË
  *
- * @param addition:å¢åŠ æ•°é¢
+ * @param addition:Ôö¼ÓÊı¶î
  */
 void Player::addExp(int addition) {
     if(Lv > 20){
-        cout << "æ»¡çº§æ— æ³•å¢åŠ ç»éªŒ" << endl;
+        cout << "Âú¼¶ÎŞ·¨Ôö¼Ó¾­Ñé" << endl;
         return;
     }
     experiencePoint += addition;
     levelUp();
-    cout << "å½“å‰ç­‰çº§" << Lv << endl;
+    cout << "µ±Ç°µÈ¼¶" << Lv << endl;
 }
 /*
- * @brief å‡çº§å‡½æ•°
- * ç»éªŒéœ€æ±‚æŒ‰çº¿æ€§å¢é•¿
- * @return æ˜¯å¦å‡çº§
+ * @brief Éı¼¶º¯Êı
+ * ¾­ÑéĞèÇó°´ÏßĞÔÔö³¤
+ * @return ÊÇ·ñÉı¼¶
  */
 void Player::levelUp() {
     int nextLvExp = 100 * (Lv + 1);
     while (experiencePoint > nextLvExp){
         experiencePoint -= nextLvExp;
-        cout << nameCN << "å‡çº§äº†" << endl;
+        cout << nameCN << "Éı¼¶ÁË" << endl;
         Lv += 1;
         if (Lv == 3){
-            // å­¦ä¹ æ–°çš„æŠ€èƒ½
-            cout << "å­¦ä¼šäº†æ–°çš„æŠ€èƒ½" << endl;
+            // Ñ§Ï°ĞÂµÄ¼¼ÄÜ
+            cout << "Ñ§»áÁËĞÂµÄ¼¼ÄÜ" << endl;
         }
         nextLvExp = 100 * (Lv + 1);
     }
-    cout << "å‰©ä½™ " << nextLvExp - experiencePoint << " ç»éªŒå‡åˆ°ä¸‹ä¸€çº§" << endl;
+    cout << "Ê£Óà " << nextLvExp - experiencePoint << " ¾­ÑéÉıµ½ÏÂÒ»¼¶" << endl;
 }
 /*
- * @brief è£…å¤‡é˜²å…·
- * å¸ä¸‹é˜²å…·å°±æ˜¯è£…å¤‡ç©ºé˜²å…·
- * @param å‘½ä»¤è¡Œä¼ å…¥çš„å­—ç¬¦ä¸²name
- * å½“name=Noneæ—¶è¡¨ç¤ºå¸ä¸‹é˜²å…·
+ * @brief ×°±¸·À¾ß
+ * Ğ¶ÏÂ·À¾ß¾ÍÊÇ×°±¸¿Õ·À¾ß
+ * @param ÃüÁîĞĞ´«ÈëµÄ×Ö·û´®name
+ * µ±name=NoneÊ±±íÊ¾Ğ¶ÏÂ·À¾ß
  */
 bool Player::equipArmor(string &name) {
     Armor oldArmor = this->armor;
-    // å¸ä¸‹è£…å¤‡
+    // Ğ¶ÏÂ×°±¸
     if( name == "None"){
         if (oldArmor.id == 0){
-            cout << "å½“å‰æ²¡æœ‰è£…å¤‡" << endl;
+            cout << "µ±Ç°Ã»ÓĞ×°±¸" << endl;
             return false;
         }
         armorBag.addItem(oldArmor.id, 1);
@@ -169,35 +169,35 @@ bool Player::equipArmor(string &name) {
         this->status.DEF -= oldArmor.DEF;
         this->status.ATK -= oldArmor.ATK;
         this->armor = Armor();
-        cout << "å¸ä¸‹äº†" << oldArmor.nameCN << endl;
+        cout << "Ğ¶ÏÂÁË" << oldArmor.nameCN << endl;
         return true;
     }
     for (auto iter = armorBag.items.begin(); iter != armorBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->armor = *iter;
             armorBag.deleteItem((*iter).id, 1);
-            // å¤„ç†åŠ æˆ
+            // ´¦Àí¼Ó³É
             this->status.ATK += ((*iter).ATK - oldArmor.ATK);
             this->status.DEF += ((*iter).DEF - oldArmor.DEF);
             this->status.Speed += ((*iter).Speed - oldArmor.Speed);
-            cout << "é˜²å…·" << (*iter).nameCN << "è£…å¤‡æˆåŠŸ" << endl;
+            cout << "·À¾ß" << (*iter).nameCN << "×°±¸³É¹¦" << endl;
             return true;
         }
     }
-    cout << "æ— è¯¥è£…å¤‡" << endl;
+    cout << "ÎŞ¸Ã×°±¸" << endl;
     return false;
 }
 
 /*
- * @brief è£…å¤‡æ­¦å™¨
- * å¸ä¸‹æ­¦å™¨å°±æ˜¯è£…å¤‡ç©ºæ­¦å™¨
- * @param å‘½ä»¤è¡Œä¼ å…¥çš„å­—ç¬¦ä¸²name
+ * @brief ×°±¸ÎäÆ÷
+ * Ğ¶ÏÂÎäÆ÷¾ÍÊÇ×°±¸¿ÕÎäÆ÷
+ * @param ÃüÁîĞĞ´«ÈëµÄ×Ö·û´®name
  */
 bool Player::equipWeapon(string& name) {
     Weapon oldWeapon = this->weapon;
     if (name == "None"){
         if (oldWeapon.id == 0){
-            cout << "å½“å‰æ²¡æœ‰è£…å¤‡" << endl;
+            cout << "µ±Ç°Ã»ÓĞ×°±¸" << endl;
             return false;
         }
         weaponBag.addItem(oldWeapon.id, 1);
@@ -205,115 +205,115 @@ bool Player::equipWeapon(string& name) {
         this->status.DEF -= oldWeapon.DEF;
         this->status.Speed -= oldWeapon.Speed;
         this->weapon = Weapon();
-        cout << "å¸ä¸‹äº†" << oldWeapon.nameCN << endl;
+        cout << "Ğ¶ÏÂÁË" << oldWeapon.nameCN << endl;
         return true;
     }
     for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->weapon = *iter;
             weaponBag.deleteItem((*iter).id, 1);
-            // å¤„ç†åŠ æˆ
+            // ´¦Àí¼Ó³É
             this->status.ATK += ((*iter).ATK - oldWeapon.ATK);
             this->status.DEF += ((*iter).DEF - oldWeapon.DEF);
             this->status.Speed += ((*iter).Speed - oldWeapon.Speed);
-            cout << "æ­¦å™¨" << (*iter).nameCN << "è£…å¤‡æˆåŠŸ" << endl;
+            cout << "ÎäÆ÷" << (*iter).nameCN << "×°±¸³É¹¦" << endl;
             return true;
         }
     }
-    cout << "æ— è¯¥è£…å¤‡" << endl;
+    cout << "ÎŞ¸Ã×°±¸" << endl;
     return false;
 }
 
 /*
- * @brief å±•ç¤ºé˜²å…·èƒŒåŒ…
+ * @brief Õ¹Ê¾·À¾ß±³°ü
  */
 void Player::showArmors() {
-    cout << "ç©å®¶çš„é˜²å…·èƒŒåŒ…" << endl;
+    cout << "Íæ¼ÒµÄ·À¾ß±³°ü" << endl;
     armorBag.showItems();
 }
 
 /*
- * @brief å±•ç¤ºæ­¦å™¨èƒŒåŒ…
+ * @brief Õ¹Ê¾ÎäÆ÷±³°ü
  */
 void Player::showWeapons() {
-    cout << "ç©å®¶çš„æ­¦å™¨èƒŒåŒ…" << endl;
+    cout << "Íæ¼ÒµÄÎäÆ÷±³°ü" << endl;
     weaponBag.showItems();
 }
 /*
- * @brief å±•ç¤ºè¯ç‰©èƒŒåŒ…
+ * @brief Õ¹Ê¾Ò©Îï±³°ü
  */
 void Player::showDrugs() {
-    cout << "ç©å®¶çš„è¯ç‰©" << endl;
+    cout << "Íæ¼ÒµÄÒ©Îï" << endl;
     drugBag.showItems();
 }
 /*
- * @brief å±•ç¤ºç‰©å“èƒŒåŒ…
+ * @brief Õ¹Ê¾ÎïÆ·±³°ü
  */
 void Player::showItems() {
-    cout << "ç©å®¶çš„é“å…·" << endl;
+    cout << "Íæ¼ÒµÄµÀ¾ß" << endl;
     itemBag.showItems();
 }
 /*
- * @brief æ¥å—ä»»åŠ¡,åŒæ—¶æ£€æŸ¥æ˜¯å¦å·²ç»æ¥å—è¿‡è¯¥ä»»åŠ¡
+ * @brief ½ÓÊÜÈÎÎñ,Í¬Ê±¼ì²éÊÇ·ñÒÑ¾­½ÓÊÜ¹ı¸ÃÈÎÎñ
  *
- * @param mission:ä»»åŠ¡çš„å¼•ç”¨
- * @return æ˜¯å¦æ¥å—æˆåŠŸ
+ * @param mission:ÈÎÎñµÄÒıÓÃ
+ * @return ÊÇ·ñ½ÓÊÜ³É¹¦
  */
 bool Player::addMission(Mission &mission) {
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
         if ((*iter).id == mission.id){
-            cout << "ä»»åŠ¡è¿›è¡Œä¸­" << endl;
+            cout << "ÈÎÎñ½øĞĞÖĞ" << endl;
             return false;
         }
     }
     quests.push_back(mission);
-    cout << "æ¥å—ä»»åŠ¡æˆåŠŸ" << endl;
+    cout << "½ÓÊÜÈÎÎñ³É¹¦" << endl;
     return true;
 }
 /*
- * @brief æç¤ºä»»åŠ¡ä¿¡æ¯
+ * @brief ÌáÊ¾ÈÎÎñĞÅÏ¢
  */
 void Player::showMissions() {
     if(quests.empty()){
-        cout << "æ²¡æœ‰æ¥ä»»ä½•ä»»åŠ¡" << endl;
+        cout << "Ã»ÓĞ½ÓÈÎºÎÈÎÎñ" << endl;
         return;
     }
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
-        cout << "ä»»åŠ¡" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-        cout << "è¿›åº¦:";
+        cout << "ÈÎÎñ" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
+        cout << "½ø¶È:";
         if ((*iter).isProcess){
-            cout << "è¿›è¡Œä¸­" << endl;
+            cout << "½øĞĞÖĞ" << endl;
         }
         if((*iter).isFinished){
-            cout << "å®Œæˆ" << endl;
+            cout << "Íê³É" << endl;
         }
     }
 }
 /*
- * @brief å±•ç¤ºå•ä¸ªä»»åŠ¡çš„è¯¦ç»†çš„ä¿¡æ¯
+ * @brief Õ¹Ê¾µ¥¸öÈÎÎñµÄÏêÏ¸µÄĞÅÏ¢
  *
- * @param missionId: ä»»åŠ¡çš„id
+ * @param missionId: ÈÎÎñµÄid
  */
 void Player::showMission(int missionId) {
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
         if ((*iter).id == missionId){
-            cout << "ä»»åŠ¡" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-            cout << "è¿›åº¦:";
+            cout << "ÈÎÎñ" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
+            cout << "½ø¶È:";
             if ((*iter).isProcess){
-                cout << "è¿›è¡Œä¸­" << endl;
-                //TODO:ä»»åŠ¡çš„æè¿°
+                cout << "½øĞĞÖĞ" << endl;
+                //TODO:ÈÎÎñµÄÃèÊö
             }
             if((*iter).isFinished){
-                cout << "å®Œæˆ" << endl;
+                cout << "Íê³É" << endl;
             }
 
         }
     }
 }
 /*
- * @brief è·å–ä»»åŠ¡
+ * @brief »ñÈ¡ÈÎÎñ
  *
- * @param assigner: å§”æ‰˜äººçš„id
+ * @param assigner: Î¯ÍĞÈËµÄid
  */
 Mission* Player::getMission(string assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
@@ -321,34 +321,34 @@ Mission* Player::getMission(string assignerId) {
             return &(*iter);
         }
     }
-    cout << "æœªæ‰¾åˆ°æŒ‡å®šä»»åŠ¡" << endl;
+    cout << "Î´ÕÒµ½Ö¸¶¨ÈÎÎñ" << endl;
     return nullptr;
 }
 /*
- * @brief å±•ç¤ºç©å®¶çš„ä¿¡æ¯
+ * @brief Õ¹Ê¾Íæ¼ÒµÄĞÅÏ¢
  */
 void Player::showStatus() {
-    cout << "ç©å®¶å§“å:" << this->nameCN << endl;
-    cout << "ç­‰çº§:" << this->Lv << endl;
-    cout << "ç”Ÿå‘½:" << this->status.HP;
-    cout << "æ³•åŠ›å€¼:" << this->status.MP;
-    cout << "é€Ÿåº¦:" << this->status.Speed;
-    cout << "é˜²å¾¡:" << this->status.DEF;
-    cout << "æ”»å‡»:" << this->status.ATK << endl;
+    cout << "Íæ¼ÒĞÕÃû:" << this->nameCN << endl;
+    cout << "µÈ¼¶:" << this->Lv << endl;
+    cout << "ÉúÃü:" << this->status.HP;
+    cout << "·¨Á¦Öµ:" << this->status.MP;
+    cout << "ËÙ¶È:" << this->status.Speed;
+    cout << "·ÀÓù:" << this->status.DEF;
+    cout << "¹¥»÷:" << this->status.ATK << endl;
 }
 
 /*
- * @brief ä¸ªäººä¿¡æ¯é¢æ¿
+ * @brief ¸öÈËĞÅÏ¢Ãæ°å
  */
 void Player::playerMenu() {
-    cout << "ç©å®¶èœå•" << endl;
-    cout << "ä½ å¯ä»¥ä½¿ç”¨ä¸‹é¢çš„å‘½ä»¤æŸ¥çœ‹ä¸ªäººçš„ä¿¡æ¯" << endl;
+    cout << "Íæ¼Ò²Ëµ¥" << endl;
+    cout << "Äã¿ÉÒÔÊ¹ÓÃÏÂÃæµÄÃüÁî²é¿´¸öÈËµÄĞÅÏ¢" << endl;
 }
 
 /*
- * @brief æ·»åŠ ç‰©å“
- * æ ¹æ®idåˆ†ç±»æ·»åŠ 
- * @param itemId:ç‰©å“çš„id number:è¦æ·»åŠ çš„ä¸ªæ•°
+ * @brief Ìí¼ÓÎïÆ·
+ * ¸ù¾İid·ÖÀàÌí¼Ó
+ * @param itemId:ÎïÆ·µÄid number:ÒªÌí¼ÓµÄ¸öÊı
  */
 void Player::addItem(int itemId, int number) {
     int division = itemId / 100;
@@ -365,13 +365,13 @@ void Player::addItem(int itemId, int number) {
         itemBag.addItem(itemId, number);
     }
     else{
-        cout << "é”™è¯¯çš„id" << endl;
+        cout << "´íÎóµÄid" << endl;
     }
 }
 /*
- * @brief æ ¹æ®idåˆ†ç±»åˆ é™¤
+ * @brief ¸ù¾İid·ÖÀàÉ¾³ı
  *
- * @param itemId:ç‰©å“id number:è¦åˆ é™¤çš„ä¸ªæ•°
+ * @param itemId:ÎïÆ·id number:ÒªÉ¾³ıµÄ¸öÊı
  */
 void Player::deleteItem(int itemId, int number) {
     int division = itemId / 100;
@@ -388,13 +388,13 @@ void Player::deleteItem(int itemId, int number) {
         itemBag.deleteItem(itemId, number);
     }
     else{
-        cout << "é”™è¯¯çš„id" << endl;
+        cout << "´íÎóµÄid" << endl;
     }
 }
 /*
- * @brief å®Œå…¨åˆ é™¤æŸä¸ªç‰©å“
- * ç”¨äºå‘½ä»¤è¡Œçš„ä¸¢å¼ƒå‘½ä»¤
- * @param itemId: ç‰©å“çš„id
+ * @brief ÍêÈ«É¾³ıÄ³¸öÎïÆ·
+ * ÓÃÓÚÃüÁîĞĞµÄ¶ªÆúÃüÁî
+ * @param itemId: ÎïÆ·µÄid
  */
 void Player::eraseItem(int itemId) {
     int division = itemId / 100;
@@ -411,14 +411,14 @@ void Player::eraseItem(int itemId) {
         itemBag.deleteItem(itemId);
     }
     else{
-        cout << "é”™è¯¯çš„id" << endl;
+        cout << "´íÎóµÄid" << endl;
     }
 }
 /*
- * @brief ç”¨äºè·å–æŒ‡å®šidç‰©å“çš„ä¸ªæ•°
+ * @brief ÓÃÓÚ»ñÈ¡Ö¸¶¨idÎïÆ·µÄ¸öÊı
  *
- * @param itemId: ç‰©å“çš„id
- * @return ç‰©å“çš„ä¸ªæ•°,0è¡¨ç¤ºæ²¡æœ‰
+ * @param itemId: ÎïÆ·µÄid
+ * @return ÎïÆ·µÄ¸öÊı,0±íÊ¾Ã»ÓĞ
  */
 int Player::getItem(int itemId) {
     int division = itemId / 100;
@@ -451,20 +451,20 @@ int Player::getItem(int itemId) {
         }
     }
     else{
-        cout << "é”™è¯¯çš„id" << endl;
+        cout << "´íÎóµÄid" << endl;
     }
     return 0;
 }
 /*
- * @brief åˆ¤æ–­æ˜¯å¦æ­»äº¡
- * å¯ä»¥è€ƒè™‘æ‰©å±•ä¸€äº›ä¸œè¥¿
- * @return æ˜¯å¦æ­»äº¡
+ * @brief ÅĞ¶ÏÊÇ·ñËÀÍö
+ * ¿ÉÒÔ¿¼ÂÇÀ©Õ¹Ò»Ğ©¶«Î÷
+ * @return ÊÇ·ñËÀÍö
  */
 bool Player::isDead() {
     if (this->status.HP <= 0){
         char input;
-        cout << "ä½ å¤„äºæ¿’æ­»çŠ¶æ€" << endl;
-        cout << "è¦å¤æ´»å—(y/n):";
+        cout << "Äã´¦ÓÚ±ôËÀ×´Ì¬" << endl;
+        cout << "Òª¸´»îÂğ(y/n):";
         cin >> input;
         if (input == 'y'){
             this->status.HP += 100;
@@ -478,14 +478,14 @@ bool Player::isDead() {
 }
 
 void Player::deadScene() {
-    cout << "ä½ æ­»äº†" << endl;
-    cout << "èœ" << endl;
+    cout << "ÄãËÀÁË" << endl;
+    cout << "²Ë" << endl;
 }
-// -----------------------NPCç±»-----------------------
+// -----------------------NPCÀà-----------------------
 
 NPC::NPC(string id):Character() {
     this->id = std::move(id);
-    //TODO:è¯»å–æ–‡ä»¶åˆå§‹åŒ–
+    //TODO:¶ÁÈ¡ÎÄ¼ş³õÊ¼»¯
     this->shopStatus = false;
     this->battleStatus = false;
     this->missionStatus = false;
@@ -493,48 +493,48 @@ NPC::NPC(string id):Character() {
 }
 
 /*
- * @brief ç”¨æˆ·èœå•
+ * @brief ÓÃ»§²Ëµ¥
  */
 void NPC::NPCMenu() {
     cout << this->nameCN << ":" << endl;
     if (this->bar){
-        cout << "ä½ å¯ä»¥åœ¨è¿™é‡Œä¼‘æ¯" << endl;
+        cout << "Äã¿ÉÒÔÔÚÕâÀïĞİÏ¢" << endl;
     }
     if (this->shopStatus){
-        cout << "å¯ä»¥äº¤æ˜“" << endl;
+        cout << "¿ÉÒÔ½»Ò×" << endl;
     }
     if (this->missionStatus){
-        cout << "å¯ä»¥æ¥ä»»åŠ¡" << endl;
+        cout << "¿ÉÒÔ½ÓÈÎÎñ" << endl;
     }
 }
 
 /*
- * @brief å’Œnpcäº¤æ˜“çš„å‡½æ•°,éœ€è¦æå‰æ£€æŸ¥æ˜¯å¦å¯ä»¥äº¤æ˜“
+ * @brief ºÍnpc½»Ò×µÄº¯Êı,ĞèÒªÌáÇ°¼ì²éÊÇ·ñ¿ÉÒÔ½»Ò×
  *
- * @param itemId:ç‰©å“id number:è´­ä¹°ä¸ªæ•° money:ç©å®¶çš„é’±
+ * @param itemId:ÎïÆ·id number:¹ºÂò¸öÊı money:Íæ¼ÒµÄÇ®
  */
 void NPC::buy(int itemId, int number, int &money) {
     if (!this->shopStatus){
-        cout << "æ— æ³•äº¤æ˜“" << endl;
+        cout << "ÎŞ·¨½»Ò×" << endl;
     }
     this->store.buy(itemId, number, money);
 }
 
 /*
- * @brief å–å‡ºç‰©å“çš„å‡½æ•°
+ * @brief Âô³öÎïÆ·µÄº¯Êı
  *
- * @param itemId:ç‰©å“id number:è´­ä¹°ä¸ªæ•° money:ç©å®¶çš„é’±
+ * @param itemId:ÎïÆ·id number:¹ºÂò¸öÊı money:Íæ¼ÒµÄÇ®
  */
 void NPC::sell(Item &item, int number, int &money) {
     if (!this->shopStatus){
-        cout << "æ— æ³•äº¤æ˜“" << endl;
+        cout << "ÎŞ·¨½»Ò×" << endl;
     }
     this->store.sell(item, number, money);
 }
 
 /*
- * @brief åˆ¤æ–­æ˜¯å¦æ­»äº¡
- * å¦‚æœæ­»äº¡ç½®ä¸ºä¸å¯è§
+ * @brief ÅĞ¶ÏÊÇ·ñËÀÍö
+ * Èç¹ûËÀÍöÖÃÎª²»¿É¼û
  */
 bool NPC::isDead() {
     if (this->status.HP <= 0){
@@ -545,111 +545,111 @@ bool NPC::isDead() {
 }
 
 /*
- * @brief å¤šæ€çš„å±•ç¤ºæè¿°
+ * @brief ¶àÌ¬µÄÕ¹Ê¾ÃèÊö
  */
 void NPC::showDescription() {
     cout << "NPC:" << this->nameCN << "(" << this->nameEN << ")";
 }
 
 /*
- * @brief æ¥å—ä»»åŠ¡, æ£€æŸ¥npcä»»åŠ¡åˆ—è¡¨çš„ç¬¬ä¸€ä¸ªæ˜¯å¦è¢«æ¥å—
+ * @brief ½ÓÊÜÈÎÎñ, ¼ì²énpcÈÎÎñÁĞ±íµÄµÚÒ»¸öÊÇ·ñ±»½ÓÊÜ
  *
- * @param player ç©å®¶çš„å¼•ç”¨
+ * @param player Íæ¼ÒµÄÒıÓÃ
  */
 void NPC::assignQuest(Player &player) {
     if (!missionStatus){
-        cout << "æ— æ³•å‘å¸ƒä»»åŠ¡" << endl;
+        cout << "ÎŞ·¨·¢²¼ÈÎÎñ" << endl;
         return;
     }
     for (unsigned int i = 0; i < questList.size(); i++) {
-        //ç¬¬ä¸€ä¸ªæœªæ¥å—çš„ä»»åŠ¡
+        //µÚÒ»¸öÎ´½ÓÊÜµÄÈÎÎñ
         if(!questList[i].isAccepted){
             if (!player.addMission(questList[i])){
-                cout << "ä»»åŠ¡æ¥å—è¿‡äº†" << endl;
+                cout << "ÈÎÎñ½ÓÊÜ¹ıÁË" << endl;
                 return;
             }
             else{
-                // æ¥ä»»åŠ¡æ—¶çš„å¯¹è¯
+                // ½ÓÈÎÎñÊ±µÄ¶Ô»°
                 cout << talkContent[questList[i].id][0] << endl;
-                cout << "æ¥å—äº†ä»»åŠ¡" << endl;
+                cout << "½ÓÊÜÁËÈÎÎñ" << endl;
                 return;
             }
         }
     }
-    cout << "æ²¡æœ‰ä»»åŠ¡å¯ä»¥æ¥äº†" << endl;
+    cout << "Ã»ÓĞÈÎÎñ¿ÉÒÔ½ÓÁË" << endl;
 }
 
 /*
- * @brief æäº¤ä»»åŠ¡
+ * @brief Ìá½»ÈÎÎñ
  *
- * @param player:ç©å®¶çš„å¼•ç”¨
+ * @param player:Íæ¼ÒµÄÒıÓÃ
  */
 void NPC::finishQuest(Player &player) {
     if (!missionStatus){
-        cout << "æ— æ³•æäº¤ä»»åŠ¡" << endl;
+        cout << "ÎŞ·¨Ìá½»ÈÎÎñ" << endl;
     }
-    // è·å–ä»»åŠ¡
+    // »ñÈ¡ÈÎÎñ
     Mission* acceptedMission = player.getMission(this->id);
-    // åˆ¤æ–­æ˜¯å¦è·å–æˆåŠŸ
+    // ÅĞ¶ÏÊÇ·ñ»ñÈ¡³É¹¦
     if (acceptedMission == nullptr){
-        cout << "æ²¡æœ‰è¦æäº¤çš„ä»»åŠ¡" << endl;
+        cout << "Ã»ÓĞÒªÌá½»µÄÈÎÎñ" << endl;
     }
     else{
-        // æ£€æŸ¥æ˜¯å¦å¯ä»¥æäº¤
-        // è‹¥å¯ä»¥åˆ™è¦ä¿®æ”¹ä»»åŠ¡å±æ€§ä¸ºå®Œæˆ
-        // ç”±äºå¼•ç”¨åŒæ—¶ä¿®æ”¹äº†npcçš„ä»»åŠ¡çš„å±æ€§
+        // ¼ì²éÊÇ·ñ¿ÉÒÔÌá½»
+        // Èô¿ÉÒÔÔòÒªĞŞ¸ÄÈÎÎñÊôĞÔÎªÍê³É
+        // ÓÉÓÚÒıÓÃÍ¬Ê±ĞŞ¸ÄÁËnpcµÄÈÎÎñµÄÊôĞÔ
         acceptedMission->checkFinished();
     }
 }
 
 /*
- * @brief è®¾ç½®npcæ˜¯å¦åœ¨åœ°å›¾ä¸Šéšè—
+ * @brief ÉèÖÃnpcÊÇ·ñÔÚµØÍ¼ÉÏÒş²Ø
  */
 void NPC::setVisibility(bool isVisible) {
     this->isVisible = isVisible;
 }
 
 /*
- * @brief è·å–npcæ˜¯å¦éšè—
- * åœ°å›¾å‡½æ•°éœ€è¦è°ƒç”¨
+ * @brief »ñÈ¡npcÊÇ·ñÒş²Ø
+ * µØÍ¼º¯ÊıĞèÒªµ÷ÓÃ
  */
 bool NPC::getVisibility() {
     return this->isVisible;
 }
 
 /*
- * @brief å’ŒNPCçš„å¯¹è¯
- * ä¸åŒä»»åŠ¡çš„è¿›è¡Œé˜¶æ®µçš„å¯¹è¯ä¸åŒ
+ * @brief ºÍNPCµÄ¶Ô»°
+ * ²»Í¬ÈÎÎñµÄ½øĞĞ½×¶ÎµÄ¶Ô»°²»Í¬
  */
 void NPC::talk(Player &player) {
-    // å¯ä»¥å‘ä»»åŠ¡çš„æ‰æœ‰ä¸åŒçš„å¯¹è¯
+    // ¿ÉÒÔ·¢ÈÎÎñµÄ²ÅÓĞ²»Í¬µÄ¶Ô»°
     if (missionStatus){
         Mission *mission = player.getMission(this->id);
         if (mission != nullptr){
             int id = mission->id;
             if(mission->isProcess){
-                // è¿›è¡Œä¸­æ—¶çš„å¯¹è¯
+                // ½øĞĞÖĞÊ±µÄ¶Ô»°
                 cout << talkContent[id][1] << endl;
                 return;
             }
         }
     }
-    // å¹³æ—¶è°ˆè¯
+    // Æ½Ê±Ì¸»°
     cout << talkContent[0][0] << endl;
 }
 
 /*
- * @brief ç”¨äºæ£€æŸ¥æ˜¯å¦æ— æ³•å¯¹è¯ç›´æ¥è¿›å…¥æˆ˜æ–—
+ * @brief ÓÃÓÚ¼ì²éÊÇ·ñÎŞ·¨¶Ô»°Ö±½Ó½øÈëÕ½¶·
  *
- * @param player:ç©å®¶çš„å¼•ç”¨
- * @return æ˜¯å¦ä¼šå‘ç”Ÿæˆ˜æ–—
+ * @param player:Íæ¼ÒµÄÒıÓÃ
+ * @return ÊÇ·ñ»á·¢ÉúÕ½¶·
  */
 bool NPC::forceBattleCheck(Player &player) {
-    // æ‹¥æœ‰çš‡åŸé€šè¡Œè¯
+    // ÓµÓĞ»Ê³ÇÍ¨ĞĞÖ¤
     if (player.getItem(302) != 0){
-        // æ£€æŸ¥npcæˆ˜æ–—çŠ¶æ€
+        // ¼ì²énpcÕ½¶·×´Ì¬
         if (this->battleStatus){
-            cout << "æ²¡æœ‰ä»€ä¹ˆå¥½è¯´çš„" << endl;
+            cout << "Ã»ÓĞÊ²Ã´ºÃËµµÄ" << endl;
             return true;
         }
     }

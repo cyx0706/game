@@ -26,33 +26,33 @@ struct SCOORD:public COORD{
 class Map{
 public:
     friend class GameLoop;
-    int id;  //æ ¹æ®è¿™ä¸ªåœ¨æ–‡ä»¶é‡ŒæŸ¥æ‰¾
+    int id;  //¸ù¾İÕâ¸öÔÚÎÄ¼şÀï²éÕÒ
     char edgeSign;
-    COORD initPos;  // è®°å½•ç”¨æˆ·çš„åˆå§‹åŒ–ä½ç½®
+    COORD initPos;  // ¼ÇÂ¼ÓÃ»§µÄ³õÊ¼»¯Î»ÖÃ
 
     void initMap();
-    void move(int key); // ç”¨æˆ·ç§»åŠ¨æ¥è°ƒç”¨è¿™ä¸ª
+    void move(int key); // ÓÃ»§ÒÆ¶¯À´µ÷ÓÃÕâ¸ö
     void gotoxy(SCOORD pos);
-    void print(char playerChar = 'P');  // æ˜¾ç¤ºç”¨æˆ·
-    void clean(SCOORD clPos); // æ¸…é™¤
-    int checkEvent(); // æ£€æŸ¥äº‹ä»¶
-    void load(int mapId); // è½½å…¥åœ°å›¾
+    void print(char playerChar = 'P');  // ÏÔÊ¾ÓÃ»§
+    void clean(SCOORD clPos); // Çå³ı
+    int checkEvent(); // ¼ì²éÊÂ¼ş
+    void load(int mapId); // ÔØÈëµØÍ¼
     void nextMap(int mapId);
     void showDescription();
     void checkSpecialScene();
 private:
-    vector<short>edgeLeft;  // ä¸èƒ½åœ¨ç±»é‡Œå£°æ˜å¤§å°,é™¤éå£°æ˜ä¸ºé™æ€
-    vector<short>edgeRight;  // å·¦å³è¾¹ç•Œ
-    vector<short>doorPosTop;  // ä¸Šä¸‹ä¾§çš„é—¨
+    vector<short>edgeLeft;  // ²»ÄÜÔÚÀàÀïÉùÃ÷´óĞ¡,³ı·ÇÉùÃ÷Îª¾²Ì¬
+    vector<short>edgeRight;  // ×óÓÒ±ß½ç
+    vector<short>doorPosTop;  // ÉÏÏÂ²àµÄÃÅ
     vector<short>doorPosBottom;
     vector<SCOORD>barrier;
-    map<SCOORD, int>items;       //æ˜ å°„å¯¹åº”ç‰©å“id
-    map<SCOORD, string>npcs;    // æ˜ å°„å¯¹åº”çš„NPC
-    map<SCOORD, string>monsters;    // æ˜ å°„å¯¹åº”çš„æ€ª
+    map<SCOORD, int>items;       //Ó³Éä¶ÔÓ¦ÎïÆ·id
+    map<SCOORD, string>npcs;    // Ó³Éä¶ÔÓ¦µÄNPC
+    map<SCOORD, string>monsters;    // Ó³Éä¶ÔÓ¦µÄ¹Ö
     string nameCN;
     string nameEN;
-    map<SCOORD, int>roadTo;   //åœ°å›¾è”é€š
-    map<SCOORD, SCOORD>road;   //é“è·¯è”é€š
+    map<SCOORD, int>roadTo;   //µØÍ¼ÁªÍ¨
+    map<SCOORD, SCOORD>road;   //µÀÂ·ÁªÍ¨
     bool checkBottomMapTransition();
     bool checkTopMapTransition();
     void initChar(char playerChar = 'P');

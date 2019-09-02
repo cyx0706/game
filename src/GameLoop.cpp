@@ -24,23 +24,23 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 /*
- * @brief æ¸¸æˆçš„åœ°å›¾å¾ªç¯
- * éœ€è¦åˆå§‹åŒ–å®Œæˆåæ‰èƒ½è°ƒç”¨
+ * @brief ÓÎÏ·µÄµØÍ¼Ñ­»·
+ * ĞèÒª³õÊ¼»¯Íê³Éºó²ÅÄÜµ÷ÓÃ
  */
 void GameLoop::mapLoop() {
-    GetConsoleCursorInfo(hOut, &cursorInfo); //è·å–æ§åˆ¶å°å…‰æ ‡ä¿¡æ¯
-    cursorInfo.bVisible = false;             //éšè—æ§åˆ¶å°å…‰æ ‡
-    SetConsoleCursorInfo(hOut, &cursorInfo); //è®¾ç½®æ§åˆ¶å°å…‰æ ‡çŠ¶æ€
+    GetConsoleCursorInfo(hOut, &cursorInfo); //»ñÈ¡¿ØÖÆÌ¨¹â±êĞÅÏ¢
+    cursorInfo.bVisible = false;             //Òş²Ø¿ØÖÆÌ¨¹â±ê
+    SetConsoleCursorInfo(hOut, &cursorInfo); //ÉèÖÃ¿ØÖÆÌ¨¹â±ê×´Ì¬
     mapNow->initMap();
     mapNow->print();
     char input;
     while(true){
         if(kbhit()){
-            mapNow->clean(uPos);//æ¸…é™¤åŸæœ‰è¾“å‡º
+            mapNow->clean(uPos);//Çå³ıÔ­ÓĞÊä³ö
             input = getch();
-            // è¾“å…¥Escè½¬æ¢ä¸ºå‘½ä»¤è¡Œæ¨¡å¼,è¿”å›trueé€šçŸ¥ä¸»è°ƒå‡½æ•°
+            // ÊäÈëEsc×ª»»ÎªÃüÁîĞĞÄ£Ê½,·µ»ØtrueÍ¨ÖªÖ÷µ÷º¯Êı
             if (input == ESC){
-                system("cls"); // æ¸…ç©ºå±å¹•
+                system("cls"); // Çå¿ÕÆÁÄ»
                 commandLoop();
                 break;
             }
@@ -57,8 +57,8 @@ void GameLoop::mapLoop() {
 }
 
 /*
- * @brief å‘½ä»¤è¡Œå¾ªç¯
- * è¾“å…¥escå‘½ä»¤åˆ‡æ¢,åœ¨mapLoopé‡Œè¢«è°ƒç”¨
+ * @brief ÃüÁîĞĞÑ­»·
+ * ÊäÈëescÃüÁîÇĞ»»,ÔÚmapLoopÀï±»µ÷ÓÃ
  */
 void GameLoop::commandLoop() {
     string input;
@@ -67,13 +67,13 @@ void GameLoop::commandLoop() {
         getline(cin, input);
         string s = input;
         if (!s.empty()){
-            // å¾ªç¯åˆ é™¤æ‰€æœ‰çš„ç©ºæ ¼
+            // Ñ­»·É¾³ıËùÓĞµÄ¿Õ¸ñ
             while ((index = s.find(' ', index)) != string::npos){
-                s.erase(index); // åˆ é™¤ç©ºæ ¼
+                s.erase(index); // É¾³ı¿Õ¸ñ
             }
         }
         if (s == "esc"){
-            return; // è¿”å›åœ°å›¾å¾ªç¯
+            return; // ·µ»ØµØÍ¼Ñ­»·
         }
         else{
             client.base(input, commonBannedCommands, 0);
@@ -81,13 +81,13 @@ void GameLoop::commandLoop() {
     }
 }
 
-// åˆå§‹åŒ–
+// ³õÊ¼»¯
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     mapNow = make_unique<Map>();
     mapNow->load(1);
 }
-// æ¸¸æˆçš„ä¸»å¾ªç¯
+// ÓÎÏ·µÄÖ÷Ñ­»·
 //void GameLoop::loop() {
 //    initGame();
 //    while (TRUE){
@@ -97,33 +97,33 @@ void GameLoop::initGame() {
 //
 //}
 void GameLoop::gameInterface(){
-    string title = "æš´å’•æ”»åŸç‹®çš„å¼‚ä¸–ç•Œç‹‚æƒ³æ›²";
+    string title = "±©¹¾¹¥³ÇÊ¨µÄÒìÊÀ½ç¿ñÏëÇú";
     auto x = short(screenInfo.dwSize.X - title.length() / 2);
     COORD pos = {x, 5};
     SetConsoleCursorPosition(hOut, pos);
     cout << "+----------------------------+"
-         << "|  æš´å’• æ”»åŸç‹® çš„å¼‚ä¸–ç•Œç‹‚æƒ³æ›²  |"
+         << "|  ±©¹¾ ¹¥³ÇÊ¨ µÄÒìÊÀ½ç¿ñÏëÇú  |"
          << "+----------------------------+"
          << endl;
     cout << "NewGame      Load      Exit   " << endl;
 }
 
 void GameLoop::gameStart() {
-    // å±•ç¤ºæ¸¸æˆçš„ç•Œé¢
+    // Õ¹Ê¾ÓÎÏ·µÄ½çÃæ
     gameInterface();
     string input;
     while (true){
         getline(cin, input);
-        transform(input.begin(), input.end(), input.begin(), ::tolower); // è½¬æˆå°å†™
-        // åˆ é™¤é¦–å°¾ç©ºæ ¼
+        transform(input.begin(), input.end(), input.begin(), ::tolower); // ×ª³ÉĞ¡Ğ´
+        // É¾³ıÊ×Î²¿Õ¸ñ
         if( !input.empty() ){
             input.erase(0,input.find_first_not_of(' '));
             input.erase(input.find_last_not_of(' ') + 1);
         }
 
         if (input == "newgame"){
-            // æç¤ºè¾“å…¥ç”¨æˆ·çš„åå­—
-            cout << "è¯·è¾“å…¥ä½ çš„ç”¨æˆ·å:\b\b\b\b\b";
+            // ÌáÊ¾ÊäÈëÓÃ»§µÄÃû×Ö
+            cout << "ÇëÊäÈëÄãµÄÓÃ»§Ãû:\b\b\b\b\b";
             cin >> input;
             player.nameCN = input;
             player.nameEN = "None";
@@ -131,102 +131,102 @@ void GameLoop::gameStart() {
             Scene scene(1);
             ifstream fp;
             fp.open("../src/scene1.txt");
-            fp >> scene; // å±•ç¤ºå‰§æƒ…
+            fp >> scene; // Õ¹Ê¾¾çÇé
             mapLoop();
         }
         else if (input == "load"){
-            // è°ƒç”¨è¯»å–
+            // µ÷ÓÃ¶ÁÈ¡
             mapLoop();
         }
         else if (input == "exit"){
             cout << "Bye!";
-            Sleep(1000); // ç¡1s
+            Sleep(1000); // Ë¯1s
             exit(1);
         }
         else{
-            // æç¤ºä¿¡æ¯
-            cout << "newgame: æ–°çš„æ¸¸æˆ" << endl;
-            cout << "load: è¯»å–å­˜æ¡£" << endl;
-            cout << "exit: é€€å‡º" << endl;
+            // ÌáÊ¾ĞÅÏ¢
+            cout << "newgame: ĞÂµÄÓÎÏ·" << endl;
+            cout << "load: ¶ÁÈ¡´æµµ" << endl;
+            cout << "exit: ÍË³ö" << endl;
         }
     }
 
 }
 
 /*
- * @brief æˆ˜æ–—å¾ªç¯ç›´åˆ°ä¸€æ–¹æ­»äº¡ç»“æŸ
+ * @brief Õ½¶·Ñ­»·Ö±µ½Ò»·½ËÀÍö½áÊø
  *
- * @param æˆ˜æ–—å¯¹è±¡character
+ * @param Õ½¶·¶ÔÏócharacter
  */
 void GameLoop::battleLoop(Character &character) {
     bool playerTurn = true;
     bool enemyTurn = false;
     if (character.status.Speed > player.status.Speed){
         playerTurn = false;
-        cout << "æ•Œäººçš„å…ˆåˆ¶æ”»å‡», é€ æˆäº†" << character.status.ATK - player.status.DEF << "ç‚¹ä¼¤å®³" << endl;
+        cout << "µĞÈËµÄÏÈÖÆ¹¥»÷, Ôì³ÉÁË" << character.status.ATK - player.status.DEF << "µãÉËº¦" << endl;
         if(player.isDead()){
-            // æ­»äº¡åœºæ™¯
+            // ËÀÍö³¡¾°
             return;
         }
         else{
-            cout << "ç©å®¶å‰©ä½™è¡€é‡:" << player.status.HP << endl;
+            cout << "Íæ¼ÒÊ£ÓàÑªÁ¿:" << player.status.HP << endl;
         }
     }
-    int turn = 0; // å›åˆæ•°
+    int turn = 0; // »ØºÏÊı
     while (true){
         turn += 1;
-        cout << "å›åˆ:" << turn << endl;
-        // å‰ç½®åˆ¤æ–­ä½¿å›åˆå¯ä»¥è·³è¿‡
-        // ç©å®¶å›åˆ
+        cout << "»ØºÏ:" << turn << endl;
+        // Ç°ÖÃÅĞ¶ÏÊ¹»ØºÏ¿ÉÒÔÌø¹ı
+        // Íæ¼Ò»ØºÏ
         if (playerTurn){
-            // éå†buffå‡å°‘ä¸€å›åˆ
-            cout << "ç©å®¶çš„å›åˆ:ä½ çš„è¡ŒåŠ¨" << endl;
+            // ±éÀúbuff¼õÉÙÒ»»ØºÏ
+            cout << "Íæ¼ÒµÄ»ØºÏ:ÄãµÄĞĞ¶¯" << endl;
 
-            //è°ƒç”¨commandåˆ†æ
+            //µ÷ÓÃcommand·ÖÎö
 
-            // ä¸‹ä¸€æ¬¡æ˜¯æ•Œäººè¡ŒåŠ¨
+            // ÏÂÒ»´ÎÊÇµĞÈËĞĞ¶¯
             playerTurn = false;
             enemyTurn = true;
 
-            // å‡»è´¥æ•Œäºº
+            // »÷°ÜµĞÈË
             if (character.isDead()){
-                cout << "ä½ å‡»è´¥äº†" << character.nameCN << "è·å¾—äº†èƒœåˆ©";
-                cout << "è·å¾—ç»éªŒ" << character.fallingExp << endl;
-                cout << "è·å¾—é‡‘é’±" << character.fallingMoney << endl;
+                cout << "Äã»÷°ÜÁË" << character.nameCN << "»ñµÃÁËÊ¤Àû";
+                cout << "»ñµÃ¾­Ñé" << character.fallingExp << endl;
+                cout << "»ñµÃ½ğÇ®" << character.fallingMoney << endl;
                 player.addExp(character.fallingExp);
                 player.addMoney(character.fallingMoney);
-                // åˆ¤æ–­æ‰è½ç‰©å“
+                // ÅĞ¶ÏµôÂäÎïÆ·
                 auto *monster = dynamic_cast<Monster*>(&character);
-                // è½¬æ¢å¤±è´¥æ—¶ä¸ºç©ºæŒ‡é’ˆ
+                // ×ª»»Ê§°ÜÊ±Îª¿ÕÖ¸Õë
                 if(monster){
                    for(auto iter = monster->fallingItem.begin(); iter!=monster->fallingItem.end(); iter++){
-                       cout << "æ€ªç‰©æ‰è½äº†" << (*iter).nameCN << endl;
+                       cout << "¹ÖÎïµôÂäÁË" << (*iter).nameCN << endl;
                        player.addItem((*iter).id, (*iter).num);
                    }
                 }
                 break;
             }
             else{
-                cout << character.nameCN << "å‰©ä½™HP: " <<character.status.HP << endl;
+                cout << character.nameCN << "Ê£ÓàHP: " <<character.status.HP << endl;
             }
         }
         if (enemyTurn){
-            int possible = getRandom(1, 100); // æš´å‡»æ¦‚ç‡
-            int fluctuation = getRandom(90, 110); // ä¼¤å®³çš„æ³¢åŠ¨
+            int possible = getRandom(1, 100); // ±©»÷¸ÅÂÊ
+            int fluctuation = getRandom(90, 110); // ÉËº¦µÄ²¨¶¯
             int damage = int(character.status.ATK * fluctuation / 100);
-            // æš´å‡»
+            // ±©»÷
             if (possible >= character.status.Critical){
                 damage = int(damage * 1.5);
             }
             player.status.HP -= (damage - player.status.DEF);
             if (player.isDead()){
-                // è°ƒç”¨æ­»äº¡åœºæ™¯
+                // µ÷ÓÃËÀÍö³¡¾°
                 break;
             }
             else{
-                cout << player.nameCN << "å‰©ä½™HP: " << player.status.HP << endl;
+                cout << player.nameCN << "Ê£ÓàHP: " << player.status.HP << endl;
             }
-            // ä¸‹ä¸€æ¬¡æ˜¯ç©å®¶è¡ŒåŠ¨
+            // ÏÂÒ»´ÎÊÇÍæ¼ÒĞĞ¶¯
             playerTurn = true;
             enemyTurn = false;
         }

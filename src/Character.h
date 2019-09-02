@@ -43,7 +43,7 @@ public:
     Location mapLocation;
     char displayChar;
     vector <Skill> skills;
-    //æ–¹æ³•
+    //·½·¨
     virtual bool isDead();
     virtual void showDescription();
 };
@@ -69,10 +69,10 @@ public:
     bool addMission(Mission &mission);
     void showMissions();
     void showMission(int missionId);
-    Mission* getMission(string assignerId); // è¿”å›ä»»åŠ¡
+    Mission* getMission(string assignerId); // ·µ»ØÈÎÎñ
 
-    void showStatus(); //æ˜¾ç¤ºäººç‰©å±æ€§å’Œè£…å¤‡
-    void playerMenu(); //æç¤ºå‘½ä»¤
+    void showStatus(); //ÏÔÊ¾ÈËÎïÊôĞÔºÍ×°±¸
+    void playerMenu(); //ÌáÊ¾ÃüÁî
 
 
 //    void showKilledMonster();
@@ -85,13 +85,13 @@ public:
     int getItem(int itemId);
 
     bool isDead() override ;
-    void deadScene(); // æ­»äº¡åœºæ™¯
+    void deadScene(); // ËÀÍö³¡¾°
 
 //    void save();
 //    void load();
 
 private:
-    //å±æ€§
+    //ÊôĞÔ
     Package<Weapon> weaponBag;
     Package<Armor> armorBag;
     Package<Drug> drugBag;
@@ -115,7 +115,7 @@ public:
 
 class NPC : public Character{
 public:
-    explicit NPC(string id); // æ ¹æ®idè¯»å–æ–‡ä»¶æ„é€ 
+    explicit NPC(string id); // ¸ù¾İid¶ÁÈ¡ÎÄ¼ş¹¹Ôì
     NPC(NPC& npc) = default;
     void NPCMenu();
     void assignQuest(Player& player);
@@ -128,7 +128,7 @@ public:
     bool getVisibility();
     bool isDead() override ;
     void showDescription() override ;
-    map<int, string[3]>talkContent; //ä¸åŒä»»åŠ¡çš„ä¸åŒå¯¹è¯
+    map<int, string[3]>talkContent; //²»Í¬ÈÎÎñµÄ²»Í¬¶Ô»°
     bool forceBattleCheck(Player &player);
 private:
     Shop store;
@@ -138,7 +138,7 @@ private:
     bool missionStatus;
     bool bar;
     bool isVisible;
-    //æ–¹æ³•
+    //·½·¨
 };
 
 

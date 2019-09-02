@@ -14,52 +14,52 @@
 #include "global.h"
 
 /*
- * @brief ç”¨äºåœ¨æ‰¾ä¸åˆ°å¯¹åº”å‘½ä»¤æ—¶ï¼Œè¾“å‡º command not found
+ * @brief ÓÃÓÚÔÚÕÒ²»µ½¶ÔÓ¦ÃüÁîÊ±£¬Êä³ö command not found
  */
 void commandNotFound(){
     cout << "command not found" << endl;
 }
 
 /*
- * @brief ç”¨äºå½“å‰è¾“å…¥çš„å‘½ä»¤è¢«ç¦æ­¢æ—¶ï¼Œè¾“å‡º command is banned
+ * @brief ÓÃÓÚµ±Ç°ÊäÈëµÄÃüÁî±»½ûÖ¹Ê±£¬Êä³ö command is banned
  */
 void commandIsBanned() {
     cout << "command is banned" << endl;
 }
 
 /*
- * @brief ç”Ÿæˆ å‘½ä»¤è¡Œå‘½ä»¤çš„ map
- * ä»æ–‡ä»¶ commands.txt è¯»å– å‘½ä»¤ å’Œ è¡¨ç¤ºæ•°å€¼ï¼Œå­˜å…¥commandsMapä¸­
- * å‘½ä»¤ å’Œ æ•°å€¼ å¿…é¡»ä¸ä¸Šæ–¹ æšä¸¾ç±»å‹ CommandLists ä¸€è‡´
+ * @brief Éú³É ÃüÁîĞĞÃüÁîµÄ map
+ * ´ÓÎÄ¼ş commands.txt ¶ÁÈ¡ ÃüÁî ºÍ ±íÊ¾ÊıÖµ£¬´æÈëcommandsMapÖĞ
+ * ÃüÁî ºÍ ÊıÖµ ±ØĞëÓëÉÏ·½ Ã¶¾ÙÀàĞÍ CommandLists Ò»ÖÂ
  *
- * commands.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * commands.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * *
- * -æˆ˜æ–—æŒ‡ä»¤
+ * -Õ½¶·Ö¸Áî
  * attack 1
  * / attack <character_name>
- * // ï¼ˆæˆ˜æ–—çŠ¶æ€ï¼‰ä½¿ç”¨æ™®é€šæ”»å‡» æ”»å‡»æŒ‡å®šç›®æ ‡
+ * // £¨Õ½¶·×´Ì¬£©Ê¹ÓÃÆÕÍ¨¹¥»÷ ¹¥»÷Ö¸¶¨Ä¿±ê
  *
- * ä»¥'-'å¼€å¤´ä¸º   å‘½ä»¤åˆ†ç±»
- * ä»¥'/ 'å¼€å¤´ä¸º  å‘½ä»¤ç”¨æ³•
- * ä»¥'// 'å¼€å¤´ä¸º å‘½ä»¤ç®€ä»‹
+ * ÒÔ'-'¿ªÍ·Îª   ÃüÁî·ÖÀà
+ * ÒÔ'/ '¿ªÍ·Îª  ÃüÁîÓÃ·¨
+ * ÒÔ'// '¿ªÍ·Îª ÃüÁî¼ò½é
  *
- * å¼€å¤´æ²¡æœ‰ä¿®é¥°ç¬¦çš„ä¸ºå‘½ä»¤
- * å‘½ä»¤åæœ‰ä¸€æ•°å­— ç”¨ç©ºæ ¼éš”å¼€
+ * ¿ªÍ·Ã»ÓĞĞŞÊÎ·ûµÄÎªÃüÁî
+ * ÃüÁîºóÓĞÒ»Êı×Ö ÓÃ¿Õ¸ñ¸ô¿ª
  * * * * * * * * * * * * * * * * * * * * * * * *
  */
 Client::Client() {
-    // å¯æ‰§è¡Œæ–‡ä»¶ç”Ÿæˆåœ¨ build é‡Œå°† command.txt æ”¾åœ¨æ ¹ç›®å½•/dataä¸‹
+    // ¿ÉÖ´ĞĞÎÄ¼şÉú³ÉÔÚ build Àï½« command.txt ·ÅÔÚ¸ùÄ¿Â¼/dataÏÂ
     ifstream f(COMMANDS_TXT_PATH);
 
     string str;
-    // ä¸€æ¬¡è¯»å–ä¸€è¡Œ
+    // Ò»´Î¶ÁÈ¡Ò»ĞĞ
     while(getline(f,str))
     {
-        // ç©ºè¡Œã€å¼€å¤´ä¸º'/'ã€å¼€å¤´ä¸º'-'çš„è¡Œ å‰”é™¤
+        // ¿ÕĞĞ¡¢¿ªÍ·Îª'/'¡¢¿ªÍ·Îª'-'µÄĞĞ ÌŞ³ı
         if (!str.empty() && str[0] != '/' && str[0] != '-') {
-            // å–å‡ºå‡º å‘½ä»¤ å’Œ è¡¨ç¤ºæ•°å€¼
+            // È¡³ö³ö ÃüÁî ºÍ ±íÊ¾ÊıÖµ
             vector<string> keyValue = Tool::split(str);
-            // å‘½ä»¤ å’Œ è¡¨ç¤ºæ•°å€¼ å­˜å…¥ map ä¸­
+            // ÃüÁî ºÍ ±íÊ¾ÊıÖµ ´æÈë map ÖĞ
             this->commandsMap.insert(pair<string, string>(keyValue[0], keyValue[1]));
         }
     }
@@ -68,15 +68,15 @@ Client::Client() {
 }
 
 /*
- * @brief è¾“å‡ºå‘½ä»¤çš„å¸®åŠ©è¯­å¥
+ * @brief Êä³öÃüÁîµÄ°ïÖúÓï¾ä
  *
- * @param command è¦æŸ¥çœ‹å¸®åŠ©çš„å‘½ä»¤
+ * @param command Òª²é¿´°ïÖúµÄÃüÁî
  */
 void Client::commandHelp(string& command) {
     ifstream f(COMMANDS_TXT_PATH);
 
     string str;
-    // ä¸€æ¬¡è¯»å–ä¸€è¡Œ è¯»åˆ°è¦æŸ¥æ‰¾åˆ°å‘½ä»¤çš„ä½ç½®
+    // Ò»´Î¶ÁÈ¡Ò»ĞĞ ¶Áµ½Òª²éÕÒµ½ÃüÁîµÄÎ»ÖÃ
     while (getline(f,str)) {
         if (!str.empty() && str[0] != '/' && str[0] != '-') {
             str = Tool::split(str)[0];
@@ -87,26 +87,26 @@ void Client::commandHelp(string& command) {
         }
     }
 
-    // è¯»åˆ°æ–‡ä»¶ç»“å°¾å³ä¸ºæ²¡æœ‰æ­¤æ¡å‘½ä»¤çš„å¸®åŠ©
+    // ¶Áµ½ÎÄ¼ş½áÎ²¼´ÎªÃ»ÓĞ´ËÌõÃüÁîµÄ°ïÖú
     if (f.eof()) {
         cout << "no command help" << endl;
     } else {
         while (getline(f,str)) {
-            // æ–‡ä»¶ä¸­ æ¯æ¡å‘½ä»¤(åŒ…å«:å‘½ä»¤ã€å‘½ä»¤ç”¨æ³•ã€å‘½ä»¤ç®€ä»‹)ä¹‹é—´ç”¨ç©ºè¡Œéš”å¼€
-            // è¯»åˆ°ç©ºè¡Œåˆ™æ­¤å‘½ä»¤çš„æ‰€æœ‰å¸®åŠ©è¯­å¥å³ä¸ºè¾“å‡ºå®Œæ¯•
+            // ÎÄ¼şÖĞ Ã¿ÌõÃüÁî(°üº¬:ÃüÁî¡¢ÃüÁîÓÃ·¨¡¢ÃüÁî¼ò½é)Ö®¼äÓÃ¿ÕĞĞ¸ô¿ª
+            // ¶Áµ½¿ÕĞĞÔò´ËÃüÁîµÄËùÓĞ°ïÖúÓï¾ä¼´ÎªÊä³öÍê±Ï
             if (str.empty()) {
                 break;
             }
             else {
-                // å°†æ–‡ä»¶ä¸­å­˜å‚¨æ­¤æ¡å‘½ä»¤çš„ç›¸å…³å†…å®¹è¿›è¡Œæ ¼å¼æ›¿æ¢
-                // ä»¥'/ ' å¼€å¤´çš„ä¸ºå‘½ä»¤ç”¨æ³•
-                // ä»¥'// 'å¼€å¤´çš„ä¸ºå‘½ä»¤ç®€ä»‹
+                // ½«ÎÄ¼şÖĞ´æ´¢´ËÌõÃüÁîµÄÏà¹ØÄÚÈİ½øĞĞ¸ñÊ½Ìæ»»
+                // ÒÔ'/ ' ¿ªÍ·µÄÎªÃüÁîÓÃ·¨
+                // ÒÔ'// '¿ªÍ·µÄÎªÃüÁî¼ò½é
                 regex informationPattern("// ");
                 regex usagePattern("/ ");
 
-                // å¿…é¡»å…ˆå¯¹'// 'è¿›è¡ŒåŒ¹é…ï¼Œå› ä¸º'/ 'ä¸º'// 'çš„ä¸€éƒ¨åˆ†
-                str = regex_replace(str, informationPattern, "ç®€ä»‹:");
-                str = regex_replace(str, usagePattern, "ç”¨æ³•:");
+                // ±ØĞëÏÈ¶Ô'// '½øĞĞÆ¥Åä£¬ÒòÎª'/ 'Îª'// 'µÄÒ»²¿·Ö
+                str = regex_replace(str, informationPattern, "¼ò½é:");
+                str = regex_replace(str, usagePattern, "ÓÃ·¨:");
 
                 cout << str << endl;
             }
@@ -117,11 +117,11 @@ void Client::commandHelp(string& command) {
 }
 
 /*
- * @brief æ£€æŸ¥å‘½ä»¤æ˜¯å¦è¢«ç¦æ­¢
+ * @brief ¼ì²éÃüÁîÊÇ·ñ±»½ûÖ¹
  *
- * @param command å‘½ä»¤è¡Œè¾“å…¥çš„å‘½ä»¤(è¡¨ç¤ºæ•°å€¼)
- * @param bannedCommands è¢«ç¦æ­¢è°ƒç”¨çš„å‘½ä»¤
- * @return æœªè¢«ç¦æ­¢åˆ™è¿”å›false è¢«ç¦æ­¢åˆ™è¿”å›true
+ * @param command ÃüÁîĞĞÊäÈëµÄÃüÁî(±íÊ¾ÊıÖµ)
+ * @param bannedCommands ±»½ûÖ¹µ÷ÓÃµÄÃüÁî
+ * @return Î´±»½ûÖ¹Ôò·µ»Øfalse ±»½ûÖ¹Ôò·µ»Øtrue
  */
 bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
     for (int one: bannedCommands) {
@@ -134,32 +134,32 @@ bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
 }
 
 /*
- * @brief æœå¯»å¯¹åº”å‘½ä»¤ å¯ç”¨å³æ‰§è¡Œ
+ * @brief ËÑÑ°¶ÔÓ¦ÃüÁî ¿ÉÓÃ¼´Ö´ĞĞ
  *
- * @param commands å‘½ä»¤è¡Œè¾“å…¥çš„å‘½ä»¤
+ * @param commands ÃüÁîĞĞÊäÈëµÄÃüÁî
  */
 void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommands, int index) {
-    // å¯»æ‰¾æ˜¯å¦åœ¨ commandMap ä¸­æœ‰å¯¹åº”çš„å‘½ä»¤
-    // å¦‚æœæ²¡æœ‰å¯¹åº”çš„å‘½ä»¤ æ‰§è¡Œ commandNotFound()
-    // commandMap.find() è¿”å›è¿­ä»£å™¨ç±»å‹
+    // Ñ°ÕÒÊÇ·ñÔÚ commandMap ÖĞÓĞ¶ÔÓ¦µÄÃüÁî
+    // Èç¹ûÃ»ÓĞ¶ÔÓ¦µÄÃüÁî Ö´ĞĞ commandNotFound()
+    // commandMap.find() ·µ»Øµü´úÆ÷ÀàĞÍ
     auto iter = commandsMap.find(commands[0]);
     if (iter != commandsMap.end()) {
-        // æŸ¥çœ‹æ˜¯å¦æ˜¯å¸®åŠ©å‘½ä»¤
+        // ²é¿´ÊÇ·ñÊÇ°ïÖúÃüÁî
         if (commands.size() == 2 && (commands[1] == "-h" || commands[1] == "--help")) {
             commandHelp(commands[0]);
 
             return;
         }
 
-        // å¸®åŠ©å‘½ä»¤çš„ç›¸ä¼¼å‘½ä»¤ï¼Œæç¤ºä½¿ç”¨æ­£ç¡®çš„å‘½ä»¤
+        // °ïÖúÃüÁîµÄÏàËÆÃüÁî£¬ÌáÊ¾Ê¹ÓÃÕıÈ·µÄÃüÁî
         if (commands.size() == 2 && commands[1] == "-help") {
             cout << "use " << commands[0] << " -h or " << commands[0] << " --help" << endl;
 
             return;
         }
 
-        // commandMap ä¸º map<string, string> ç±»å‹ï¼Œå¯¹åº” å‘½ä»¤ å’Œ è¡¨ç¤ºæ•°å€¼
-        // è¡¨ç¤ºæ•°å€¼è½¬æ¢ä¸º int ç±»å‹
+        // commandMap Îª map<string, string> ÀàĞÍ£¬¶ÔÓ¦ ÃüÁî ºÍ ±íÊ¾ÊıÖµ
+        // ±íÊ¾ÊıÖµ×ª»»Îª int ÀàĞÍ
         stringstream stream;
         int number = 0;
         string text(iter->second);
@@ -169,7 +169,7 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
 
         auto command = (CommandLists)number;
 
-        // æ£€æŸ¥å‘½ä»¤æ˜¯å¦å¯ç”¨
+        // ¼ì²éÃüÁîÊÇ·ñ¿ÉÓÃ
         if (!isBanned(command, bannedCommands)) {
             // TODO
             switch (command) {
@@ -224,20 +224,20 @@ void Client::executeCommand(vector<string> commands,  vector<int>& bannedCommand
 }
 
 /*
- * @brief å‘½ä»¤è¡Œçš„ è¾“å‡º æ¥å— å¤„ç†
+ * @brief ÃüÁîĞĞµÄ Êä³ö ½ÓÊÜ ´¦Àí
  *
- * @param str è¾“å…¥çš„ä¸€è¡Œå‘½ä»¤
- * @param bannedCommands è¢«ç¦æ­¢çš„å‘½ä»¤
- * @param index å‘½ä»¤æ“ä½œå¯¹è±¡å¯¹åº”çš„ç´¢å¼•ä½ç½®
+ * @param str ÊäÈëµÄÒ»ĞĞÃüÁî
+ * @param bannedCommands ±»½ûÖ¹µÄÃüÁî
+ * @param index ÃüÁî²Ù×÷¶ÔÏó¶ÔÓ¦µÄË÷ÒıÎ»ÖÃ
  */
 void Client::base(string str, vector<int>& bannedCommands, int index) {
-        // å°†å‰åç©ºæ ¼å»é™¤ï¼Œè¿ç»­ç©ºæ ¼å˜ä¸ºå•ä¸ªç©ºæ ¼
+        // ½«Ç°ºó¿Õ¸ñÈ¥³ı£¬Á¬Ğø¿Õ¸ñ±äÎªµ¥¸ö¿Õ¸ñ
         str = Tool::clean(str);
 
         if (!str.empty()) {
             vector commands = Tool::split(str, ' ');
 
-            // è°ƒç”¨å‘½ä»¤è¡Œè¾“å…¥å‘½ä»¤å¯¹åº”çš„å‡½æ•°
+            // µ÷ÓÃÃüÁîĞĞÊäÈëÃüÁî¶ÔÓ¦µÄº¯Êı
             executeCommand(commands, bannedCommands, index);
         } else {
             cout << "empty command" << endl;

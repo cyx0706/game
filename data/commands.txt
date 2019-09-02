@@ -1,93 +1,93 @@
--战斗指令
+-ս��ָ��
 attack 1
 / attack <character_name>
-// （战斗状态）使用普通攻击 攻击指定目标
+// ��ս��״̬��ʹ����ͨ���� ����ָ��Ŀ��
 
 skill 2
 / skill <skill_name> <character_name>
-// （战斗状态）使用指定技能 攻击指定目标
+// ��ս��״̬��ʹ��ָ������ ����ָ��Ŀ��
 
 flee 3
 / flee
-// （战斗状态）逃跑
+// ��ս��״̬������
 
 
 
--商店指令
+-�̵�ָ��
 purchase 4
 / purchase <item_name>
-// 购买指定物品1个
+// ����ָ����Ʒ1��
 / purchase <item_name> -number <num>
-// 购买指定物品num个
+// ����ָ����Ʒnum��
 
 sell 5
 /sell <item_name> <num>
-// 出售指定物品num个
+// ����ָ����Ʒnum��
 
 
 
--角色指令
+-��ɫָ��
 status 6
 / status <character_name>
-// 展示指定角色的状态
+// չʾָ����ɫ��״̬
 
 equipment 7
 / equipment <character_name>
-// 展示指定角色的装备
+// չʾָ����ɫ��װ��
 
 package 8
 / package
-// 展示玩家的背包
+// չʾ��ҵı���
 
 item 9
 / item <item_name>
-// 展示物品详情
+// չʾ��Ʒ����
 
 equip 10
 / equip <equipment_name>
-// 装备指定装备（如果当前存在装备，则将旧的放回背包）
+// װ��ָ��װ���������ǰ����װ�����򽫾ɵķŻر�����
 
 takeoff 11
 / takeoff <equipment_name>
-// 脱下指定装备
+// ����ָ��װ��
 
 discard 12
 / discard <item_name> <num>
-// 丢弃指定物品num个
+// ����ָ����Ʒnum��
 
 talk 13
 / talk
-// 和当前十字格内的NPC交流
+// �͵�ǰʮ�ָ��ڵ�NPC����
 
 fight 14
 / fight
-// 和当前十字格内的NPC战斗（需要有战斗选项的NPC才可以触发）
+// �͵�ǰʮ�ָ��ڵ�NPCս������Ҫ��ս��ѡ���NPC�ſ��Դ�����
 
 slaughter 15
 / slaughter
-// 搜索十字格内的怪，如果有自动进入战斗回合
+// ����ʮ�ָ��ڵĹ֣�������Զ�����ս���غ�
 
 
 
--地图指令
+-��ͼָ��
 maps 16
 / map
-// 查看世界地图
+// �鿴�����ͼ
 
 
 
--帮助指令
+-����ָ��
 help 17
 / help
-// 指令的提示
+// ָ�����ʾ
 
 mission 18
 / mission
-// 查看当前执行的任务
+// �鿴��ǰִ�е�����
 
 
 
--系统指令
+-ϵͳָ��
 save 19
 / save
-// 存档，战斗时无法使用
+// �浵��ս��ʱ�޷�ʹ��

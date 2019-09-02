@@ -24,8 +24,8 @@ vector<int>commonBannedCommands = {};
 vector<int>shopBannedCommands = {};
 SCOORD uPos = {1, 1};
 int main() {
-    // åšä¸€äº›æ£€æŸ¥å·¥ä½œ
-    // éšæœºæ•°ç§å­
+    // ×öÒ»Ğ©¼ì²é¹¤×÷
+    // Ëæ»úÊıÖÖ×Ó
     srand(static_cast<unsigned int>(time(nullptr)));
 //    std::cout << "Hello, World!" << std::endl;
     GameLoop::initGame();

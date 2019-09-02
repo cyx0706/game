@@ -38,7 +38,7 @@ using std::srand;
 using std::transform;
 using std::istream;
 /*
- * 鍏ㄥ眬鍙橀噺瀛樺埌杩欓噷
+ * 全局变量存到这里
  */
 
 

@@ -13,7 +13,7 @@
 static const string MISSION_TXT_PATH = "../data/mission"; // NOLINT
 
 /*
- * @brief ‰ªªÂä°Á±ª
+ * @brief »ŒŒÒ¿‡
  */
 class Mission {
 public:

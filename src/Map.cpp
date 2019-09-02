@@ -34,7 +34,7 @@ bool SCOORD::operator<(const SCOORD &pos) const {
 
 
 /*
- * @brief åˆå§‹åŒ–åœ°å›¾
+ * @brief ³õÊ¼»¯µØÍ¼
  */
 void Map::initMap() {
     initChar();
@@ -43,7 +43,7 @@ void Map::initMap() {
     SCOORD pos = {0, 0};
     gotoxy(pos);
     for (int j = edgeLeft[0]; j <= edgeRight[0]; j++) {
-        // ç”»ä¸Šè¾¹ç•Œçš„é—¨
+        // »­ÉÏ±ß½çµÄÃÅ
         for (int z = 0; z < doorPosTop.size(); z++) {
             if (doorPosTop[z] == j){
                 flag = true;
@@ -61,7 +61,7 @@ void Map::initMap() {
     for (short i = 1; i < edgeLeft.size() - 1; i++) {
 
         if (edgeLeft[i] < edgeLeft[i+1]) {
-            temp = i+1;  // ç›´æ¥å†™i+1ä¼šå‡ºé”™ï¼Œéœ€è¦ä¸€ä¸ªä¸­é—´å˜é‡
+            temp = i+1;  // Ö±½ÓĞ´i+1»á³ö´í£¬ĞèÒªÒ»¸öÖĞ¼ä±äÁ¿
             pos = {edgeLeft[i], temp};
             gotoxy(pos);
             for (short j = edgeLeft[i]; j <= edgeLeft[i+1]; j++) {
@@ -101,13 +101,13 @@ void Map::initMap() {
         putchar(edgeSign);
         putchar('\n');
     }
-    temp = edgeLeft.size() -1; // æ— æ³•ç›´æ¥ä½¿ç”¨è¡¨è¾¾å¼,åˆ›å»ºä¸´æ—¶å˜é‡
+    temp = edgeLeft.size() -1; // ÎŞ·¨Ö±½ÓÊ¹ÓÃ±í´ïÊ½,´´½¨ÁÙÊ±±äÁ¿
     pos = {edgeLeft[temp], temp};
     gotoxy(pos);
 
     flag = false;
     for (int j = edgeLeft[temp]; j <= edgeRight[temp]; j++) {
-        // ç”»ä¸‹è¾¹ç•Œçš„é—¨
+        // »­ÏÂ±ß½çµÄÃÅ
         for (int z = 0; z < doorPosBottom.size(); z++) {
             if (doorPosBottom[z] == j){
                 flag = true;
@@ -126,27 +126,27 @@ void Map::initMap() {
 
 
 /*
- * @brief åˆå§‹åŒ–éšœç¢ç‰©
+ * @brief ³õÊ¼»¯ÕÏ°­Îï
  */
 void Map::initBarrier() {
-    //æŸ¥ä¸€ä¸‹æ˜ å°„çš„å¯¹åº”å¯¹è±¡,ä¸åŒçš„ç¬¦å·è¡¨ç¤º
+    //²éÒ»ÏÂÓ³ÉäµÄ¶ÔÓ¦¶ÔÏó,²»Í¬µÄ·ûºÅ±íÊ¾
     SetConsoleTextAttribute(hOut, 0x0a);
     GetConsoleScreenBufferInfo(hOut, &screenInfo);
     short xLeft = 0;
     short xRight = 0;
     short y = 0;
-    // ç”»NPCå’ŒMonster
-    CHAR_INFO chFill;   //å®šä¹‰å‰ªåˆ‡åŒºåŸŸå¡«å……å­—ç¬¦
+    // »­NPCºÍMonster
+    CHAR_INFO chFill;   //¶¨Òå¼ôÇĞÇøÓòÌî³ä×Ö·û
     for (auto iter= this->barrier.begin();  iter!=this->barrier.end() ; iter++) {
         auto m = npcs.find(*iter);
         if (m!=npcs.end()){
-            // æ‰¾åˆ°äº†,æ˜¯ä¸ªnpc
-            //TODO:å…¨å±€NPCé‡Œæ‰¾ä¸€ä¸‹çœ‹çœ‹æ˜¯ä¸æ˜¯ä¸æ˜¾ç¤º
-            chFill = {'N',  screenInfo.wAttributes}; //å®šä¹‰å‰ªåˆ‡åŒºåŸŸå¡«å……å­—ç¬¦
+            // ÕÒµ½ÁË,ÊÇ¸önpc
+            //TODO:È«¾ÖNPCÀïÕÒÒ»ÏÂ¿´¿´ÊÇ²»ÊÇ²»ÏÔÊ¾
+            chFill = {'N',  screenInfo.wAttributes}; //¶¨Òå¼ôÇĞÇøÓòÌî³ä×Ö·û
         }
         m = monsters.find(*iter);
         if(m!=monsters.end()){
-            // ç”»Monster
+            // »­Monster
             chFill = {'M',  screenInfo.wAttributes};
         }
         xLeft = short((*iter).X - 1);
@@ -154,18 +154,18 @@ void Map::initBarrier() {
         y = short((*iter).Y);
         SMALL_RECT CutScr = {xLeft, y, xRight, y};
         COORD cutPos = {xRight, y};
-        ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //ç§»åŠ¨æ–‡æœ¬
+        ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //ÒÆ¶¯ÎÄ±¾
     }
     SetConsoleTextAttribute(hOut, 0x0f);
 
-    // ç”»item
+    // »­item
 }
 
 
 /*
- * @brief åˆå§‹åŒ–ç”¨æˆ·çš„ä½ç½®
+ * @brief ³õÊ¼»¯ÓÃ»§µÄÎ»ÖÃ
  *
- * @param playerChar:ç”¨æ¥ä»£è¡¨ç”¨æˆ·çš„å­—ç¬¦
+ * @param playerChar:ÓÃÀ´´ú±íÓÃ»§µÄ×Ö·û
  */
 void Map::initChar(char playerChar/* ='P '*/) {
     SetConsoleCursorPosition(hOut, initPos);
@@ -173,24 +173,24 @@ void Map::initChar(char playerChar/* ='P '*/) {
 }
 
 /*
- * @brief ç”Ÿæˆä¸‹ä¸€å¼ åœ°å›¾
+ * @brief Éú³ÉÏÂÒ»ÕÅµØÍ¼
  *
- * @param mapId:è¦ç”Ÿæˆåœ°å›¾çš„id
- * @return è¿”å›ä¸‹ä¸€å¼ åœ°å›¾çš„æŒ‡é’ˆ
+ * @param mapId:ÒªÉú³ÉµØÍ¼µÄid
+ * @return ·µ»ØÏÂÒ»ÕÅµØÍ¼µÄÖ¸Õë
  */
 void Map::nextMap(int mapId) {
     SCOORD pos = this->road[uPos];
     mapNow = make_unique<Map>();
-    mapNow->load(mapId);          // è¯»å–åœ°å›¾
-    mapNow->initPos = pos; // è®¾ç½®å‡ºç”Ÿåœ°ç‚¹
+    mapNow->load(mapId);          // ¶ÁÈ¡µØÍ¼
+    mapNow->initPos = pos; // ÉèÖÃ³öÉúµØµã
 //    return mapNow;
 }
 
 /*
- * @brief æ£€æŸ¥ç©å®¶æ˜¯å¦åˆ°è¾¾äº†åœ°å›¾åº•ä¾§çš„è½¬ç§»ç‚¹
+ * @brief ¼ì²éÍæ¼ÒÊÇ·ñµ½´ïÁËµØÍ¼µ×²àµÄ×ªÒÆµã
  *
- * @param ç©å®¶çš„åæ ‡
- * @return æ˜¯å¦åˆ°è¾¾
+ * @param Íæ¼ÒµÄ×ø±ê
+ * @return ÊÇ·ñµ½´ï
  */
 bool Map::checkBottomMapTransition() {
     for (int i = 0; i < doorPosBottom.size(); i++) {
@@ -199,9 +199,9 @@ bool Map::checkBottomMapTransition() {
             cout << "Waiting......";
             Sleep(2000);
             system("cls");
-            // ç”ŸæˆæŒ‡é’ˆå¹¶è¯»å–æ•°æ®
+            // Éú³ÉÖ¸Õë²¢¶ÁÈ¡Êı¾İ
             mapNow->nextMap(mapNow->roadTo[uPos]);
-            // ç»˜åˆ¶åœ°å›¾
+            // »æÖÆµØÍ¼
             mapNow->initMap();
             uPos.X = mapNow->initPos.X;
             uPos.Y = mapNow->initPos.Y;
@@ -214,10 +214,10 @@ bool Map::checkBottomMapTransition() {
 
 
 /*
- * @brief æ£€æŸ¥ç©å®¶æ˜¯å¦åˆ°è¾¾äº†åœ°å›¾é¡¶éƒ¨çš„è½¬ç§»ç‚¹
+ * @brief ¼ì²éÍæ¼ÒÊÇ·ñµ½´ïÁËµØÍ¼¶¥²¿µÄ×ªÒÆµã
  *
- * @param uPosç©å®¶çš„åæ ‡çš„å¼•ç”¨
- * @return æ˜¯å¦åˆ°è¾¾
+ * @param uPosÍæ¼ÒµÄ×ø±êµÄÒıÓÃ
+ * @return ÊÇ·ñµ½´ï
  */
 bool Map::checkTopMapTransition() {
     for (int i = 0; i < doorPosTop.size(); i++) {
@@ -226,11 +226,11 @@ bool Map::checkTopMapTransition() {
             cout << "Waiting......";
             Sleep(2000);
             system("cls");
-            // ç”ŸæˆæŒ‡é’ˆå¹¶è¯»å–æ•°æ®
+            // Éú³ÉÖ¸Õë²¢¶ÁÈ¡Êı¾İ
             mapNow->nextMap(mapNow->roadTo[uPos]);
-            // ç»˜åˆ¶åœ°å›¾
+            // »æÖÆµØÍ¼
             mapNow->initMap();
-            // ä¿®æ”¹ç©å®¶ä½ç½®
+            // ĞŞ¸ÄÍæ¼ÒÎ»ÖÃ
             uPos.X = mapNow->initPos.X;
             uPos.Y = mapNow->initPos.Y;
             mapNow->checkSpecialScene();
@@ -241,9 +241,9 @@ bool Map::checkTopMapTransition() {
 }
 
 /*
- * @brief æ ¹æ®idæ¥åœ¨æ–‡ä»¶é‡Œè¯»å‡ºåœ°å›¾ä¿¡æ¯
+ * @brief ¸ù¾İidÀ´ÔÚÎÄ¼şÀï¶Á³öµØÍ¼ĞÅÏ¢
  *
- * @param mapId: è¦è¯»å–åœ°å›¾çš„id
+ * @param mapId: Òª¶ÁÈ¡µØÍ¼µÄid
  */
 void Map::load(int mapId) {
     ifstream fp;
@@ -251,7 +251,7 @@ void Map::load(int mapId) {
     int id;
     vector<string>temp;
     string sentence;
-    //å£°æ˜æ­£åˆ™åŒ¹é…ç‚¹
+    //ÉùÃ÷ÕıÔòÆ¥Åäµã
     regex r;
     r = R"(\{(\d+),(\d+)\})";
     smatch group;
@@ -260,54 +260,54 @@ void Map::load(int mapId) {
         getline(fp, sentence);
     }
     while (fp.peek() != EOF){
-        getline(fp, sentence); // æ–‡ä»¶æµè¯»å…¥ä¸€è¡Œ
+        getline(fp, sentence); // ÎÄ¼şÁ÷¶ÁÈëÒ»ĞĞ
        if (sentence == "---"){
-           getline(fp, sentence); // è¯»å‡ºid
-           index = sentence.find_first_of(' ') + 1; // å‘åä¸€ä½
-           // ASCIIå­—ç¬¦å’Œintå‹å·®48
+           getline(fp, sentence); // ¶Á³öid
+           index = sentence.find_first_of(' ') + 1; // ÏòºóÒ»Î»
+           // ASCII×Ö·ûºÍintĞÍ²î48
            id = int(sentence[index]) - 48;
            if (mapId == id){
-               // è¯»åé¢çš„æ•°æ®
+               // ¶ÁºóÃæµÄÊı¾İ
                mapNow->id = id;
-               // è¯»ä¸­æ–‡å
+               // ¶ÁÖĞÎÄÃû
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                mapNow->nameCN = sentence.substr(index);
-               // è¯»è‹±æ–‡å
+               // ¶ÁÓ¢ÎÄÃû
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                mapNow->nameEN = sentence.substr(index);
-               //è¯»è¾¹ç•Œç¬¦å·
+               //¶Á±ß½ç·ûºÅ
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                mapNow->edgeSign = char(sentence[index]);
 
-               //è¯»å–åˆå§‹ä½ç½®,åœ¨å¤–é¢ä¼šè®¾å®š,è¿™é‡Œæ— æ‰€è°“
+               //¶ÁÈ¡³õÊ¼Î»ÖÃ,ÔÚÍâÃæ»áÉè¶¨,ÕâÀïÎŞËùÎ½
                getline(fp, sentence);
                mapNow->initPos = {1, 1};
 
-               //è¯»å–å·¦è¾¹ç•Œ
+               //¶ÁÈ¡×ó±ß½ç
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
                for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                   mapNow->edgeLeft.push_back(fromString<short>(*iter)); // stringè½¬int
+                   mapNow->edgeLeft.push_back(fromString<short>(*iter)); // string×ªint
                }
 
-               // è¯»å–å³è¾¹ç•Œ
+               // ¶ÁÈ¡ÓÒ±ß½ç
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                sentence = sentence.substr(index);
                temp = Tool::split(sentence, ',');
                for (auto iter = temp.begin(); iter != temp.end(); iter++) {
-                   mapNow->edgeRight.push_back(fromString<short>(*iter)); // stringè½¬int
+                   mapNow->edgeRight.push_back(fromString<short>(*iter)); // string×ªint
                }
                string foo;
-               // è¯»å–é¡¶éƒ¨é—¨
+               // ¶ÁÈ¡¶¥²¿ÃÅ
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
-               foo = sentence.substr(index); // è·å–åç»­çš„å­—ç¬¦ä¸²
+               foo = sentence.substr(index); // »ñÈ¡ºóĞøµÄ×Ö·û´®
                regex DoorRegex;
                DoorRegex = R"((\d+):(\d+):\{(\d+),(\d+)\})";
                if(foo != "None"){
@@ -319,10 +319,10 @@ void Map::load(int mapId) {
                    mapNow->road.insert(make_pair(SCOORD {door, 1}, pos));
                    mapNow->doorPosTop.push_back(door);
                }
-               //è¯»å–åº•éƒ¨é—¨
+               //¶ÁÈ¡µ×²¿ÃÅ
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
-               foo = sentence.substr(index); // è·å–åç»­çš„å­—ç¬¦ä¸²
+               foo = sentence.substr(index); // »ñÈ¡ºóĞøµÄ×Ö·û´®
                if(foo != "None"){
                    temp = Tool::split(foo, ' ');
                    for (auto iter = temp.begin(); iter != temp.end(); iter++) {
@@ -335,7 +335,7 @@ void Map::load(int mapId) {
                        mapNow->doorPosBottom.push_back(door);
                    }
                }
-               // è¯»å–éšœç¢ç‰©
+               // ¶ÁÈ¡ÕÏ°­Îï
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
@@ -345,11 +345,11 @@ void Map::load(int mapId) {
                    SCOORD pos = {short(stoi(group[1])), short(stoi(group[2]))};
                    mapNow->barrier.push_back(pos);
                }
-               //npc monsteræ˜ å°„çš„åŒ¹é…æ­£åˆ™å¼
+               //npc monsterÓ³ÉäµÄÆ¥ÅäÕıÔòÊ½
                regex mapRegex;
                mapRegex = R"((.{5}):\{(\d+),(\d+)\})";
 
-               //è¯»å–æ€ªç‰©
+               //¶ÁÈ¡¹ÖÎï
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
@@ -361,7 +361,7 @@ void Map::load(int mapId) {
                        mapNow->monsters.insert(make_pair(pos, group[1]));
                    }
                }
-               //è¯»å–npc
+               //¶ÁÈ¡npc
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
@@ -373,7 +373,7 @@ void Map::load(int mapId) {
                        mapNow->npcs.insert(make_pair(pos, group[1]));
                    }
                }
-               //è¯»å–item
+               //¶ÁÈ¡item
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
@@ -392,15 +392,15 @@ void Map::load(int mapId) {
 }
 
 /*
- * @brief æ§åˆ¶ç”¨æˆ·ç§»åŠ¨çš„å‡½æ•°
+ * @brief ¿ØÖÆÓÃ»§ÒÆ¶¯µÄº¯Êı
  *
- * @param key:æ–¹å‘é”®
+ * @param key:·½Ïò¼ü
  */
 void Map::move(int key) {
     SCOORD resetPos = uPos;
     short x = uPos.X;
     short y = uPos.Y;
-    //å‘ä¸Šèµ°
+    //ÏòÉÏ×ß
     if(key == 72){
         bool flag1 = (y <= 1) ;
         bool flag2 = (x >= min(edgeLeft[y-1], edgeLeft[y]) && x <= max(edgeLeft[y-1], edgeLeft[y]));
@@ -414,7 +414,7 @@ void Map::move(int key) {
         }
         uPos.Y--;
     }
-    //å‘å·¦èµ°
+    //Ïò×ó×ß
     else if (key == 75){
         if (x > edgeLeft[y] + 1){
             uPos.X--;
@@ -424,7 +424,7 @@ void Map::move(int key) {
         }
 
     }
-    //å‘å³èµ°
+    //ÏòÓÒ×ß
     else if (key == 77){
         if (x < edgeRight[y] - 1)
             uPos.X++;
@@ -432,9 +432,9 @@ void Map::move(int key) {
             return;
         }
     }
-    //å‘ä¸‹èµ°
+    //ÏòÏÂ×ß
     else if (key == 80){
-        // 20å¤§å°çš„åœ°å›¾,æœ€å¤šèµ°åˆ°18
+        // 20´óĞ¡µÄµØÍ¼,×î¶à×ßµ½18
         bool flag1 = (y >= edgeLeft.size() - 2) ;
         bool flag2 = (x >= min(edgeLeft[y+1], edgeLeft[y]) && x <= max(edgeLeft[y+1], edgeLeft[y]));
         bool flag3 = (x >= min(edgeRight[y+1], edgeRight[y]) && x <= max(edgeRight[y+1], edgeRight[y]));
@@ -450,9 +450,9 @@ void Map::move(int key) {
     else{
         return;
     }
-    // åˆ¤æ–­æ˜¯å¦èµ°åˆ°éšœç¢ç‰©ä¸Šäº†
+    // ÅĞ¶ÏÊÇ·ñ×ßµ½ÕÏ°­ÎïÉÏÁË
     for (int i = 0; i < barrier.size(); i++) {
-        //å­˜åœ¨xä¸Šçš„1è·ç¦»çš„åå·®
+        //´æÔÚxÉÏµÄ1¾àÀëµÄÆ«²î
         if (barrier[i].X - 1 == uPos.X && barrier[i].Y == uPos.Y){
             uPos = resetPos;
             return;
@@ -461,9 +461,9 @@ void Map::move(int key) {
 }
 
 /*
- * @brief æ‰“å°å±å¹•ä¸­ç©å®¶ä½ç½®
+ * @brief ´òÓ¡ÆÁÄ»ÖĞÍæ¼ÒÎ»ÖÃ
  *
- * @param playerChar:ç©å®¶çš„è¡¨ç¤º
+ * @param playerChar:Íæ¼ÒµÄ±íÊ¾
  */
 void Map::print(char playerChar/* ='P' */) {
     SetConsoleCursorPosition(hOut, uPos);
@@ -471,9 +471,9 @@ void Map::print(char playerChar/* ='P' */) {
 }
 
 /*
- * @brief æ¸…é™¤å±å¹•ä¸­çš„å½“å‰ä½ç½®
+ * @brief Çå³ıÆÁÄ»ÖĞµÄµ±Ç°Î»ÖÃ
  *
- * @param clPos: ä½ç½®
+ * @param clPos: Î»ÖÃ
  */
 void Map::clean(SCOORD clPos) {
     SetConsoleCursorPosition(hOut, clPos);
@@ -481,41 +481,41 @@ void Map::clean(SCOORD clPos) {
 }
 
 /*
- * @brief ä½¿å…‰æ ‡ç§»åŠ¨åˆ°æŒ‡å®šä½ç½®
+ * @brief Ê¹¹â±êÒÆ¶¯µ½Ö¸¶¨Î»ÖÃ
  *
- * @param pos:æŒ‡å®šåæ ‡
+ * @param pos:Ö¸¶¨×ø±ê
  */
 void Map::gotoxy(SCOORD pos) {
     SetConsoleCursorPosition(hOut, pos);
 }
 
 /*
- * @brief æ£€æŸ¥äº‹ä»¶
+ * @brief ¼ì²éÊÂ¼ş
  *
- * @return è¿”å›äº‹ä»¶ç±»å‹
+ * @return ·µ»ØÊÂ¼şÀàĞÍ
  */
 int Map::checkEvent() {
-    // åå­—ä½ç½®æŒ‰ä¸‹ç©ºæ ¼éƒ½å¯ä»¥è§¦å‘
+    // Ê®×ÖÎ»ÖÃ°´ÏÂ¿Õ¸ñ¶¼¿ÉÒÔ´¥·¢
     for (int i = 0; i < barrier.size(); i++) {
         bool flag1 = (uPos.X == (barrier[i].X - 1) && (uPos.Y == barrier[i].Y - 1|| uPos.Y == barrier[i].Y + 1));
         bool flag2 = ((uPos.Y == barrier[i].Y) && (uPos.X == barrier[i].X - 2 || uPos.X == barrier[i].X));
         if (flag1||flag2){
-            // åˆ¤æ–­äº‹ä»¶,è°ƒç”¨ä¸åŒçš„æ¥å£
-            MessageBox(nullptr, "äº‹ä»¶å‘ç”Ÿ", "æç¤º", MB_OK);
+            // ÅĞ¶ÏÊÂ¼ş,µ÷ÓÃ²»Í¬µÄ½Ó¿Ú
+            MessageBox(nullptr, "ÊÂ¼ş·¢Éú", "ÌáÊ¾", MB_OK);
         }
     }
     return 0;
 }
 
 /*
- * @brief å±•ç¤ºåœ°å›¾çš„ä¿¡æ¯
+ * @brief Õ¹Ê¾µØÍ¼µÄĞÅÏ¢
  */
 void Map::showDescription() {
     cout << this->nameCN << " : " << this->nameEN << endl;
 }
 
 /*
- * @brief æ£€æŸ¥ç‰¹æ®Šäº‹ä»¶,ç”¨äºå‰§æƒ…è®¾å®š
+ * @brief ¼ì²éÌØÊâÊÂ¼ş,ÓÃÓÚ¾çÇéÉè¶¨
  *
  */
 

@@ -1,6 +1,6 @@
 ---
 [id] 1
-[nameCN] ÂÜÖÂüé
+[nameCN] ƒ⁄≥«
 [nameEN] inner-royal-city
 [edgeSign] @
 [initPos] {1,1}
@@ -14,7 +14,7 @@
 [item] None
 ---
 [id] 2
-[nameCN] ÁéãÂüé
+[nameCN] Õı≥«
 [nameEN] royal-city
 [edgeSign] @
 [initPos] {10,10}
@@ -28,12 +28,12 @@
 [item] None
 ---
 [id] 3
-[nameCN] Êó†‰∫∫‰πãÈïá
+[nameCN] Œﬁ»À÷Æ’Ú
 [nameEN] non-human-town
 [edgeSign] @
 [initPos] {1,1}
-[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
-[edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
+[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5
+[edgeRight] 20,20,20,20,20,20,20,20,30,30,30,30,30,30,30,30,30,30,30,30
 [doorPosTop] 5:2:{7,18}
 [doorPosBottom] None
 [barrier] {5,10} {6,4} {10,5}
@@ -42,7 +42,7 @@
 [item] None
 ---
 [id] 4
-[nameCN] Ê£ÆÊûó
+[nameCN] …≠¡÷
 [nameEN] forest
 [edgeSign] +
 [initPos] {1,1}
@@ -56,12 +56,12 @@
 [item] None
 ---
 [id] 5
-[nameCN] Âπ≥Âéü
+[nameCN] ∆Ω‘≠
 [nameEN] plain
-[edgeSign] @
+[edgeSign] *
 [initPos] {1,1}
-[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
-[edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
+[edgeLeft] 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+[edgeRight] 30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30
 [doorPosTop] 5:2:{17,18}
 [doorPosBottom] 4:7:{4,1} 10:8:{8,1}
 [barrier] {10,5} {6,4} {6,9}
@@ -70,7 +70,7 @@
 [item] None
 ---
 [id] 6
-[nameCN] ÈòøÁì¶ÈöÜ
+[nameCN] ∞¢Õﬂ¬°
 [nameEN] avalon
 [edgeSign] #
 [initPos] {1,1}
@@ -84,11 +84,11 @@
 [item] None
 ---
 [id] 7
-[nameCN] Â§±ËêΩ‰πãÂú∞
+[nameCN]  ß¬‰÷Æµÿ
 [nameEN] lost-area
-[edgeSign] @
+[edgeSign] &
 [initPos] {1,1}
-[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
+[edgeLeft] 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 [edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
 [doorPosTop] 4:5:{4,18}
 [doorPosBottom] 10:9:{3,2}
@@ -98,12 +98,12 @@
 [item] None
 ---
 [id] 8
-[nameCN] Ê≤ºÊ≥Ω
+[nameCN] ’”‘Û
 [nameEN] swamp
-[edgeSign] @
+[edgeSign] ~
 [initPos] {1,1}
-[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
-[edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
+[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,5,5
+[edgeRight] 30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30,30
 [doorPosTop] 8:5:{10,18}
 [doorPosBottom] 10:9:{10,18}
 [barrier] {5,3} {5,4} {5,5}
@@ -112,12 +112,12 @@
 [item] None
 ---
 [id] 9
-[nameCN] È≠îÁéãÂüé
+[nameCN] ƒßÕı≥«
 [nameEN] monster-king-city
-[edgeSign] @
+[edgeSign] =
 [initPos] {1,1}
-[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,5,5,5,7,7
-[edgeRight] 30,30,30,20,20,20,20,20,10,10,10,10,10,30,30,30,30,30,30,30
+[edgeLeft] 0,0,0,0,0,0,0,0,0,0,5,5,5,5,5,0,0,0,0,0
+[edgeRight] 15,15,15,15,15,30,30,30,30,30,15,15,15,15,15,30,30,30,30,30
 [doorPosTop] 10:7:{10,18}
 [doorPosBottom] 10:8:{10,18}
 [barrier] {5,3} {10,5} {7,7}

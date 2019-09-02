@@ -13,15 +13,15 @@ class Status {
 public:
     explicit Status(int HP, int MP, int ATK = 15, int PHY = 4,
                     int DEF = 2, int CRITICAL = 10, int SPEED = 5);
-    //å±æ€§
+    //ÊôĞÔ
     Status();
-    int HP; //ç”Ÿå‘½å€¼ï¼Œä¸º0æ—¶æ­»äº¡
-    int MP; //é­”æ³•å€¼ï¼Œä½¿ç”¨æŠ€èƒ½æ—¶æ¶ˆè€—
-    int Phy; //ä½“åŠ›å€¼ï¼Œå½±å“å¯è¡ŒåŠ¨æ¬¡æ•°ï¼Œæœ€å¤§å€¼10
-    int ATK; //æ”»å‡»åŠ›
+    int HP; //ÉúÃüÖµ£¬Îª0Ê±ËÀÍö
+    int MP; //Ä§·¨Öµ£¬Ê¹ÓÃ¼¼ÄÜÊ±ÏûºÄ
+    int Phy; //ÌåÁ¦Öµ£¬Ó°Ïì¿ÉĞĞ¶¯´ÎÊı£¬×î´óÖµ10
+    int ATK; //¹¥»÷Á¦
     int Speed;
     int Critical;
-    int DEF; //é˜²å¾¡åŠ›
+    int DEF; //·ÀÓùÁ¦
 };
 
 class Buff : public Status{
@@ -32,11 +32,11 @@ public:
 
     Buff(string name, string description, int duration);
 
-    //å±æ€§
+    //ÊôĞÔ
     string name;
     string description;
     int duration;
-    //æ–¹æ³•
+    //·½·¨
     void showDescription();
 };
 

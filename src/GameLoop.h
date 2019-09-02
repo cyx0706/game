@@ -11,7 +11,7 @@
 #define SPACE 32
 #define ESC 27
 
-//æ‰§è¡Œæ¸¸æˆ
+//Ö´ĞĞÓÎÏ·
 class GameLoop{
 public:
     static void mapLoop();

@@ -14,7 +14,7 @@
 #include "global.h"
 
 /*
- * @brief å·¥å…·ç±»
+ * @brief ¹¤¾ßÀà
  *
  */
 class Tool {

@@ -15,7 +15,7 @@ Skill::Skill(string id) {
     ifstream f(Buff_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -24,7 +24,7 @@ Skill::Skill(string id) {
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];

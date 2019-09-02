@@ -12,7 +12,7 @@
 #include "global.h"
 #include "templateHeader.h"
 /*
- * @brief æ— å‚çš„æ„é€ å‡½æ•° ç”¨äºç‰©å“æ çš„å ä½ å³ä¸ºç©º
+ * @brief ÎŞ²ÎµÄ¹¹Ôìº¯Êı ÓÃÓÚÎïÆ·À¸µÄÕ¼Î» ¼´Îª¿Õ
  */
 Item::Item() {
     this->id = 0;
@@ -26,36 +26,36 @@ Item::Item() {
 }
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–å‡º Item ç±»çš„åŸºæœ¬ä¿¡æ¯ æ„é€ ç›¸åº”çš„å¯¹è±¡
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡³ö Item ÀàµÄ»ù±¾ĞÅÏ¢ ¹¹ÔìÏàÓ¦µÄ¶ÔÏó
  *
- * @param id Item å¯¹è±¡å¯¹åº”çš„è¡¨ç¤º id
- * @param number å¯¹è±¡ç‰©å“çš„æ•°é‡
+ * @param id Item ¶ÔÏó¶ÔÓ¦µÄ±íÊ¾ id
+ * @param number ¶ÔÏóÎïÆ·µÄÊıÁ¿
  * * * * * * * * * * * * * * * * * * * * * * * * *
- * æ–‡ä»¶ä¸­ç‰©å“çš„ id å¯¹åº”:
- * 001 -- 099: æ­¦å™¨ Weapon
- * 101 -- 199: é˜²å…· Armor
- * 201 -- 299: è¯å‰‚ Drug
- * 301 -- 399: ä»»åŠ¡é“å…·
+ * ÎÄ¼şÖĞÎïÆ·µÄ id ¶ÔÓ¦:
+ * 001 -- 099: ÎäÆ÷ Weapon
+ * 101 -- 199: ·À¾ß Armor
+ * 201 -- 299: Ò©¼Á Drug
+ * 301 -- 399: ÈÎÎñµÀ¾ß
  *
- * items.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * items.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * * *
  * id 1
- * nameCN å‰‘
+ * nameCN ½£
  * nameEN sword
- * description ä¸€æŠŠæ™®é€šçš„å‰‘ï¼Œå¥½åƒæ˜¯é‡äº§çš„ç±»å‹
+ * description Ò»°ÑÆÕÍ¨µÄ½££¬ºÃÏñÊÇÁ¿²úµÄÀàĞÍ
  * boughtPrice 10
  * canDrop true
  * canSell true
  *
- * åˆ†åˆ«å¯¹åº” Item ç±»çš„å„ä¸ªå±æ€§
- * æ‰€æœ‰é”®å€¼å¯¹å¿…é¡»å­˜åœ¨
+ * ·Ö±ğ¶ÔÓ¦ Item ÀàµÄ¸÷¸öÊôĞÔ
+ * ËùÓĞ¼üÖµ¶Ô±ØĞë´æÔÚ
  * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 Item::Item(int id, int number) {
     ifstream f(ITEMS_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -64,7 +64,7 @@ Item::Item(int id, int number) {
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->id = id;
@@ -80,19 +80,19 @@ Item::Item(int id, int number) {
 }
 
 /*
- * @brief æ‰“å°ç‰©å“çš„ä»‹ç»
+ * @brief ´òÓ¡ÎïÆ·µÄ½éÉÜ
  */
 void Item::showDescription() {
-    // å‰”é™¤ å ä½ Item å¯¹è±¡ï¼Œè¾“å‡ºä¸ºæ— 
+    // ÌŞ³ı Õ¼Î» Item ¶ÔÏó£¬Êä³öÎªÎŞ
     if (id != 0) {
         cout << this->description << endl;
     } else {
-        cout << "æ— " << endl;
+        cout << "ÎŞ" << endl;
     }
 }
 
 /*
- * @brief æ— å‚çš„æ„é€ å‡½æ•° å³ä¸ºç©º
+ * @brief ÎŞ²ÎµÄ¹¹Ôìº¯Êı ¼´Îª¿Õ
  */
 Drug::Drug() : Item(){
     this->HP = 0;
@@ -102,12 +102,12 @@ Drug::Drug() : Item(){
 }
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–å‡º Drug ç±»çš„åŸºæœ¬ä¿¡æ¯ æ„é€ ç›¸åº”çš„å¯¹è±¡
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡³ö Drug ÀàµÄ»ù±¾ĞÅÏ¢ ¹¹ÔìÏàÓ¦µÄ¶ÔÏó
  *
- * @param id Item è¶…ç±»å¯¹åº”çš„ id (id èŒƒå›´: 201 -- 299)
- * @param number å¯¹è±¡ç‰©å“çš„æ•°é‡
+ * @param id Item ³¬Àà¶ÔÓ¦µÄ id (id ·¶Î§: 201 -- 299)
+ * @param number ¶ÔÏóÎïÆ·µÄÊıÁ¿
  *
- * drug.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * drug.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * * *
  * id
  * buff
@@ -116,15 +116,15 @@ Drug::Drug() : Item(){
  * Phy
  * playerTarget
  *
- * åˆ†åˆ«å¯¹åº” Drug ç±»çš„å„ä¸ªå±æ€§
- * æ‰€æœ‰é”®å€¼å¯¹å¿…é¡»å­˜åœ¨
+ * ·Ö±ğ¶ÔÓ¦ Drug ÀàµÄ¸÷¸öÊôĞÔ
+ * ËùÓĞ¼üÖµ¶Ô±ØĞë´æÔÚ
  * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 Drug::Drug(int id, int number) : Item(id, number){
     ifstream f(DRUG_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -133,7 +133,7 @@ Drug::Drug(int id, int number) : Item(id, number){
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->HP = fromString<int>(data["HP"]);
@@ -143,10 +143,10 @@ Drug::Drug(int id, int number) : Item(id, number){
 
     f.close();
 
-    // buff å±æ€§ä¸æ˜¯æ™®é€šé”®å€¼å¯¹ï¼Œéœ€è¦é‡æ–°è¯»å–
+    // buff ÊôĞÔ²»ÊÇÆÕÍ¨¼üÖµ¶Ô£¬ĞèÒªÖØĞÂ¶ÁÈ¡
     f.open(DRUG_TXT_PATH);
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -156,15 +156,15 @@ Drug::Drug(int id, int number) : Item(id, number){
         }
     }
 
-    // æ‰¾åˆ° id å¯¹åº”çš„ buff å¤„
+    // ÕÒµ½ id ¶ÔÓ¦µÄ buff ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> line = Tool::split(str);
             if (line[0] == "buff") {
-                // åˆ é™¤ line (vector<string>) çš„ç¬¬ä¸€ä¸ªå…ƒç´  å³ å­—ç¬¦ä¸²"buff"
+                // É¾³ı line (vector<string>) µÄµÚÒ»¸öÔªËØ ¼´ ×Ö·û´®"buff"
                 line.erase(line.begin());
 
-                // æ„é€  Buff å¯¹è±¡ï¼Œå­˜å…¥ buff (vector<Buff>) ä¸­
+                // ¹¹Ôì Buff ¶ÔÏó£¬´æÈë buff (vector<Buff>) ÖĞ
                 for (const auto& one: line) {
                     this->buff.emplace_back(one);
                 }
@@ -176,7 +176,7 @@ Drug::Drug(int id, int number) : Item(id, number){
 }
 
 /*
- * @brief æ— å‚çš„æ„é€ å‡½æ•° å³ä¸ºç©º
+ * @brief ÎŞ²ÎµÄ¹¹Ôìº¯Êı ¼´Îª¿Õ
  */
 Weapon::Weapon() : Item(){
     this->ATK = 0;
@@ -185,27 +185,27 @@ Weapon::Weapon() : Item(){
 }
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–å‡º Weapon ç±»çš„åŸºæœ¬ä¿¡æ¯ æ„é€ ç›¸åº”çš„å¯¹è±¡
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡³ö Weapon ÀàµÄ»ù±¾ĞÅÏ¢ ¹¹ÔìÏàÓ¦µÄ¶ÔÏó
  *
- * @param id Item è¶…ç±»å¯¹åº”çš„ id (id èŒƒå›´: 001 -- 099)
- * @param number å¯¹è±¡ç‰©å“çš„æ•°é‡
+ * @param id Item ³¬Àà¶ÔÓ¦µÄ id (id ·¶Î§: 001 -- 099)
+ * @param number ¶ÔÏóÎïÆ·µÄÊıÁ¿
  *
- * weapon.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * weapon.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * * *
  * id
  * ATK
  * DEF
  * Speed
  *
- * åˆ†åˆ«å¯¹åº” Weapon ç±»çš„å„ä¸ªå±æ€§
- * æ‰€æœ‰é”®å€¼å¯¹å¿…é¡»å­˜åœ¨
+ * ·Ö±ğ¶ÔÓ¦ Weapon ÀàµÄ¸÷¸öÊôĞÔ
+ * ËùÓĞ¼üÖµ¶Ô±ØĞë´æÔÚ
  * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 Weapon::Weapon(int id, int number) : Item(id, number) {
     ifstream f(WEAPON_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -214,7 +214,7 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->ATK = fromString<int>(data["ATK"]);
@@ -225,7 +225,7 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
 }
 
 /*
- * @brief æ— å‚çš„æ„é€ å‡½æ•° å³ä¸ºç©º
+ * @brief ÎŞ²ÎµÄ¹¹Ôìº¯Êı ¼´Îª¿Õ
  */
 Armor::Armor() : Item(){
     this->ATK = 0;
@@ -234,27 +234,27 @@ Armor::Armor() : Item(){
 }
 
 /*
- * @brief ä»æ–‡ä»¶ä¸­è¯»å–å‡º Armor ç±»çš„åŸºæœ¬ä¿¡æ¯ æ„é€ ç›¸åº”çš„å¯¹è±¡
+ * @brief ´ÓÎÄ¼şÖĞ¶ÁÈ¡³ö Armor ÀàµÄ»ù±¾ĞÅÏ¢ ¹¹ÔìÏàÓ¦µÄ¶ÔÏó
  *
- * @param id Item è¶…ç±»å¯¹åº”çš„ id (id èŒƒå›´: 101 -- 199)
- * @param number å¯¹è±¡ç‰©å“çš„æ•°é‡
+ * @param id Item ³¬Àà¶ÔÓ¦µÄ id (id ·¶Î§: 101 -- 199)
+ * @param number ¶ÔÏóÎïÆ·µÄÊıÁ¿
  *
- * armor.txt æ–‡ä»¶å†…å®¹ (å¤§è‡´æ ¼å¼):
+ * armor.txt ÎÄ¼şÄÚÈİ (´óÖÂ¸ñÊ½):
  * * * * * * * * * * * * * * * * * * * * * * * * *
  * id
  * ATK
  * DEF
  * Speed
  *
- * åˆ†åˆ«å¯¹åº” Armor ç±»çš„å„ä¸ªå±æ€§
- * æ‰€æœ‰é”®å€¼å¯¹å¿…é¡»å­˜åœ¨
+ * ·Ö±ğ¶ÔÓ¦ Armor ÀàµÄ¸÷¸öÊôĞÔ
+ * ËùÓĞ¼üÖµ¶Ô±ØĞë´æÔÚ
  * * * * * * * * * * * * * * * * * * * * * * * * *
  */
 Armor::Armor(int id, int number) : Item(id, number) {
     ifstream f(ARMOR_TXT_PATH);
     string str;
 
-    // æ‰¾åˆ°å¯¹åº” id å¤„
+    // ÕÒµ½¶ÔÓ¦ id ´¦
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -263,7 +263,7 @@ Armor::Armor(int id, int number) : Item(id, number) {
             }
         }
     }
-    // å°† å¯¹åº” id è¡Œåˆ°ä¸‹ä¸€ä¸ªç©ºè¡Œä¹‹é—´çš„å†…å®¹è¯»å–ä¸ºé”®å€¼å¯¹
+    // ½« ¶ÔÓ¦ id ĞĞµ½ÏÂÒ»¸ö¿ÕĞĞÖ®¼äµÄÄÚÈİ¶ÁÈ¡Îª¼üÖµ¶Ô
     map<string, string> data = Tool::dataMap(f);
 
     this->ATK = fromString<int>(data["ATK"]);

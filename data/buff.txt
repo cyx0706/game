@@ -1,6 +1,6 @@
 id A01
 name star-buster
-description é€ æˆ150ç‚¹ä¼¤å®³ï¼Œè‡ªå·±çš„HPå‡15,æ¶ˆè€—30MP
+description Ôì³É150µãÉËº¦£¬×Ô¼ºµÄHP¼õ15,ÏûºÄ30MP
 duration 0
 HP -15
 MP -30
@@ -12,7 +12,7 @@ DEF 0
 
 id A02
 name one-hit-999
-description é€ æˆ999ç‚¹ä¼¤å®³ï¼Œä¸æ¶ˆè€—10MP
+description Ôì³É999µãÉËº¦£¬²»ÏûºÄ10MP
 duration 0
 HP 0
 MP 0
@@ -24,7 +24,7 @@ DEF 0
 
 id A03
 name jump-repetition
-description æ— æ•ˆæœï¼Œä¸è€—MP
+description ÎŞĞ§¹û£¬²»ºÄMP
 duration 0
 HP 0
 MP 0
@@ -36,7 +36,7 @@ DEF 0
 
 id A04
 name girl-singing
-description é€ æˆ15ç‚¹ä¼¤å®³ï¼Œæ¶ˆè€—10MP
+description Ôì³É15µãÉËº¦£¬ÏûºÄ10MP
 duration 0
 HP 0
 MP -10
@@ -48,7 +48,7 @@ DEF 0
 
 id B01
 name release-name
-description çœŸåè§£æ”¾,è§‰é†’ï¼Œè‡ªèº«æ”»å‡»+100ï¼Œmpå‡å°‘50,æŒç»­3å›åˆ
+description ÕæÃû½â·Å,¾õĞÑ£¬×ÔÉí¹¥»÷+100£¬mp¼õÉÙ50,³ÖĞø3»ØºÏ
 duration 3
 HP 0
 MP -50
@@ -60,7 +60,7 @@ DEF 0
 
 id B02
 name attack-gesture
-description æ”»å‡»æ€åŠ¿,è‡ªèº«æ”»å‡»å°å¹…åº¦ä¸Šå‡,æ¶ˆè€—5MPï¼ŒæŒç»­2å›åˆ
+description ¹¥»÷Ì¬ÊÆ,×ÔÉí¹¥»÷Ğ¡·ù¶ÈÉÏÉı,ÏûºÄ5MP£¬³ÖĞø2»ØºÏ
 duration 2
 HP 0
 MP -5
@@ -72,7 +72,7 @@ DEF 0
 
 id B04
 name defend-gesture
-description è‡ªèº«é˜²å¾¡ä¸Šå‡+5,æ¶ˆè€—5mpï¼ŒæŒç»­2å›åˆ
+description ×ÔÉí·ÀÓùÉÏÉı+5,ÏûºÄ5mp£¬³ÖĞø2»ØºÏ
 duration 2
 HP 0
 MP -5
@@ -84,7 +84,7 @@ DEF +5
 
 id H01
 name health
-description æ¢å¤HPå€¼10ï¼Œæ¶ˆè€—5MP
+description »Ö¸´HPÖµ10£¬ÏûºÄ5MP
 duration 0
 HP +5
 MP -5
@@ -96,7 +96,7 @@ DEF 0
 
 id H02
 name poison-talk
-description å‡å°‘HP5ç‚¹
+description ¼õÉÙHP5µã
 duration 0
 HP -5
 MP 0

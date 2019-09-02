@@ -18,7 +18,7 @@ static const string WEAPON_TXT_PATH = "../data/weapon.txt"; //NOLINT
 static const string ARMOR_TXT_PATH = "../data/armor.txt"; // NOLINT
 
 /*
- * @brief ç‰©å“ç±»
+ * @brief ÎïÆ·Àà
  */
 class Item{
 public:
@@ -39,7 +39,7 @@ public:
 };
 
 /*
- * @brief è¯å‰‚ç±»
+ * @brief Ò©¼ÁÀà
  */
 class Drug: public Item{
 public:
@@ -55,7 +55,7 @@ public:
 };
 
 /*
- * @brief æ­¦å™¨ç±»
+ * @brief ÎäÆ÷Àà
  */
 class Weapon: public Item{
 public:
@@ -68,7 +68,7 @@ public:
 };
 
 /*
- * @brief é˜²å…·ç±»
+ * @brief ·À¾ßÀà
  */
 class Armor: public Item{
 public:
