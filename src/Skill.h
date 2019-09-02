@@ -6,13 +6,17 @@
 #define GAME_SKILL_H
 
 #include "global.h"
+#include "Status.h"
+
 class Skill{
 public:
     Skill();
     Skill(string id);
-    vector <Buff> buffs;
+    Buff buff;
     string description;
     int HP;
     int MP;
+    int ATK;
+    string name;
 };
 #endif //GAME_SKILL_H

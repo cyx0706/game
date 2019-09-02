@@ -1,5 +1,53 @@
-id B01
+id A01
 name star-buster
+description 造成150点伤害，自己的HP减15,消耗30MP
+duration 0
+HP -15
+MP -30
+Phy 0
+ATK 150
+Speed 0
+Critical 0
+DEF 0
+
+id A02
+name one-hit-999
+description 造成999点伤害，不消耗10MP
+duration 0
+HP 0
+MP 0
+Phy 0
+ATK 999
+Speed 0
+Critical 0
+DEF 0
+
+id A03
+name jump-repetition
+description 无效果，不耗MP
+duration 0
+HP 0
+MP 0
+Phy 0
+ATK 0
+Speed 0
+Critical 0
+DEF 0
+
+id A04
+name girl-singing
+description 造成15点伤害，消耗10MP
+duration 0
+HP 0
+MP -10
+Phy 0
+ATK 15
+Speed 0
+Critical 0
+DEF 0
+
+id B01
+name release-name
 description 真名解放,觉醒，自身攻击+100，mp减少50,持续3回合
 duration 3
 HP 0
