@@ -45,7 +45,11 @@ void GameLoop::mapLoop() {
                 break;
             }
             if(input == SPACE){
-                mapNow->checkEvent();
+                int branch = mapNow->checkEvent();
+                if (branch == 2){
+                    string barrierType = "item";
+                    mapNow->deleteBarrier(uPos, barrierType);
+                }
                 mapNow->print();
             }
             else{
@@ -179,7 +183,7 @@ void GameLoop::battleLoop(Character &character) {
         // 前置判断使回合可以跳过
         // 玩家回合
         if (playerTurn){
-            // 遍历buff减少一回合
+            // TODO:buff逻辑
             cout << "玩家的回合:你的行动" << endl;
 
             //调用command分析
