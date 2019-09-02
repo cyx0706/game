@@ -15,12 +15,13 @@ extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
+extern Player player;
 //extern vector<NPC>globalNPC;
 //extern vector<Monster>globalMonster;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
-    return this->X < pos.X || this->Y < pos.Y;
+    return (this->X < pos.X || this->Y < pos.Y);
 }
 bool SCOORD::operator>(const SCOORD &pos) {
     return !(this->operator<(pos));
@@ -122,6 +123,8 @@ void Map::initMap() {
     }
     putchar('\n');
     initBarrier();
+    cout << endl;
+    cout << "         " << this->nameCN << endl;
 }
 
 
@@ -140,7 +143,7 @@ void Map::initBarrier() {
     for (auto iter= this->barrier.begin();  iter!=this->barrier.end() ; iter++) {
         auto m = npcs.find(*iter);
         if (m!=npcs.end()){
-            // 找到了,是个npc
+            // 画npc
             //TODO:全局NPC里找一下看看是不是不显示
             chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
         }
@@ -148,6 +151,11 @@ void Map::initBarrier() {
         if(m!=monsters.end()){
             // 画Monster
             chFill = {'M',  screenInfo.wAttributes};
+        }
+        auto itemFinder = items.find(*iter);
+        if (itemFinder != items.end()){
+            // 画Item
+            chFill = {'I', screenInfo.wAttributes};
         }
         xLeft = short((*iter).X - 1);
         xRight = short((*iter).X);
@@ -183,7 +191,6 @@ void Map::nextMap(int mapId) {
     mapNow = make_unique<Map>();
     mapNow->load(mapId);          // 读取地图
     mapNow->initPos = pos; // 设置出生地点
-//    return mapNow;
 }
 
 /*
@@ -199,8 +206,17 @@ bool Map::checkBottomMapTransition() {
             cout << "Waiting......";
             Sleep(2000);
             system("cls");
-            // 生成指针并读取数据
-            mapNow->nextMap(mapNow->roadTo[uPos]);
+            int t = mapNow->roadTo[uPos];
+            if (t == 0){
+                for (auto j = mapNow->roadTo.begin(); j != mapNow->roadTo.begin(); j++) {
+                    cout << (*j).second;
+                }
+                cout << "Wrong !" << endl;
+                cout << uPos.X << " " << uPos.Y;
+                Sleep(5000);
+                exit(1);
+            }
+            mapNow->nextMap(t);
             // 绘制地图
             mapNow->initMap();
             uPos.X = mapNow->initPos.X;
@@ -227,7 +243,12 @@ bool Map::checkTopMapTransition() {
             Sleep(2000);
             system("cls");
             // 生成指针并读取数据
-            mapNow->nextMap(mapNow->roadTo[uPos]);
+            int t = mapNow->roadTo[uPos];
+            if (t == 0){
+                cout << "Wrong !" << endl;
+                cout << uPos.X << " " << uPos.Y;
+            }
+            mapNow->nextMap(t);
             // 绘制地图
             mapNow->initMap();
             // 修改玩家位置
@@ -377,9 +398,17 @@ void Map::load(int mapId) {
                getline(fp, sentence);
                index = sentence.find_first_of(' ') + 1;
                foo = sentence.substr(index);
-//               if (foo == "None"){
-//
-//               }
+               if (foo != "None"){
+                   regex itemRegex;
+                   itemRegex = R"((\d+):\{(\d+),(\d+)\})";
+                   temp = Tool::split(foo, ' ');
+                   for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+                       regex_match(*iter, group, itemRegex);
+                       SCOORD pos = {short(stoi(group[2])), short(stoi(group[3]))};
+                       int itemId = stoi(group[1]);
+                       mapNow->items.insert(make_pair(pos, itemId));
+                   }
+               }
            }
            else{
                continue;
@@ -389,6 +418,7 @@ void Map::load(int mapId) {
            continue;
        }
     }
+    fp.close();
 }
 
 /*
@@ -490,21 +520,53 @@ void Map::gotoxy(SCOORD pos) {
 }
 
 /*
- * @brief 检查事件
- *
+ * @brief 检查事件并触发事件
+ * 在主调函数处判断消除点的显示
  * @return 返回事件类型
+ * 0:战斗事件
+ * 1:npc对话事件
+ * 2:采集事件
+ * 3:无事件
  */
 int Map::checkEvent() {
     // 十字位置按下空格都可以触发
     for (int i = 0; i < barrier.size(); i++) {
-        bool flag1 = (uPos.X == (barrier[i].X - 1) && (uPos.Y == barrier[i].Y - 1|| uPos.Y == barrier[i].Y + 1));
-        bool flag2 = ((uPos.Y == barrier[i].Y) && (uPos.X == barrier[i].X - 2 || uPos.X == barrier[i].X));
+        bool flag1 = (uPos.X == (barrier[i].X - 1) && (uPos.Y == barrier[i].Y - 1|| uPos.Y == barrier[i].Y + 1)); // 判断上下位置
+        bool flag2 = ((uPos.Y == barrier[i].Y) && (uPos.X == barrier[i].X - 2 || uPos.X == barrier[i].X)); // 判断左右位置
         if (flag1||flag2){
             // 判断事件,调用不同的接口
-            MessageBox(nullptr, "事件发生", "提示", MB_OK);
+            // 采集
+            auto resultItem = items.find(barrier[i]);
+            if (resultItem != items.end()){
+                int itemId = items[barrier[i]];
+                // 构造item
+                Item pickedItem(itemId, 1);
+                player.addItem(itemId, 1);
+                string tips = "发现物品" + pickedItem.nameCN;
+                char t[30];
+                int j = 0;
+                for (; j < 30; j++) {
+                    t[j] = tips[j];
+                }
+                t[j++] = '\0';
+                MessageBox(nullptr, "发现物品", "提示", MB_OK);
+                return 2;
+            }
+            // npc对话
+            auto resultNPC = npcs.find(barrier[i]);
+            if (resultNPC != npcs.end()){
+                MessageBox(nullptr, "和NPC对话", "提示", MB_OK);
+                return 1;
+            }
+            auto resultMonster = monsters.find(barrier[i]);
+            if (resultMonster != monsters.end()){
+                //TODO:初始化一个Monster
+                MessageBox(nullptr, "和monster发生战斗", "提示", MB_OK);
+                return 0;
+            }
         }
     }
-    return 0;
+    return 3;
 }
 
 /*
@@ -521,6 +583,38 @@ void Map::showDescription() {
 
 void Map::checkSpecialScene() {
 
+}
+
+/*
+ * @brief 删除障碍物,用于修改地图
+ */
+void Map::deleteBarrier(SCOORD& pos, string &type) {
+    // 删除这个障碍物点
+    for (auto iter = this->barrier.begin(); iter != this->barrier.end(); iter++) {
+        short x = (*iter).X;
+        short y = (*iter).Y;
+        bool flag1 = (uPos.X == (x - 1) && (uPos.Y == y - 1|| uPos.Y == y + 1));
+        bool flag2 = ((uPos.Y == y) && (uPos.X == x - 2 || uPos.X == x));
+        if (flag1||flag2){
+            barrier.erase(iter);
+            if (type == "item"){
+                this->items.erase(*iter);
+            }
+            else if (type == "monster"){
+                this->monsters.erase(*iter);
+            }
+            else if (type == "npc"){
+                this->npcs.erase(*iter);
+            }
+            else{
+                return;
+            }
+            // 清除显示
+            SCOORD cleanPos = {short(x - 1), y}; // 切割问题,存在一格偏差
+            clean(cleanPos);
+            return;
+        }
+    }
 }
 
 
