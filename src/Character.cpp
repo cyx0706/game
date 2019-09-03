@@ -512,8 +512,9 @@ bool Player::isDead() {
  */
 void Player::save() {
     ofstream of;
-    of.open(SAVE_TXT_PATH);
+    of.open(SAVE_PLAYER_PATH);
     map<string,string> m_map;
+
     //保存player的单项属性
     m_map["type"] = "attribute";
     m_map["id"] = id;
@@ -530,6 +531,7 @@ void Player::save() {
     }
     m_map.clear();
     of << endl;
+
     //保存player的location
     m_map["type"] = "location";
     m_map["mapId"] = toString<int>(mapLocation.mapId);
@@ -540,21 +542,56 @@ void Player::save() {
     }
     m_map.clear();
     of << endl;
-    of.close();
+
     //保存player的Status
     status.saveStatus("player");
-    //存buff
-    for (int i = 0; i < buffs.size(); ++(i)) {
-        buffs[i].saveStatus("player");
-    }
-    //存buff
 
+    //保存player的skills
+    of << "type" << " " << "skill" << endl;
+    for (auto & skill : skills) {
+        of << skill.id << endl;
+    }
+    of << endl;
+
+    //保存player的weapon
+    of << "type" << " " << "weapon" << endl;
+    for (auto & item : weaponBag.items) {
+        of << item.id << endl;
+    }
+    of << endl;
+
+    //保存player的weapon
+    of << "type" << " " << "armor" << endl;
+    for (auto & item : armorBag.items) {
+        of << item.id << endl;
+    }
+    of << endl;
+
+    //保存player的drug
+    of << "type" << " " << "drug" << endl;
+    for (auto & item : armorBag.items) {
+        of << item.id << endl;
+    }
+    of << endl;
+
+    //保存player的item
+    of << "type" << " " << "item" << endl;
+    for (auto & item : itemBag.items) {
+        of << item.id << endl;
+    }
+    of << endl;
+
+    of.close();
 }
 
 
 void Player::deadScene() {
     cout << "你死了" << endl;
     cout << "菜" << endl;
+}
+
+void Player::load() {
+
 }
 // -----------------------NPC类-----------------------
 

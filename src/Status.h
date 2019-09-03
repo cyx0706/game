@@ -7,9 +7,8 @@
 
 #include "global.h"
 
-static const string Buff_TXT_PATH = "../data/buff.txt";
-static const string SAVE_STATUS_PATH = "../data/saveStatus.txt";
-static const string SAVE_BUFF_PATH = "../data/saveBuff.txt";
+static const string BUFF_TXT_PATH = "../data/skill.txt";
+static const string SAVE_STATUS_PATH = "../save/saveStatus.txt";
 
 class Status {
 public:

@@ -12,7 +12,7 @@
 
 
 Skill::Skill(string id) {
-    ifstream f(Buff_TXT_PATH);
+    ifstream f(BUFF_TXT_PATH);
     string str;
 
     // 找到对应 id 处
@@ -27,11 +27,14 @@ Skill::Skill(string id) {
     // 将 对应 id 行到下一个空行之间的内容读取为键值对
     map<string, string> data = Tool::dataMap(f);
 
-    this->name = data["name"];
+    this->id = id;
+    this->nameCN = data["nameCN"];
+    this->nameEN = data["nameEN"];
     this->description = data["description"];
     this->MP = fromString<int>(data["MP"]);
     this->HP = fromString<int>(data["HP"]);
     this->ATK = fromString<int>(data["ATK"]);
+    //如果duration不为0，此skill为加buff，请使用buff中的属性值
     if(fromString<int>(data["duration"]) != 0){
         buff = Buff(id);
     }
@@ -39,11 +42,20 @@ Skill::Skill(string id) {
 }
 
 Skill::Skill() {
-    name = "";
+    nameEN = "";
+    nameCN = "";
     ATK = 0;
     HP = 0;
     MP = 0;
     description = "";
     buff = Buff();
+}
+
+void Skill::saveSkill(string owner) {
+
+}
+
+void Skill::loadSkill(string owner) {
+
 }
 
