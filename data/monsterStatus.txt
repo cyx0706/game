@@ -1,0 +1,71 @@
+owner NY-01
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner NY-02
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner NY-03
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner NY-04
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner MY-01
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner MY-02
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner MY-03
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
+
+owner MY-04
+MP 10
+HP 10
+Phy 10
+ATK 10
+Speed 0
+Critical 0
+DEF 0
