@@ -9,6 +9,7 @@
 
 static const string BUFF_TXT_PATH = "../data/skill.txt";
 static const string SAVE_STATUS_PATH = "../save/saveStatus.txt";
+static const string READ_MONSTER_STATUS_PATH = "../data/monsterStatus.txt";
 
 class Status {
 public:
@@ -25,7 +26,7 @@ public:
     int DEF; //∑¿”˘¡¶
     //∑Ω∑®
     void saveStatus(string owner);
-    void loadStatus(string owner);
+    void loadStatus(string owner, string path);
 };
 
 class Buff : public Status{

@@ -102,6 +102,8 @@ Monster::Monster(string id) :Character(){
     this->fallingExp = fromString<int>(data["fallingExp"]);
     this->displayChar = fromString<char>(data["displayChar"]);
     f.close();
+
+    status.loadStatus(id,READ_MONSTER_STATUS_PATH);
 }
 
 
@@ -532,6 +534,9 @@ void Player::save() {
     //保存player的单项属性
     m_map["type"] = "attribute";
     m_map["id"] = id;
+    m_map["nameCN"] = nameCN;
+    m_map["nameEN"] = nameEN;
+    m_map["description"] = description;
     m_map["fallingExp"] = toString<int>(fallingExp);
     m_map["fallingMoney"] = toString<int>(fallingMoney);
     m_map["displayChar"] = toString<char>(displayChar);
@@ -668,7 +673,49 @@ void Player::deadScene() {
 }
 
 void Player::load() {
+    ifstream os;
+    os.open(SAVE_PLAYER_PATH);
 
+    string str;
+
+    //获取单项属性值
+    // 找到对应 type 为 attribute 处
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "attribute") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的内容读取为键值对
+    map<string, string> data = Tool::dataMap(os);
+
+    this->id = id;
+    this->nameCN = data["nameCN"];
+    this->nameEN = data["nameEN"];
+    this->description = data["description"];
+    this->fallingExp = fromString<int>(data["fallingExp"]);
+    this->fallingMoney = fromString<int>(data["fallingMoney"]);
+    this->displayChar = fromString<char>(data["displayChar"]);
+    this->experiencePoint = fromString<int>(data["experiencePoint"]);
+    this->days = fromString<int>(data["days"]);
+    this->money = fromString<int>(data["money"]);
+    this->Lv = fromString<int>(data["Lv"]);
+    data.clear();
+
+    //读取位置
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "location") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的内容读取为键值对
+    data = Tool::dataMap(os);
+    os.close();
 }
 // -----------------------NPC类-----------------------
 
