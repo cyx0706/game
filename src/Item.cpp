@@ -85,7 +85,24 @@ Item::Item(int id, int number) {
 void Item::showDescription() {
     // 剔除 占位 Item 对象，输出为无
     if (id != 0) {
-        cout << this->description << endl;
+        cout << "中文名:\t" << this->nameCN << endl;
+        cout << "英文名:\t" << this->nameEN << endl;
+        cout << "简介:\t" << this->description << endl;
+        cout << "数量:\t" << this->num << endl;
+        cout << "价值:\t" << this->boughtPrice << endl;
+
+        if (this->canDrop) {
+            cout << "属性:\t" << "可丢弃  ";
+        } else {
+            cout << "属性:\t" << "不可丢弃";
+        }
+
+        if (this->canSell) {
+            cout << "可交易  " << endl;
+        } else {
+            cout << "不可交易" << endl;
+        }
+
     } else {
         cout << "无" << endl;
     }
@@ -144,10 +161,19 @@ Drug::Drug(int id, int number) : Item(id, number){
     f.close();
 }
 
-/*
- * @brief 无参的构造函数 即为空
- */
-Weapon::Weapon() : Item(){
+void Drug::showDescription(){
+    Item::showDescription();
+    cout << "回复血量:\t" << this->HP << endl;
+    cout << "回复蓝亮:\t" << this->MP << endl;
+    cout << "回复体力值:\t" <<  this->Phy << endl;
+    if (this->playerTarget) {
+        cout << "使用方式:\t" << "对己" << endl;
+    } else {
+        cout << "使用方式:\t" << "对敌" << endl;
+    }
+}
+
+Weapon::Weapon() : Item() {
     this->ATK = 0;
     this->DEF = 0;
     this->Speed = 0;
@@ -191,6 +217,13 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
     this->Speed = fromString<int>(data["Speed"]);
 
     f.close();
+}
+
+void Weapon::showDescription() {
+    Item::showDescription();
+    cout << "攻击:" << this->ATK << endl;
+    cout << "防御:" << this->DEF << endl;
+    cout << "速度:" << this->Speed << endl;
 }
 
 /*
@@ -240,4 +273,11 @@ Armor::Armor(int id, int number) : Item(id, number) {
     this->Speed = fromString<int>(data["Speed"]);
 
     f.close();
+}
+
+void Armor::showDescription() {
+    Item::showDescription();
+    cout << "攻击:" << this->ATK << endl;
+    cout << "防御:" << this->DEF << endl;
+    cout << "速度:" << this->Speed << endl;
 }

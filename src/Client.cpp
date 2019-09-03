@@ -11,10 +11,12 @@
 #include <regex>
 
 #include "Tool.h"
+#include "Map.h"
 #include "templateHeader.h"
 #include "global.h"
 
 extern Player player;
+extern Map mapNow;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found
@@ -193,44 +195,162 @@ bool Client::executeCommand(vector<string> commands) {
     // 表示数值转换为 int 类型
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
 
-    switch (command) {
-        case purchase:
-            if (commands.size() != 2 || commands.size() != 4) {
-                cout << "wrong usage" << endl;
-                return false;
-            }
-
-
-            break;
-        case sell:
-            break;
-        case status:
-            break;
-        case equipment:
-            break;
-        case package:
-            break;
-        case item:
-            break;
-        case equip:
-            break;
-        case takeoff:
-            break;
-        case discard:
-            break;
-        case talk:
-            break;
-        case maps:
-            break;
-        case help:
-            break;
-        case mission:
-            break;
-        case save:
-            break;
-        default:
+    if (command == status) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
             return false;
+        }
+
+        player.showStatus();
+        return false;
     }
+
+    if (command == equipment) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        player.showStatus();
+        return false;
+    }
+
+    if (command == package) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        player.showWeapons();
+        player.showArmors();
+        player.showDrugs();
+        player.showItems();
+        return false;
+    }
+
+    if (command == item) {
+        if (commands.size() != 2) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such item" << endl;
+            return false;
+        }
+
+        if (!player.showItem(fromString<int>(data[commands[1]]))) {
+            cout << "no such item" << endl;
+        }
+        return false;
+    }
+
+    if (command == equip) {
+        if (commands.size() != 2) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such equipment" << endl;
+            return false;
+        }
+
+        if (fromString<int>(data[commands[1]]) < 100) {
+            player.equipWeapon(commands[1]);
+        } else {
+            player.equipArmor(commands[1]);
+        }
+
+        return false;
+    }
+
+    if (command == takeoff) {
+        if (commands.size() != 2) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such equipment" << endl;
+            return false;
+        }
+
+        if (fromString<int>(data[commands[1]]) < 100) {
+            player.equipWeapon((string &) "None");
+        } else {
+            player.equipArmor((string &) "None");
+        }
+
+        return false;
+    }
+
+    if (command == discard) {
+        if (commands.size() != 3) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        if (commands[2] == "0") {
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such equipment" << endl;
+            return false;
+        }
+
+        if (player.getItem(fromString<int>(data[commands[1]])) < fromString<int>(commands[2])) {
+            cout << "you do not have " << fromString<int>(commands[2]) << " but " << fromString<int>(data[commands[1]]) << endl;
+            return false;
+        }
+
+        player.deleteItem(fromString<int>(data[commands[1]]), fromString<int>(commands[2]));
+        cout << "你丢弃了 " << fromString<int>(commands[2]) << "数量的" << commands[1] << endl;
+
+        return false;
+    }
+
+    if (command == maps) {
+        mapNow.showDescription();
+        return false;
+    }
+
+    if (command == help) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        for (const auto& one: this->commandsMap) {
+            cout << one.first << endl;
+        }
+
+        cout << "you can use" << endl;
+        cout <<"'command' + -h or 'command' + --help" << endl;
+        cout << "look for specific help" << endl;
+        return false;
+    }
+
+    if (command == save) {
+        player.save();
+    }
+
+    return false;
 }
 
 /*
@@ -251,7 +371,9 @@ void Client::base() {
         if (!str.empty()) {
             commands = Tool::split(str, ' ');
 
-            vector<int> bannedCommands = {attack, skill, flee, use};
+            vector<int> bannedCommands = {attack, skill, flee, use,
+                                          talk,
+                                          purchase, sell};
 
             if (!analyse(commands, bannedCommands)) {
                 continue;
@@ -422,8 +544,7 @@ void Client::base(Character& target) {
         if (!str.empty()) {
             commands = Tool::split(str, ' ');
 
-            vector<int> bannedCommands = {purchase, sell,
-                                          status, equipment, package, item, equip, takeoff, discard, talk,
+            vector<int> bannedCommands = {status, equipment, package, item, equip, takeoff, discard, talk,
                                           maps,
                                           mission,
                                           save};
@@ -472,32 +593,68 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
         if (commands.size() == 2){
             npc.buy(itemId, 1, player);
         } else{
-            // TODO
             npc.buy(itemId, fromString<int>(commands[3]), player);
         }
-        return true;
+        return false;
     }
 
     if (command == sell) {
-        if (commands.size()) {
-            int itemId;
-            if (itemId < 100) {
-                Weapon thing(itemId);
-            }
+        if (commands.size() != 3) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
 
-            if (itemId < 200) {
-                Armor thing(itemId);
-            }
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
 
-            if (itemId < 300) {
-                Drug thing(itemId);
-            }
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such item" << endl;
+            return false;
+        }
 
-            if (itemId < 400) {
-                Item thing(itemId);
-            }
+        int itemId = fromString<int>(data[commands[1]]);
+
+
+
+        if (itemId < 100) {
+            Weapon one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        }
+
+        if (itemId < 200) {
+            Armor one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        }
+
+        if (itemId < 300) {
+            Drug one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        } else{
+            Item one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
         }
     }
+
+    if (command == talk) {
+        npc.talk(player);
+        return false;
+    }
+
+    if (command == accept) {
+        npc.assignQuest(player);
+        return false;
+    }
+
+    if (command == finish) {
+        npc.finishQuest(player);
+        return false;
+    }
+
     return false;
 }
 
