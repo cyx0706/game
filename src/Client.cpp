@@ -321,7 +321,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
             return false;
         }
 
-        for (const auto& one: player.skills) {
+        for (auto& one: player.skills) {
             if (one.nameEN == commands[1]) {
                 int damage;
                 if (getRandom(1, 100) <= player.status.Critical) {
@@ -457,7 +457,7 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
 //                Item thing(itemId);
 //            }
     }
-    
+
     return false;
 }
 
