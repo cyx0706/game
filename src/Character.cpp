@@ -2,15 +2,13 @@
 // Created by cyx on 2019/8/30.
 //
 #include <utility>
-#include <iostream>
 #include <fstream>
 #include "Character.h"
 #include "Status.h"
 #include "Item.h"
 #include "Tool.h"
+#include "templateHeader.h"
 #include "global.h"
-
-
 
 // ----------------------Character类----------------------
 
@@ -102,7 +100,7 @@ Monster::Monster(string id) :Character(){
     this->nameEN = data["nameEN"];
     this->fallingMoney = fromString<int>(data["fallingMoney"]);
     this->fallingExp = fromString<int>(data["fallingExp"]);
-    //this->displayChar = data["displayChar"];
+    this->displayChar = fromString<char>(data["displayChar"]);
 
     f.close();
 }
@@ -337,16 +335,24 @@ void Player::showMission(int missionId) {
 }
 /*
  * @brief 获取任务
- *
+ * 获取的是最前面的未完成的任务
  * @param assigner: 委托人的id
  */
 Mission* Player::getMission(string assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
-        if ((*iter).assigner == assignerId){
+        if ((*iter).assigner == assignerId && !((*iter).isFinished)){
             return &(*iter);
         }
     }
-    cout << "未找到指定任务" << endl;
+    return nullptr;
+}
+
+Mission* Player::getMission(int missionId) {
+    for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
+        if ((*iter).id == missionId){
+            return &(*iter);
+        }
+    }
     return nullptr;
 }
 /*
@@ -511,13 +517,13 @@ void Player::save() {
     //保存player的单项属性
     m_map["type"] = "attribute";
     m_map["id"] = id;
-    m_map["fallingExp"] = std::to_string(fallingExp);
-    m_map["fallingMoney"] = std::to_string(fallingMoney);
-    m_map["displayChar"] = displayChar;
-    m_map["experiencePoint"] = std::to_string(experiencePoint);
-    m_map["days"] = std::to_string(days);
-    m_map["money"] = std::to_string(money);
-    m_map["Lv"] = std::to_string(Lv);
+    m_map["fallingExp"] = toString<int>(fallingExp);
+    m_map["fallingMoney"] = toString<int>(fallingMoney);
+    m_map["displayChar"] = toString<char>(displayChar);
+    m_map["experiencePoint"] = toString<int>(experiencePoint);
+    m_map["days"] = toString<int>(days);
+    m_map["money"] = toString<int>(money);
+    m_map["Lv"] = toString<int>(Lv);
     auto iter = m_map.begin();
     for(; iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
@@ -526,9 +532,9 @@ void Player::save() {
     of << endl;
     //保存player的location
     m_map["type"] = "location";
-    m_map["mapId"] = std::to_string(mapLocation.mapId);
-    m_map["x"] = std::to_string(mapLocation.x);
-    m_map["y"] = std::to_string(mapLocation.y);
+    m_map["mapId"] = toString<int>(mapLocation.mapId);
+    m_map["x"] = toString<int>(mapLocation.x);
+    m_map["y"] = toString<int>(mapLocation.y);
     for(; iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
@@ -538,7 +544,7 @@ void Player::save() {
     //保存player的Status
     status.saveStatus("player");
     //存buff
-    for (int (i) = 0; (i) < buffs.size(); ++(i)) {
+    for (int i = 0; i < buffs.size(); ++(i)) {
         buffs[i].saveStatus("player");
     }
     //存buff

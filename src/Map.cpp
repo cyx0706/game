@@ -18,7 +18,6 @@ extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern Player player;
 //extern vector<NPC>globalNPC;
-//extern vector<Monster>globalMonster;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
@@ -544,16 +543,13 @@ int Map::checkEvent() {
                 Item pickedItem(itemId, 1);
                 player.addItem(itemId, 1);
                 string tips = "发现物品" + pickedItem.nameCN;
-                char t[30];
-                int j = 0;
-                for (; j < 30; j++) {
-                    t[j] = tips[j];
-                }
-                t[j++] = '\0';
-                MessageBox(nullptr, "发现物品", "提示", MB_OK);
+                char t[50];
+                Tool::stringToChar(tips, t);
+                MessageBox(nullptr, t, "提示", MB_OK);
                 return 2;
             }
             // npc对话
+            // TODO:NPC对话的接口调用
             auto resultNPC = npcs.find(barrier[i]);
             if (resultNPC != npcs.end()){
                 MessageBox(nullptr, "和NPC对话", "提示", MB_OK);
@@ -561,11 +557,12 @@ int Map::checkEvent() {
             }
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
-                //TODO:提示消息和哪个Monster对战
-                MessageBox(nullptr, "和monster发生战斗", "提示", MB_OK);
                 Monster aMonster(monsters[barrier[i]]);
+                string tips = "和" + aMonster.nameCN + "对战";
+                char t[80];
+                Tool::stringToChar(tips, t);
+                MessageBox(nullptr, t, "提示", MB_OK);
                 GameLoop::battleLoop(aMonster);
-
                 return 0;
             }
         }
@@ -584,9 +581,47 @@ void Map::showDescription() {
  * @brief 检查特殊事件,用于剧情设定
  *
  */
-
+// TODO:检查玩家的任务进度来确定特殊事件
 void Map::checkSpecialScene() {
+    int mapId = this->id;
+}
 
+/*
+ * @brief 判断是否可以进入地图中
+ * 需要获取player的任务进度
+ * @param mapId:地图的id
+ * @return true:可以进入
+ */
+bool Map::canEnter(int mapId) {
+    if (mapId == 6){
+        // 判断任务8是否已经接受
+        if (!player.getMission(8)){
+            return false;
+        }
+    }
+    else if (mapId == 7){
+        // 判断任务2是否完成
+        Mission* missionPtr = player.getMission(7);
+        if (missionPtr == nullptr || !(missionPtr->isFinished)){
+            return false;
+        }
+    }
+    else if (mapId == 8){
+        // 判断是否接受了任务10
+        if (!player.getMission(10)){
+            return false;
+        }
+    }
+    else if (mapId == 9){
+        // 判断任务3是否完成
+        Mission* missionPtr = player.getMission(3);
+        if (missionPtr == nullptr || !(missionPtr->isFinished)){
+            return false;
+        }
+    }
+    else {
+        return true;
+    }
 }
 
 /*

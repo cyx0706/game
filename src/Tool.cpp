@@ -136,3 +136,14 @@ bool Tool::boolFromString(string &str) {
     return str == "true";
 }
 
+/*
+ * @brief 将字符串转换为字符数组
+ * 需要注意字符串不要超过50的长度
+ */
+void Tool::stringToChar(string &str, char t[]) {
+    int j = 0;
+    for (auto iter = str.begin(); iter != str.end(); iter++) {
+        t[j++] = *iter;
+    }
+    t[j++] = '\0';
+}

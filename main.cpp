@@ -8,10 +8,6 @@
 #include "src/Map.h"
 
 Client client;
-//Package playerPackage;
-//Armor armor;
-//Status playerStatus;
-//Weapon weapon;
 Player player;
 HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;

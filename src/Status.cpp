@@ -5,6 +5,7 @@
 #include "Status.h"
 #include "Tool.h"
 #include "templateHeader.h"
+#include "global.h"
 
 Status::Status(int HP, int MP, int ATK, int PHY, int DEF, int CRITICAL, int SPEED) {
     this->HP = HP;
@@ -31,13 +32,13 @@ void Status::saveStatus(string owner) {
     map<string,string> m_map;
     //保存player的单项属性
     m_map["owner"] = owner;
-    m_map["HP"] = std::to_string(HP);
-    m_map["MP"] = std::to_string(MP);
-    m_map["Phy"] = std::to_string(Phy);
-    m_map["ATK"] = std::to_string(ATK);
-    m_map["Speed"] = std::to_string(Speed);
-    m_map["Critical"] = std::to_string(Critical);
-    m_map["DEF"] = std::to_string(DEF);
+    m_map["HP"] = toString<int>(HP);
+    m_map["MP"] = toString<int>(MP);
+    m_map["Phy"] = toString<int>(Phy);
+    m_map["ATK"] = toString<int>(ATK);
+    m_map["Speed"] = toString<int>(Speed);
+    m_map["Critical"] = toString<int>(Critical);
+    m_map["DEF"] = toString<int>(DEF);
     auto iter = m_map.begin();
     for(; iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
@@ -88,7 +89,7 @@ Buff::Buff(string id):Status() {
     ifstream f(Buff_TXT_PATH);
     string str;
 
-    // ?????? id ??
+
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -97,7 +98,7 @@ Buff::Buff(string id):Status() {
             }
         }
     }
-    // ?? ??? id ?е??????????????????????????
+
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];
@@ -125,15 +126,15 @@ void Buff::saveBuff(string owner) {
     m_map["owner"] = owner;
     m_map["name"] = name;
     m_map["description"] = description;
-    m_map["duration"] = std::to_string(duration);
+    m_map["duration"] = toString<int>(duration);
     m_map["owner"] = owner;
-    m_map["HP"] = std::to_string(HP);
-    m_map["MP"] = std::to_string(MP);
-    m_map["Phy"] = std::to_string(Phy);
-    m_map["ATK"] = std::to_string(ATK);
-    m_map["Speed"] = std::to_string(Speed);
-    m_map["Critical"] = std::to_string(Critical);
-    m_map["DEF"] = std::to_string(DEF);
+    m_map["HP"] = toString<int>(HP);
+    m_map["MP"] = toString<int>(MP);
+    m_map["Phy"] = toString<int>(Phy);
+    m_map["ATK"] = toString<int>(ATK);
+    m_map["Speed"] = toString<int>(Speed);
+    m_map["Critical"] = toString<int>(Critical);
+    m_map["DEF"] = toString<int>(DEF);
     auto iter = m_map.begin();
     for(; iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
@@ -147,7 +148,7 @@ void Buff::loadBuff(string owner) {
     ifstream f(SAVE_BUFF_PATH);
     string str;
 
-    // ?????? id ??
+
     while (getline(f, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -156,7 +157,8 @@ void Buff::loadBuff(string owner) {
             }
         }
     }
-    // ?? ??? id ?е??????????????????????????
+
+
     map<string, string> data = Tool::dataMap(f);
 
     this->name = data["name"];

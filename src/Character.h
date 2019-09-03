@@ -5,18 +5,18 @@
 #ifndef GAME_CHARACTER_H
 #define GAME_CHARACTER_H
 
-#include <iostream>
 #include <vector>
 #include <map>
 #include "Package.h"
 #include "Status.h"
 #include "Item.h"
 #include "Skill.h"
-#include "global.h"
 #include "Mission.h"
+#include "global.h"
+
 
 static const string SAVE_TXT_PATH = "../data/savePlayerAttribute.txt";
-string READ_MONSTER_PATH = "../data/monsters.txt";
+static const string READ_MONSTER_PATH = "../data/monsters.txt";
 
 //
 //class Player;
@@ -74,6 +74,7 @@ public:
     void showMissions();
     void showMission(int missionId);
     Mission* getMission(string assignerId); // 返回任务
+    Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
     void playerMenu(); //提示命令

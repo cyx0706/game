@@ -8,8 +8,8 @@
 #include "global.h"
 
 static const string Buff_TXT_PATH = "../data/buff.txt";
-string SAVE_STATUS_PATH = "../data/saveStatus.txt";
-string SAVE_BUFF_PATH = "../data/saveBuff.txt";
+static const string SAVE_STATUS_PATH = "../data/saveStatus.txt";
+static const string SAVE_BUFF_PATH = "../data/saveBuff.txt";
 
 class Status {
 public:
@@ -31,7 +31,7 @@ public:
 
 class Buff : public Status{
 public:
-    Buff(string id);
+    explicit Buff(string id);
 
     Buff();
 
