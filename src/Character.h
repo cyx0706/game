@@ -57,6 +57,9 @@ public:
 //    Player(Package& package, Armor armor, Weapon weapon, Status status);
     Player();
     string talkTo;
+    int money;
+    int maxHP;
+    int maxMP;
     void addMoney(int addition);
     void addExp(int addition);
     void levelUp();
@@ -69,7 +72,8 @@ public:
     void showDrugs();
     void showItems();
 
-
+    void addBuff(Buff &buff);
+    void deleteBuff(Buff &buff);
     bool addMission(Mission &mission);
     void showMissions();
     void showMission(int missionId);
@@ -88,6 +92,7 @@ public:
     void deleteItem(int itemId, int number = 1);
     void eraseItem(int itemId);
     int getItem(int itemId);
+    Drug* useDrug(string& name);
 
     bool isDead() override ;
     void deadScene(); // À¿Õˆ≥°æ∞
@@ -106,7 +111,6 @@ private:
     int days;
     Weapon weapon;
     Armor armor;
-    int money;
     int Lv;
     map<string, int>killedMonster;
 };
@@ -126,8 +130,8 @@ public:
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);
-    void buy(int itemId, int number, int &money);
-    void sell(Item &item, int number, int &money);
+    void buy(int itemId, int number, Player& player);
+    void sell(Item &item, int number, Player& player);
 //    void assignRest(Player& player);
     void setVisibility(bool isVisible);
     bool getVisibility();

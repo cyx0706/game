@@ -173,9 +173,18 @@ void GameLoop::gameStart() {
 void GameLoop::battleLoop(Character &character) {
     bool playerTurn = true;
     bool enemyTurn = false;
+    system("cls");
+
+    int damage;
+    cursorInfo.bVisible = true;
+    SetConsoleCursorInfo(hOut, &cursorInfo);
     if (character.status.Speed > player.status.Speed){
         playerTurn = false;
-        cout << "敌人的先制攻击, 造成了" << character.status.ATK - player.status.DEF << "点伤害" << endl;
+        damage = character.status.ATK - player.status.DEF;
+        if (damage <= 0){
+            damage = 1;
+        }
+        cout << "敌人的先制攻击, 造成了" << damage << "点伤害" << endl;
         if(player.isDead()){
             // 死亡场景
             return;
@@ -193,6 +202,7 @@ void GameLoop::battleLoop(Character &character) {
             // 只有为0才过期
             if ((*iter).duration != 0){
                 (*iter).duration--;
+                player.deleteBuff((*iter));
             }
             else{
                 player.buffs.erase(iter);
@@ -233,12 +243,17 @@ void GameLoop::battleLoop(Character &character) {
         if (enemyTurn){
             int possible = getRandom(1, 100); // 暴击概率
             int fluctuation = getRandom(90, 110); // 伤害的波动
-            int damage = int(character.status.ATK * fluctuation / 100);
+            damage = int(character.status.ATK * fluctuation / 100);
             // 暴击
             if (possible >= character.status.Critical){
                 damage = int(damage * 1.5);
             }
-            player.status.HP -= (damage - player.status.DEF);
+            damage -= player.status.DEF;
+            if (damage <= 0){
+                damage = 1;
+            }
+            player.status.HP -= damage;
+            cout << "造成" << damage << "伤害" << endl;
             if (player.isDead()){
                 // 调用死亡场景
                 break;
