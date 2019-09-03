@@ -15,7 +15,7 @@
 #include "global.h"
 
 
-static const string SAVE_TXT_PATH = "../data/savePlayerAttribute.txt";
+static const string SAVE_PLAYER_PATH = "../save/savePlayerAttribute.txt";
 static const string READ_MONSTER_PATH = "../data/monsters.txt";
 
 //
@@ -98,7 +98,7 @@ public:
     void deadScene(); // À¿Õˆ≥°æ∞
 
     void save();
-//    void load();
+    void load();
 
 private:
     // Ù–‘

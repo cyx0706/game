@@ -1,5 +1,6 @@
 id A01
-name star-buster
+nameEN star-buster
+nameCN 星爆弃疗斩
 description 造成150点伤害，自己的HP减15,消耗30MP
 duration 0
 HP -15
@@ -11,7 +12,8 @@ Critical 0
 DEF 0
 
 id A02
-name one-hit-999
+nameEN one-hit-999
+nameCN 一刀999
 description 造成999点伤害，不消耗10MP
 duration 0
 HP 0
@@ -23,7 +25,8 @@ Critical 0
 DEF 0
 
 id A03
-name jump-repetition
+nameEN jump-repetition
+nameCN 反复横跳
 description 无效果，不耗MP
 duration 0
 HP 0
@@ -35,7 +38,8 @@ Critical 0
 DEF 0
 
 id A04
-name girl-singing
+nameEN girl-singing
+nameCN 女人唱歌
 description 造成15点伤害，消耗10MP
 duration 0
 HP 0
@@ -47,8 +51,9 @@ Critical 0
 DEF 0
 
 id B01
-name release-name
-description 真名解放,觉醒，自身攻击+100，mp减少50,持续3回合
+nameEN release-name
+nameCN 真名解放
+description 觉醒，自身攻击+100，mp减少50,持续3回合
 duration 3
 HP 0
 MP -50
@@ -59,8 +64,9 @@ Critical 0
 DEF 0
 
 id B02
-name attack-gesture
-description 攻击态势,自身攻击小幅度上升,消耗5MP，持续2回合
+nameEN attack-gesture
+nameCN 攻击态势
+description 自身攻击小幅度上升,消耗5MP，持续2回合
 duration 2
 HP 0
 MP -5
@@ -71,7 +77,8 @@ Critical 0
 DEF 0
 
 id B04
-name defend-gesture
+nameEN defend-gesture
+nameCN 防御态势
 description 自身防御上升+5,消耗5mp，持续2回合
 duration 2
 HP 0
@@ -83,7 +90,8 @@ Critical 0
 DEF +5
 
 id H01
-name health
+nameEN health
+nameCN 治疗
 description 恢复HP值10，消耗5MP
 duration 0
 HP +5
@@ -95,7 +103,8 @@ Critical 0
 DEF 0
 
 id H02
-name poison-talk
+nameEN poison-talk
+nameCN 毒奶
 description 减少HP5点
 duration 0
 HP -5
