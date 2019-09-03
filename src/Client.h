@@ -44,6 +44,7 @@ namespace CMD {
 
         save,
         accept,
+        finish,
         };
 }
 

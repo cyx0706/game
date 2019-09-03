@@ -47,6 +47,8 @@ public:
     int MP;
     int Phy;
     bool playerTarget;
+
+    void showDescription() override;
 };
 
 /*
@@ -59,6 +61,8 @@ public:
     int ATK;
     int DEF;
     int Speed;
+
+    void showDescription() override;
 };
 
 /*
@@ -71,6 +75,8 @@ public:
     int ATK = 0;
     int DEF = 0;
     int Speed = 0;
+
+    void showDescription() override;
 };
 
 #endif //GAME_ITEM_H

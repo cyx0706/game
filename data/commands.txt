@@ -90,3 +90,7 @@ save 19
 accept 20
 / accept
 // 接受任务
+
+finish 21
+/ finish
+// 完成任务
