@@ -13,6 +13,7 @@
 #include "global.h"
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
+static const string NAMEID_TXT_PATH = "../data/nameId.txt"; // NOLINT
 
 namespace CMD {
     /*
@@ -42,6 +43,7 @@ namespace CMD {
         mission,
 
         save,
+        accept,
         };
 }
 
@@ -75,9 +77,11 @@ public:
 
     void base();
     void base(Character& target);
+    void npcBase(NPC& npc);
 
     bool executeCommand(vector<string> commands);
     bool battleExecuteCommand(vector<string> commands, Character& target);
+    bool shopExecuteCommand(vector<string> commands, NPC& npc);
 
     bool analyse(vector<string> commands, vector<int>& bannedCommands);
 

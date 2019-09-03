@@ -195,6 +195,12 @@ bool Client::executeCommand(vector<string> commands) {
 
     switch (command) {
         case purchase:
+            if (commands.size() != 2 || commands.size() != 4) {
+                cout << "wrong usage" << endl;
+                return false;
+            }
+
+
             break;
         case sell:
             break;
@@ -331,8 +337,6 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
                 cout << player.nameCN << "使用" << one.nameCN << "对" << target.nameCN << "造成了" << damage << "点伤害" << endl;
                 target.status.HP -= damage;
 
-                player.buffs.push_back(one.buff);
-
                 player.addBuff(one.buff);
 
                 return true;
@@ -405,3 +409,86 @@ void Client::base(Character& target) {
         }
     }
 }
+
+bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
+    // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
+    // 表示数值转换为 int 类型
+    auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
+    if (command == purchase) {
+        if (commands.size() != 2 || commands.size() != 4) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        if (commands.size() == 4 && commands[2] != "-number") {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such item" << endl;
+            return false;
+        }
+
+        int itemId = fromString<int>(data[commands[1]]);
+        //npc.sell();
+
+        return true;
+    }
+
+    if (command == sell) {
+        //            if (itemId < 100) {
+//                Weapon thing(itemId);
+//            }
+//
+//            if (itemId < 200) {
+//                Armor thing(itemId);
+//            }
+//
+//            if (itemId < 300) {
+//                Drug thing(itemId);
+//            }
+//
+//            if (itemId < 400) {
+//                Item thing(itemId);
+//            }
+    }
+    
+    return false;
+}
+
+
+void Client::npcBase(NPC &npc) {
+    string str;
+    vector<string> commands;
+
+    while (true) {
+        getline(cin, str);
+
+        str = Tool::clean(str);
+
+        if (!str.empty()) {
+            commands = Tool::split(str, ' ');
+
+            vector<int> bannedCommands = {attack, skill, flee, use,
+                                          save};
+
+            if (!analyse(commands, bannedCommands)) {
+                continue;
+            }
+        } else {
+            cout << "empty command" << endl;
+            continue;
+        }
+
+        if (shopExecuteCommand(commands, npc)) {
+            return;
+        }
+    }
+}
+
+
