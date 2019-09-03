@@ -204,13 +204,21 @@ void GameLoop::battleLoop(Character &character) {
     int turn = 0; // 回合数
     while (true){
         turn += 1;
+        cout << "-------------------" << endl;
         cout << "回合:" << turn << endl;
+        cout << "-------------------" << endl;
+        cout << "你剩余HP:" << player.status.HP << " 剩余MP:" << player.status.MP << endl;
         // 判断buff是否过期
         for (auto iter = player.buffs.begin(); iter != player.buffs.end() ; iter++) {
             // 只有为0才过期
             if ((*iter).duration != 0){
                 (*iter).duration--;
-                cout << "Buff" << iter->name << "剩余" << iter->duration << "回合" << endl;
+                if (iter->duration == 0){
+                    cout << "Buff " << iter->name << "消失" << endl;
+                }
+                else{
+                    cout << "Buff " << iter->name << "剩余" << iter->duration << "回合" << endl;
+                }
             }
             else{
                 player.buffs.erase(iter);
@@ -223,6 +231,7 @@ void GameLoop::battleLoop(Character &character) {
             cout << "玩家的回合:你的行动" << endl;
             client.base(character);
             // 下一次是敌人行动
+
             playerTurn = false;
             enemyTurn = true;
 
