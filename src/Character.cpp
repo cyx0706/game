@@ -81,7 +81,7 @@ void Character::showDescription() {
 // ---------------------Monster类-----------------------
 
 Monster::Monster(string id) :Character(){
-    this->id = std::move(id);
+    this->id = id;
     ifstream f(READ_MONSTER_PATH);
     string str;
 
@@ -101,7 +101,6 @@ Monster::Monster(string id) :Character(){
     this->fallingMoney = fromString<int>(data["fallingMoney"]);
     this->fallingExp = fromString<int>(data["fallingExp"]);
     this->displayChar = fromString<char>(data["displayChar"]);
-
     f.close();
 
     status.loadStatus(id,READ_MONSTER_STATUS_PATH);
@@ -128,7 +127,7 @@ Player::Player() :Character(){
     this->status.ATK = 20;
     this->status.DEF = 20;
     this->status.Speed = 5;
-    this->status.Critical = 10;
+    this->status.Critical = 50;
     this->status.Phy = 5;
 }
 
@@ -171,6 +170,9 @@ void Player::levelUp() {
         experiencePoint -= nextLvExp;
         cout << nameCN << "升级了" << endl;
         Lv += 1;
+        if (Lv > 20){
+            cout << "达到了最高等级" << endl;
+        }
         this->status.DEF += 5;
         this->status.ATK += 5;
         this->maxHP += 15;
@@ -607,7 +609,7 @@ void Player::save() {
  */
 void Player::addBuff(Buff &buff) {
     for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
-        if ((*iter).id == buff.id){
+        if ((*iter).name == buff.name){
             (*iter).duration += buff.duration;
             break;
         }
@@ -637,14 +639,30 @@ void Player::deleteBuff(Buff &buff) {
  *
  * @param 传入一个药物的名字
  */
-Drug* Player::useDrug(string& name) {
+bool Player::useDrug(string& name, Character &character) {
     for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
         if ((*iter).nameEN == name){
             this->drugBag.deleteItem((*iter).id);
-            return &(*iter);
+            if((*iter).playerTarget){
+                this->status.HP += (*iter).HP;
+                if (status.HP > maxHP){
+                    status.HP = maxHP;
+                }
+                cout << "恢复到了" << status.HP << "血" << endl;
+                this->status.MP += (*iter).MP;
+                if (status.MP > maxMP){
+                    status.MP = maxMP;
+                }
+                cout << "恢复到了" << status.MP << "蓝" << endl;
+            }
+            else{
+                character.status.HP -= iter->HP;
+                cout << "造成" << iter->HP << "点伤害" << endl;
+            }
+            return true;
         }
     }
-    return nullptr;
+    return false;
 }
 /*
  * @brief 玩家死亡的场景

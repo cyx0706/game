@@ -42,7 +42,8 @@ void GameLoop::mapLoop() {
             if (input == ESC){
                 system("cls"); // 清空屏幕
                 commandLoop();
-                break;
+                mapNow->initPos = uPos;
+                mapNow->initMap();
             }
             if(input == SPACE){
                 int branch = mapNow->checkEvent();
@@ -69,24 +70,25 @@ void GameLoop::mapLoop() {
  * 输入esc命令切换,在mapLoop里被调用
  */
 void GameLoop::commandLoop() {
-    string input;
-    while (true){
-        int index = 0;
-        getline(cin, input);
-        string s = input;
-        if (!s.empty()){
-            // 循环删除所有的空格
-            while ((index = s.find(' ', index)) != string::npos){
-                s.erase(index); // 删除空格
-            }
-        }
-        if (s == "esc"){
-            return; // 返回地图循环
-        }
-        else{
-            client.base(input, commonBannedCommands, 0);
-        }
-    }
+    client.base();
+//    string input;
+//    while (true){
+//        int index = 0;
+//        getline(cin, input);
+//        string s = input;
+//        if (!s.empty()){
+//            // 循环删除所有的空格
+//            while ((index = s.find(' ', index)) != string::npos){
+//                s.erase(index); // 删除空格
+//            }
+//        }
+//        if (s == "esc"){
+//            return; // 返回地图循环
+//        }
+//        else{
+
+//        }
+//    }
 }
 
 // 初始化
@@ -94,6 +96,12 @@ void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     mapNow = make_unique<Map>();
     mapNow->load(1);
+    Skill skill1("A01");
+    player.skills.push_back(skill1);
+    Skill skill2("B01");
+    player.skills.push_back(skill2);
+    Skill skill3("H01");
+    player.skills.push_back(skill3);
 }
 // 游戏的主循环
 //void GameLoop::loop() {
@@ -186,7 +194,7 @@ void GameLoop::battleLoop(Character &character) {
         }
         cout << "敌人的先制攻击, 造成了" << damage << "点伤害" << endl;
         if(player.isDead()){
-            // 死亡场景
+            player.deadScene();
             return;
         }
         else{
@@ -202,18 +210,18 @@ void GameLoop::battleLoop(Character &character) {
             // 只有为0才过期
             if ((*iter).duration != 0){
                 (*iter).duration--;
-                player.deleteBuff((*iter));
+                cout << "Buff" << iter->name << "剩余" << iter->duration << "回合" << endl;
             }
             else{
                 player.buffs.erase(iter);
+                player.deleteBuff((*iter));
             }
         }
         // 前置判断使回合可以跳过
         // 玩家回合
         if (playerTurn){
             cout << "玩家的回合:你的行动" << endl;
-            //TODO::调用command分析
-
+            client.base(character);
             // 下一次是敌人行动
             playerTurn = false;
             enemyTurn = true;
@@ -234,6 +242,8 @@ void GameLoop::battleLoop(Character &character) {
                        player.addItem((*iter).id, (*iter).num);
                    }
                 }
+                system("pause");
+                system("cls");
                 break;
             }
             else{
@@ -253,7 +263,7 @@ void GameLoop::battleLoop(Character &character) {
                 damage = 1;
             }
             player.status.HP -= damage;
-            cout << "造成" << damage << "伤害" << endl;
+            cout << character.nameCN << "对你造成" << damage << "伤害" << endl;
             if (player.isDead()){
                 // 调用死亡场景
                 break;
