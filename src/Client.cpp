@@ -324,9 +324,12 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
         for (auto& one: player.skills) {
             if (one.nameEN == commands[1]) {
                 // MP 不足，直接退出
-                if (player.status.MP + one.MP < 0) {
+                if (player.status.MP - one.MP < 0) {
                     cout << "low MP" << endl;
                     return false;
+                } else {
+                    player.status.MP -= one.MP;
+                    cout << "你消耗了" << one.MP << "点 MP" << endl;
                 }
 
                 // 攻击的技能
