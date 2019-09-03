@@ -45,7 +45,15 @@ void GameLoop::mapLoop() {
                 break;
             }
             if(input == SPACE){
-                mapNow->checkEvent();
+                int branch = mapNow->checkEvent();
+                if (branch == 2){
+                    string barrierType = "item";
+                    mapNow->deleteBarrier(uPos, barrierType);
+                }
+                if (branch == 0){
+                    string barrierType = "monster";
+                    mapNow->deleteBarrier(uPos, barrierType);
+                }
                 mapNow->print();
             }
             else{
@@ -155,7 +163,11 @@ void GameLoop::gameStart() {
 
 /*
  * @brief 战斗循环直到一方死亡结束
- *
+ * 函数负责战斗的逻辑处理
+ * 玩家的行动由命令系统给出接口实现
+ * 函数判断buff的持续而buff的加成计算由命令系统实现
+ * 玩家死亡循环结束，调用死亡场景
+ * 敌对方死亡结算奖励
  * @param 战斗对象character
  */
 void GameLoop::battleLoop(Character &character) {
@@ -176,13 +188,21 @@ void GameLoop::battleLoop(Character &character) {
     while (true){
         turn += 1;
         cout << "回合:" << turn << endl;
+        // 判断buff是否过期
+        for (auto iter = player.buffs.begin(); iter != player.buffs.end() ; iter++) {
+            // 只有为0才过期
+            if ((*iter).duration != 0){
+                (*iter).duration--;
+            }
+            else{
+                player.buffs.erase(iter);
+            }
+        }
         // 前置判断使回合可以跳过
         // 玩家回合
         if (playerTurn){
-            // 遍历buff减少一回合
             cout << "玩家的回合:你的行动" << endl;
-
-            //调用command分析
+            //TODO::调用command分析
 
             // 下一次是敌人行动
             playerTurn = false;

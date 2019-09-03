@@ -29,7 +29,7 @@ public:
     int id;  //根据这个在文件里查找
     char edgeSign;
     COORD initPos;  // 记录用户的初始化位置
-
+    void deleteBarrier(SCOORD& pos, string& type);
     void initMap();
     void move(int key); // 用户移动来调用这个
     void gotoxy(SCOORD pos);
@@ -39,6 +39,7 @@ public:
     void load(int mapId); // 载入地图
     void nextMap(int mapId);
     void showDescription();
+    static bool canEnter(int mapId);
     void checkSpecialScene();
 private:
     vector<short>edgeLeft;  // 不能在类里声明大小,除非声明为静态

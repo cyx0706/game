@@ -8,8 +8,8 @@
 #include "Status.h"
 #include "Tool.h"
 #include "templateHeader.h"
+#include "global.h"
 
-using namespace std;
 
 Skill::Skill(string id) {
     ifstream f(Buff_TXT_PATH);

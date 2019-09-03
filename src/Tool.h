@@ -23,6 +23,7 @@ public:
     static string clean(const string& str);
     static map<string, string> dataMap(ifstream& f);
     static bool boolFromString(string& str);
+    static void stringToChar(string &str, char t[]);
 };
 
 int getRandom(int min, int max);

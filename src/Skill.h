@@ -11,7 +11,7 @@
 class Skill{
 public:
     Skill();
-    Skill(string id);
+    explicit Skill(string id);
     Buff buff;
     string description;
     int HP;

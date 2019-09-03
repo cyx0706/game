@@ -1,11 +1,14 @@
 //
 // Created by cyx on 2019/8/30.
 //
-#include "Character.h"
-
 #include <utility>
-#include "Item.h"
+#include <fstream>
+#include "Character.h"
 #include "Status.h"
+#include "Item.h"
+#include "Tool.h"
+#include "templateHeader.h"
+#include "global.h"
 
 // ----------------------Character类----------------------
 
@@ -78,8 +81,28 @@ void Character::showDescription() {
 // ---------------------Monster类-----------------------
 
 Monster::Monster(string id) :Character(){
-    // TODO:读取文件初始化
     this->id = std::move(id);
+    ifstream f(READ_MONSTER_PATH);
+    string str;
+
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "id" && idLine[1] == id) {
+                break;
+            }
+        }
+    }
+    map<string, string> data = Tool::dataMap(f);
+
+    this->nameCN = data["nameCN"];
+    this->description = data["description"];
+    this->nameEN = data["nameEN"];
+    this->fallingMoney = fromString<int>(data["fallingMoney"]);
+    this->fallingExp = fromString<int>(data["fallingExp"]);
+    this->displayChar = fromString<char>(data["displayChar"]);
+
+    f.close();
 }
 
 
@@ -312,16 +335,24 @@ void Player::showMission(int missionId) {
 }
 /*
  * @brief 获取任务
- *
+ * 获取的是最前面的未完成的任务
  * @param assigner: 委托人的id
  */
 Mission* Player::getMission(string assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
-        if ((*iter).assigner == assignerId){
+        if ((*iter).assigner == assignerId && !((*iter).isFinished)){
             return &(*iter);
         }
     }
-    cout << "未找到指定任务" << endl;
+    return nullptr;
+}
+
+Mission* Player::getMission(int missionId) {
+    for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
+        if ((*iter).id == missionId){
+            return &(*iter);
+        }
+    }
     return nullptr;
 }
 /*
@@ -476,6 +507,50 @@ bool Player::isDead() {
     }
     return false;
 }
+/*
+ * @brief 玩家的存档函数
+ */
+void Player::save() {
+    ofstream of;
+    of.open(SAVE_TXT_PATH);
+    map<string,string> m_map;
+    //保存player的单项属性
+    m_map["type"] = "attribute";
+    m_map["id"] = id;
+    m_map["fallingExp"] = toString<int>(fallingExp);
+    m_map["fallingMoney"] = toString<int>(fallingMoney);
+    m_map["displayChar"] = toString<char>(displayChar);
+    m_map["experiencePoint"] = toString<int>(experiencePoint);
+    m_map["days"] = toString<int>(days);
+    m_map["money"] = toString<int>(money);
+    m_map["Lv"] = toString<int>(Lv);
+    auto iter = m_map.begin();
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    //保存player的location
+    m_map["type"] = "location";
+    m_map["mapId"] = toString<int>(mapLocation.mapId);
+    m_map["x"] = toString<int>(mapLocation.x);
+    m_map["y"] = toString<int>(mapLocation.y);
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    of.close();
+    //保存player的Status
+    status.saveStatus("player");
+    //存buff
+    for (int i = 0; i < buffs.size(); ++(i)) {
+        buffs[i].saveStatus("player");
+    }
+    //存buff
+
+}
+
 
 void Player::deadScene() {
     cout << "你死了" << endl;
