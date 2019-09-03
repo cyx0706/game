@@ -1,0 +1,47 @@
+id 1
+nameCN 剑
+ATK 10
+DEF 5
+Speed 1
+
+id 2
+nameCN 阐释者
+ATK 45
+DEF 15
+Speed 2
+
+id 3
+nameCN 逐暗者
+ATK 35
+DEF 10
+Speed 3
+
+id 4
+nameCN 村正
+ATK 30
+DEF 0
+Speed 2
+
+id 5
+nameCN 全村最好的剑
+ATK 20
+DEF 5
+Speed 2
+
+id 6
+nameCN 金色战斧
+ATK 30
+DEF 10
+Speed 0
+
+id 7
+nameCN 喵帕斯之剑
+ATK 40
+DEF 10
+Speed 100
+
+id 8
+nameCN 咖喱棒
+ATK 50
+DEF 20
+Speed 0
