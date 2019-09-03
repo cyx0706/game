@@ -226,6 +226,7 @@ bool Client::executeCommand(vector<string> commands) {
             return false;
     }
 }
+
 /*
  * @brief ÆÕÍ¨×´Ì¬µÄÃüÁîÐÐ
  */
@@ -332,13 +333,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
                 player.buffs.push_back(one.buff);
 
-                player.status.HP += one.buff.HP;
-                player.status.MP += one.buff.MP;
-                player.status.ATK += one.buff.ATK;
-                player.status.DEF += one.buff.DEF;
-                player.status.Phy += one.buff.Phy;
-                player.status.Critical += one.buff.Critical;
-                player.status.Speed += one.buff.Speed;
+                player.addBuff(one.buff);
 
                 return true;
             }
@@ -358,7 +353,16 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
     }
 
     if (command == use) {
-        return false;
+        if (commands.size() != 2) {
+            cout << "wrong usage" << endl;
+            return false;
+        }
+
+        if (!player.useDrug(commands[1], target)){
+            return false;
+        }
+
+        return true;
     }
 }
 

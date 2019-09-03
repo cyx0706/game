@@ -1,0 +1,23 @@
+id 101
+nameCN 全村最好的甲
+ATK 0
+DEF 2
+Speed 0
+
+id 102
+nameCN 恶鬼缠身
+ATK 10
+DEF 0
+Speed 0
+
+id 103
+nameCN 红披风
+ATK 0
+DEF 5
+Speed 0
+
+id 104
+nameCN 冒险者服装
+ATK 0
+DEF 3
+Speed 0

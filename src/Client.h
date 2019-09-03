@@ -2,8 +2,8 @@
 // Created by Leo on 2019-08-26.
 //
 
-#ifndef TEST_CLIENT_H
-#define TEST_CLIENT_H
+#ifndef GAME_CLIENT_H
+#define GAME_CLIENT_H
 
 #include <string>
 #include <map>
@@ -87,4 +87,4 @@ private:
     map<string, string> commandsMap;
 };
 
-#endif //TEST_CLIENT_H
+#endif //GAME_CLIENT_H
