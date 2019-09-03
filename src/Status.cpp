@@ -48,8 +48,8 @@ void Status::saveStatus(string owner) {
     of.close();
 }
 
-void Status::loadStatus(string owner) {
-    ifstream f(SAVE_STATUS_PATH);
+void Status::loadStatus(string owner, string path) {
+    ifstream f(path);
     string str;
 
     while (getline(f, str)) {
