@@ -323,23 +323,53 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
         for (auto& one: player.skills) {
             if (one.nameEN == commands[1]) {
-                int damage;
-                if (getRandom(1, 100) <= player.status.Critical) {
-                    damage = int((player.status.ATK + one.ATK )* 1.5) - target.status.DEF;
-                } else {
-                    damage= player.status.ATK + one.ATK - target.status.DEF;
+                // MP 不足，直接退出
+                if (player.status.MP + one.MP < 0) {
+                    cout << "low MP" << endl;
+                    return false;
                 }
 
-                if (damage <= 0) {
-                    damage = 1;
+                // 攻击的技能
+                if (one.id[0] == 'A') {
+                    int damage;
+                    if (getRandom(1, 100) <= player.status.Critical) {
+                        damage = int((player.status.ATK + one.ATK )* 1.5) - target.status.DEF;
+                    } else {
+                        damage= player.status.ATK + one.ATK - target.status.DEF;
+                    }
+
+                    if (damage <= 0) {
+                        damage = 1;
+                    }
+
+                    cout << player.nameCN << "使用" << one.nameCN << "对" << target.nameCN << "造成了" << damage << "点伤害" << endl;
+                    target.status.HP -= damage;
+
+                    return true;
                 }
 
-                cout << player.nameCN << "使用" << one.nameCN << "对" << target.nameCN << "造成了" << damage << "点伤害" << endl;
-                target.status.HP -= damage;
+                // 加 buff 的技能
+                if (one.id[0] == 'B') {
+                    player.addBuff(one.buff);
+                    cout << "获得" << one.buff.name << "Buff" << endl;
 
-                player.addBuff(one.buff);
+                    return true;
+                }
 
-                return true;
+                // 恢复的技能
+                if (one.id[0] == 'H') {
+                    if (player.status.HP + one.HP > player.maxHP) {
+                        cout << "恢复了" << player.maxHP - player.status.HP << "点血量" << endl;
+                        player.status.HP = player.maxHP;
+
+                    } else {
+                        player.status.HP += one.HP;
+                        cout << "恢复了" << one.HP << "点血量" << endl;
+                    }
+                    return true;
+                }
+
+                return false;
             }
         }
         cout << "you do not have the skill " << commands[1] << endl;
@@ -435,29 +465,36 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
         }
 
         int itemId = fromString<int>(data[commands[1]]);
-        //npc.sell();
 
+        if (commands.size() == 2){
+            npc.buy(itemId, 1, player);
+        } else{
+            // TODO
+            npc.buy(itemId, fromString<int>(commands[3]), player);
+        }
         return true;
     }
 
     if (command == sell) {
-        //            if (itemId < 100) {
-//                Weapon thing(itemId);
-//            }
-//
-//            if (itemId < 200) {
-//                Armor thing(itemId);
-//            }
-//
-//            if (itemId < 300) {
-//                Drug thing(itemId);
-//            }
-//
-//            if (itemId < 400) {
-//                Item thing(itemId);
-//            }
-    }
+        if (commands.size()) {
+            int itemId;
+            if (itemId < 100) {
+                Weapon thing(itemId);
+            }
 
+            if (itemId < 200) {
+                Armor thing(itemId);
+            }
+
+            if (itemId < 300) {
+                Drug thing(itemId);
+            }
+
+            if (itemId < 400) {
+                Item thing(itemId);
+            }
+        }
+    }
     return false;
 }
 
