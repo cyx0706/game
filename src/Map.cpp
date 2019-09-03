@@ -558,6 +558,8 @@ int Map::checkEvent() {
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
                 Monster aMonster(monsters[barrier[i]]);
+                aMonster.status.HP = 100;
+                aMonster.status.ATK = 50;
                 string tips = "∫Õ" + aMonster.nameCN + "∂‘’Ω";
                 char t[80];
                 Tool::stringToChar(tips, t);
@@ -656,4 +658,7 @@ void Map::deleteBarrier(SCOORD& pos, string &type) {
     }
 }
 
-
+void Map::setCursorStatus(bool visible) {
+    cursorInfo.bVisible = visible;
+    SetConsoleCursorInfo(hOut, &cursorInfo);
+}

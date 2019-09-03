@@ -1,0 +1,35 @@
+id 201
+HP 0
+MP 50
+Phy 0
+playerTarget true
+
+id 202
+HP 0
+MP 100
+Phy 0
+playerTarget true
+
+id 203
+HP 50
+MP 0
+Phy 0
+playerTarget true
+
+id 204
+HP 100
+MP 0
+Phy 0
+playerTarget true
+
+id 205
+HP 5
+MP 5
+Phy 0
+playerTarget true
+
+id 206
+HP 100
+MP 0
+Phy 0
+playerTarget false

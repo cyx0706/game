@@ -39,6 +39,7 @@ public:
     void load(int mapId); // ‘ÿ»ÎµÿÕº
     void nextMap(int mapId);
     void showDescription();
+    static void setCursorStatus(bool visiable);
     static bool canEnter(int mapId);
     void checkSpecialScene();
 private:

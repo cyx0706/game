@@ -121,11 +121,15 @@ Player::Player() :Character(){
     this->Lv = 1;
     this->weapon = Weapon();
     this->armor = Armor();
-    // 初始化一下背包
-//    this->weaponBag = Package<Weapon>();
-//    this->armorBag = Package<Armor>();
-//    this->drugBag = Package<Drug>();
-//    this->itemBag = Package<Item>();
+    this->maxMP = 100;
+    this->maxMP = 100;
+    this->status.HP = 150;
+    this->status.MP = 100;
+    this->status.ATK = 20;
+    this->status.DEF = 20;
+    this->status.Speed = 5;
+    this->status.Critical = 10;
+    this->status.Phy = 5;
 }
 
 /*
@@ -167,6 +171,13 @@ void Player::levelUp() {
         experiencePoint -= nextLvExp;
         cout << nameCN << "升级了" << endl;
         Lv += 1;
+        this->status.DEF += 5;
+        this->status.ATK += 5;
+        this->maxHP += 15;
+        this->maxMP += 15;
+        this->status.Speed += 1;
+        this->status.HP = maxHP;
+        this->status.MP = maxMP;
         if (Lv == 3){
             // 学习新的技能
             cout << "学会了新的技能" << endl;
@@ -175,6 +186,7 @@ void Player::levelUp() {
     }
     cout << "剩余 " << nextLvExp - experiencePoint << " 经验升到下一级" << endl;
 }
+
 /*
  * @brief 装备防具
  * 卸下防具就是装备空防具
@@ -588,8 +600,55 @@ void Player::save() {
 
     of.close();
 }
+/*
+ * @brief buff值累计入玩家的属性
+ *
+ * @param buff:的引用
+ */
+void Player::addBuff(Buff &buff) {
+    for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
+        if ((*iter).id == buff.id){
+            (*iter).duration += buff.duration;
+            break;
+        }
+    }
+    this->status.Critical += buff.Critical;
+    this->status.Speed += buff.Speed;
+    this->status.ATK += buff.ATK;
+    this->status.DEF += buff.DEF;
+    this->status.HP += buff.HP;
+}
 
+/*
+ * @brief buff值减少玩家的属性
+ *
+ * @param buff:的引用
+ */
+void Player::deleteBuff(Buff &buff) {
+    this->status.Critical -= buff.Critical;
+    this->status.Speed -= buff.Speed;
+    this->status.ATK -= buff.ATK;
+    this->status.DEF -= buff.DEF;
+    this->status.HP -= buff.HP;
+}
 
+/*
+ * @brief 用于命令行使用
+ *
+ * @param 传入一个药物的名字
+ */
+Drug* Player::useDrug(string& name) {
+    for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
+        if ((*iter).nameEN == name){
+            this->drugBag.deleteItem((*iter).id);
+            return &(*iter);
+        }
+    }
+    return nullptr;
+}
+/*
+ * @brief 玩家死亡的场景
+ */
 void Player::deadScene() {
     cout << "你死了" << endl;
     cout << "菜" << endl;
@@ -670,25 +729,31 @@ void NPC::NPCMenu() {
 /*
  * @brief 和npc交易的函数,需要提前检查是否可以交易
  *
- * @param itemId:物品id number:购买个数 money:玩家的钱
+ * @param itemId:物品id number:购买个数 Player:玩家的引用
  */
-void NPC::buy(int itemId, int number, int &money) {
+void NPC::buy(int itemId, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
     }
-    this->store.buy(itemId, number, money);
+    if (this->store.buy(itemId, number, player.money)){
+        cout << "买入成功" << endl;
+        player.addItem(itemId, number);
+    }
+    else{
+        cout << "买入失败" << endl;
+    }
 }
 
 /*
  * @brief 卖出物品的函数
  *
- * @param itemId:物品id number:购买个数 money:玩家的钱
+ * @param itemId:物品id number:购买个数 Player:玩家的引用
  */
-void NPC::sell(Item &item, int number, int &money) {
+void NPC::sell(Item &item, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
     }
-    this->store.sell(item, number, money);
+    this->store.sell(item, number, player.money);
 }
 
 /*

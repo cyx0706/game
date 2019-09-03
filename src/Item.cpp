@@ -142,37 +142,6 @@ Drug::Drug(int id, int number) : Item(id, number){
     this->playerTarget = Tool::boolFromString(data["playerTarget"]);
 
     f.close();
-
-    // buff 属性不是普通键值对，需要重新读取
-    f.open(DRUG_TXT_PATH);
-
-    // 找到对应 id 处
-    while (getline(f, str)) {
-        if (!str.empty()) {
-            vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && fromString<int>(idLine[1]) == id) {
-                break;
-            }
-        }
-    }
-
-    // 找到 id 对应的 buff 处
-    while (getline(f, str)) {
-        if (!str.empty()) {
-            vector<string> line = Tool::split(str);
-            if (line[0] == "buff") {
-                // 删除 line (vector<string>) 的第一个元素 即 字符串"buff"
-                line.erase(line.begin());
-
-                // 构造 Buff 对象，存入 buff (vector<Buff>) 中
-                for (const auto& one: line) {
-                    this->buff.emplace_back(one);
-                }
-            }
-        }
-    }
-
-    f.close();
 }
 
 /*
