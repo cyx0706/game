@@ -166,8 +166,6 @@ void Map::initBarrier() {
         ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
     }
     SetConsoleTextAttribute(hOut, 0x0f);
-
-    // 画item
 }
 
 
@@ -559,9 +557,6 @@ int Map::checkEvent() {
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
                 Monster aMonster(monsters[barrier[i]]);
-                aMonster.status.HP = 100;
-                aMonster.status.ATK = 30;
-                aMonster.status.Critical = 40;
                 string tips = "和" + aMonster.nameCN + "对战";
                 char t[80];
                 Tool::stringToChar(tips, t);

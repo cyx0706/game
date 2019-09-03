@@ -608,10 +608,15 @@ void Player::save() {
  * @param buff:µÄÒýÓÃ
  */
 void Player::addBuff(Buff &buff) {
-    for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
-        if ((*iter).name == buff.name){
-            (*iter).duration += buff.duration;
-            break;
+    if (buffs.empty()){
+        buffs.push_back(buff);
+    }
+    else{
+        for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
+            if ((*iter).name == buff.name){
+                (*iter).duration += buff.duration - 1;
+                break;
+            }
         }
     }
     this->status.Critical += buff.Critical;
