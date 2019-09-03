@@ -9,6 +9,7 @@
 #include <map>
 #include <vector>
 
+#include "Character.h"
 #include "global.h"
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
@@ -21,8 +22,11 @@ namespace CMD {
         attack = 1,
         skill,
         flee,
+        use,
+
         purchase,
         sell,
+
         status,
         equipment,
         package,
@@ -31,11 +35,12 @@ namespace CMD {
         takeoff,
         discard,
         talk,
-        fight,
-        slaughter,
+
         maps,
+
         help,
         mission,
+
         save,
         };
 }
@@ -67,8 +72,15 @@ using namespace CMD;
 class Client {
 public:
     Client();
-    void base(string str, vector<int>& bannedCommands, int index);
-    void executeCommand(vector<string> commands,  vector<int>& bannedCommands, int index);
+
+    void base();
+    void base(Character& target);
+
+    bool executeCommand(vector<string> commands);
+    bool battleExecuteCommand(vector<string> commands, Character& target);
+
+    bool analyse(vector<string> commands, vector<int>& bannedCommands);
+
     static bool isBanned(CommandLists command, vector<int>& bannedCommands);
     static void commandHelp(string& command);
 private:

@@ -1,87 +1,82 @@
 -战斗指令
 attack 1
-/ attack <character_name>
+/ attack
 // （战斗状态）使用普通攻击 攻击指定目标
 
 skill 2
-/ skill <skill_name> <character_name>
+/ skill <skill_name>
 // （战斗状态）使用指定技能 攻击指定目标
 
 flee 3
 / flee
 // （战斗状态）逃跑
 
+use 4
+/ use <item_name>
+// （战斗状态）使用物品
+
 
 
 -商店指令
-purchase 4
+purchase 5
 / purchase <item_name>
 // 购买指定物品1个
 / purchase <item_name> -number <num>
 // 购买指定物品num个
 
-sell 5
+sell 6
 /sell <item_name> <num>
 // 出售指定物品num个
 
 
 
 -角色指令
-status 6
+status 7
 / status <character_name>
 // 展示指定角色的状态
 
-equipment 7
+equipment 8
 / equipment <character_name>
 // 展示指定角色的装备
 
-package 8
+package 9
 / package
 // 展示玩家的背包
 
-item 9
+item 10
 / item <item_name>
 // 展示物品详情
 
-equip 10
+equip 11
 / equip <equipment_name>
 // 装备指定装备（如果当前存在装备，则将旧的放回背包）
 
-takeoff 11
+takeoff 12
 / takeoff <equipment_name>
 // 脱下指定装备
 
-discard 12
+discard 13
 / discard <item_name> <num>
 // 丢弃指定物品num个
 
-talk 13
+talk 14
 / talk
 // 和当前十字格内的NPC交流
 
-fight 14
-/ fight
-// 和当前十字格内的NPC战斗（需要有战斗选项的NPC才可以触发）
-
-slaughter 15
-/ slaughter
-// 搜索十字格内的怪，如果有自动进入战斗回合
-
-
 
 -地图指令
-maps 16
-/ map
+maps 15
+/ maps
 // 查看世界地图
 
 
 
 -帮助指令
-help 17
+help 16
 / help
 // 指令的提示
 
-mission 18
+mission 17
 / mission
 // 查看当前执行的任务
 

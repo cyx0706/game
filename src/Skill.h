@@ -17,6 +17,8 @@ public:
     int HP;
     int MP;
     int ATK;
-    string name;
+    string id;
+    string nameCN;
+    string nameEN;
 };
 #endif //GAME_SKILL_H
