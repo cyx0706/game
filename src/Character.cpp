@@ -34,10 +34,10 @@ Character::Character(Status status,
                      int fallingExp,
                      int fallingMoney) {
     this->status = status;
-    this->id = std::move(id);
-    this->nameEN = std::move(nameEN);
-    this->nameCN = std::move(nameCN);
-    this->description = std::move(description);
+    this->id = id;
+    this->nameEN = nameEN;
+    this->nameCN = nameCN;
+    this->description = description;
     this->mapLocation = location;
     this->displayChar = display;
     this->fallingExp = fallingExp;
@@ -49,14 +49,13 @@ Character::Character(Status status,
  * 所有的初始化为空
  *
  */
-Character::Character() {
+Character::Character():mapLocation({1,1,1}) {
     Status status1;
     this->status = status1;
     this->nameCN = "";
     this->nameEN = "";
     this->fallingMoney = 0;
     this->fallingExp = 0;
-    this->mapLocation = {1, 1, 1};
     this->description = "";
     this->displayChar = '\0';
 }
@@ -101,8 +100,17 @@ Monster::Monster(string id) :Character(){
     this->fallingMoney = fromString<int>(data["fallingMoney"]);
     this->fallingExp = fromString<int>(data["fallingExp"]);
     this->displayChar = fromString<char>(data["displayChar"]);
-    f.close();
 
+    string items = data["fallingItem"];
+    if (items != "None"){
+        vector<string>temp;
+        temp = Tool::split(items, ' '); // 空格隔开
+        for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+            Item aItem(fromString<int>(*iter));
+            this->fallingItem.push_back(aItem);
+        }
+    }
+    f.close();
     status.loadStatus(id,READ_MONSTER_STATUS_PATH);
 }
 
@@ -166,7 +174,7 @@ void Player::addExp(int addition) {
  */
 void Player::levelUp() {
     int nextLvExp = 100 * (Lv + 1);
-    while (experiencePoint > nextLvExp){
+    while (experiencePoint >= nextLvExp){
         experiencePoint -= nextLvExp;
         cout << nameCN << "升级了" << endl;
         Lv += 1;
@@ -183,6 +191,8 @@ void Player::levelUp() {
         if (Lv == 3){
             // 学习新的技能
             cout << "学会了新的技能" << endl;
+            Skill newSkill("B04");
+            this->skills.push_back(newSkill);
         }
         nextLvExp = 100 * (Lv + 1);
     }
@@ -260,6 +270,53 @@ bool Player::equipWeapon(string& name) {
         }
     }
     cout << "无该装备" << endl;
+    return false;
+}
+
+/*
+ * @brief 给定物品展示物品的详细信息
+ */
+bool Player::showItem(int itemId) {
+    if (itemId < 100){
+        // 武器
+        for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 200){
+        // 防具
+        for (auto iter = armorBag.items.begin(); iter != armorBag.items.end(); iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 300){
+        // 药品
+        for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 400){
+        // 物品
+        for (auto iter = itemBag.items.begin(); iter != itemBag.items.end() ; iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
     return false;
 }
 

@@ -84,35 +84,31 @@ Buff::Buff(string name, string description, int duration):Status() {
     this->name = name;
     this->description = description;
 }
-
-Buff::Buff(string id):Status() {
-    ifstream f(BUFF_TXT_PATH);
-    string str;
-
-
-    while (getline(f, str)) {
-        if (!str.empty()) {
-            vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "id" && idLine[1] == id) {
-                break;
-            }
-        }
-    }
-
-    map<string, string> data = Tool::dataMap(f);
-
-    this->name = data["nameEN"];
-    this->description = data["description"];
-    this->duration = fromString<int>(data["duration"]);
-    this->MP = fromString<int>(data["MP"]);
-    this->HP = fromString<int>(data["HP"]);
-    this->Phy = fromString<int>(data["Phy"]);
-    this->ATK = fromString<int>(data["ATK"]);
-    this->Speed = fromString<int>(data["Speed"]);
-    this->Critical = fromString<int>(data["Critical"]);
-    this->DEF = fromString<int>(data["DEF"]);
-    f.close();
-}
+//
+//Buff::Buff(string id):Status() {
+//    ifstream f(BUFF_TXT_PATH);
+//    string str;
+//
+//    while (getline(f, str)) {
+//        if (!str.empty()) {
+//            vector<string> idLine = Tool::split(str);
+//            if (idLine[0] == "id" && idLine[1] == id) {
+//                break;
+//            }
+//        }
+//    }
+//
+//    map<string, string> data = Tool::dataMap(f);
+//
+//    this->name = data["nameEN"];
+//    this->description = data["description"];
+//    this->duration = fromString<int>(data["duration"]);
+//    this->ATK = fromString<int>(data["ATK"]);
+//    this->Speed = fromString<int>(data["Speed"]);
+//    this->Critical = fromString<int>(data["Critical"]);
+//    this->DEF = fromString<int>(data["DEF"]);
+//    f.close();
+//}
 
 void Buff::showDescription() {
 

@@ -31,7 +31,7 @@ public:
 
 class Buff : public Status{
 public:
-    explicit Buff(string id);
+//    explicit Buff(string id);
 
     Buff();
 
