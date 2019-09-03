@@ -92,7 +92,7 @@ public:
     void deleteItem(int itemId, int number = 1);
     void eraseItem(int itemId);
     int getItem(int itemId);
-    Drug* useDrug(string& name);
+    bool useDrug(string& name, Character& character);
 
     bool isDead() override ;
     void deadScene(); // ËÀÍö³¡¾°
