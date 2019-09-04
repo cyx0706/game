@@ -12,6 +12,7 @@
 #include "Item.h"
 #include "Skill.h"
 #include "Mission.h"
+#include "Map.h"
 #include "global.h"
 
 
@@ -81,6 +82,8 @@ public:
     Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
+    void showSkills();
+    void battleBagShow(SCOORD &pos);
     void playerMenu(); //提示命令
 
 

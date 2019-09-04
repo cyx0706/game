@@ -1,12 +1,12 @@
 id A01
 nameEN star-buster
 nameCN 星爆弃疗斩
-description 造成15点伤害，消耗30MP
+description 造成70点伤害，消耗30MP
 duration 0
 HP 0
 MP 30
 Phy 0
-ATK 15
+ATK 70
 Speed 0
 Critical 0
 buffDEF 0
@@ -101,7 +101,7 @@ nameEN health
 nameCN 治疗
 description 恢复HP值20，消耗15MP
 duration 0
-HP 20
+HP 60
 MP 15
 Phy 0
 ATK 0

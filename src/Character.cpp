@@ -128,7 +128,7 @@ Player::Player() :Character(){
     this->Lv = 1;
     this->weapon = Weapon();
     this->armor = Armor();
-    this->maxMP = 100;
+    this->maxMP = 150;
     this->maxMP = 100;
     this->status.HP = 150;
     this->status.MP = 100;
@@ -342,6 +342,7 @@ void Player::showDrugs() {
     cout << "玩家的药物" << endl;
     drugBag.showItems();
 }
+
 /*
  * @brief 展示物品背包
  */
@@ -566,11 +567,11 @@ int Player::getItem(int itemId) {
  */
 bool Player::isDead() {
     if (this->status.HP <= 0){
-        char input;
+        string input;
         cout << "你处于濒死状态" << endl;
         cout << "要复活吗(y/n):";
         cin >> input;
-        if (input == 'y'){
+        if (input == "y"){
             this->status.HP += 100;
             return false;
         }
@@ -669,12 +670,15 @@ void Player::addBuff(Buff &buff) {
         buffs.push_back(buff);
     }
     else{
+        // 存在buff,先判断是否重叠
         for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
             if ((*iter).name == buff.name){
                 (*iter).duration += buff.duration - 1;
-                break;
+                return;
             }
         }
+        // 不重叠
+        buffs.push_back(buff);
     }
     this->status.Critical += buff.Critical;
     this->status.Speed += buff.Speed;
@@ -778,6 +782,30 @@ void Player::load() {
     // 将 对应 type 行到下一个空行之间的内容读取为键值对
     data = Tool::dataMap(os);
     os.close();
+}
+
+void Player::battleBagShow(SCOORD& pos) {
+    if (!this->drugBag.items.empty()){
+        for (auto iter = drugBag.items.begin(); iter != drugBag.items.end() ; iter++) {
+            Map::gotoxy(pos);
+            cout << iter->nameCN << "\t" << iter->nameEN << "\t" << " X " << iter->num;
+            pos.Y++;
+        }
+    }
+    else{
+        Map::gotoxy(pos);
+        cout << "\t\t无物品" << endl;
+        pos.Y++;
+    }
+
+}
+/*
+ * @brief 展示玩家的技能的信息
+ */
+void Player::showSkills() {
+    for (auto iter = skills.begin(); iter != skills.end() ; iter++) {
+        cout << iter->nameCN << "(" << iter->nameEN << ")" << endl;
+    }
 }
 // -----------------------NPC类-----------------------
 

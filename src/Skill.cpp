@@ -35,10 +35,14 @@ Skill::Skill(string id) {
     this->HP = fromString<int>(data["HP"]);
     this->ATK = fromString<int>(data["ATK"]);
     //如果duration不为0，此skill为加buff，请使用buff中的属性值
-    this->buff = Buff();
-    this->buff.name = this->nameEN;
-    this->buff.ATK = fromString<int>(data["buffATK"]);
-    this->buff.DEF = fromString<int>(data["buffDEF"]);
+    this->buff = Buff(); //空buff
+    int duration = fromString<int>(data["duration"]);
+    if (duration != 0){
+        this->buff.duration = duration;
+        this->buff.name = this->nameEN;
+        this->buff.ATK = fromString<int>(data["buffATK"]);
+        this->buff.DEF = fromString<int>(data["buffDEF"]);
+    }
     f.close();
 }
 

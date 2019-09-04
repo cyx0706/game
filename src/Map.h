@@ -32,7 +32,7 @@ public:
     void deleteBarrier(SCOORD& pos, string& type);
     void initMap();
     void move(int key); // 用户移动来调用这个
-    void gotoxy(SCOORD pos);
+    static void gotoxy(SCOORD pos);
     void print(char playerChar = 'P');  // 显示用户
     void clean(SCOORD clPos); // 清除
     int checkEvent(); // 检查事件

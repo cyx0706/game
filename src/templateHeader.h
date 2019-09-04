@@ -77,7 +77,6 @@ bool Package<T>::deleteItem(int itemId) {
 template <class T>
 void Package<T>::showItems() {
     for (auto iter = this->items.begin();  iter != this->items.end() ; iter++) {
-        cout << "展示背包的所有物品" << endl;
         (*iter).showDescription();
     }
 }
