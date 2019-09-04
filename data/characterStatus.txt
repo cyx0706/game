@@ -18,21 +18,21 @@ DEF 0
 
 owner NY-03
 MP 10
-HP 500
+HP 250
 Phy 10
-ATK 35
-Speed 0
-Critical 0
+ATK 30
+Speed 15
+Critical 5
 DEF 0
 
 owner NY-04
 MP 10
-HP 100
+HP 500
 Phy 10
-ATK 40
-Speed 0
-Critical 0
-DEF 1
+ATK 50
+Speed 100
+Critical 50
+DEF 0
 
 owner MY-01
 MP 10
@@ -69,3 +69,12 @@ ATK 29
 Speed 15
 Critical 0
 DEF 1
+
+owner NN-02
+MP 10
+HP 150
+Phy 5
+ATK 30
+Speed 10
+Critical 30
+DEF 10

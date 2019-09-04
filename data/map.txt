@@ -9,8 +9,8 @@
 [doorPosTop] None
 [doorPosBottom] 10:2:{10,1}
 [barrier] {5,6} {5,3} {4,2}
-[monster] MY-03:{4,2}
-[npc] NN-01:{5,6} NY-01:{5,3}
+[monster] None
+[npc] NN-01:{5,6} NY-01:{5,3} NN-02:{4,2}
 [item] None
 ---
 [id] 2
@@ -37,8 +37,8 @@
 [doorPosTop] 5:2:{7,18}
 [doorPosBottom] None
 [barrier] {5,3} {8,4} {10,5}
-[monster] MY-03:{5,3}
-[npc] NY-03:{10,5} NN-11:{8,4}
+[monster] MY-03:{5,3} NY-03:{10,5}
+[npc] NN-11:{8,4}
 [item] None
 ---
 [id] 4

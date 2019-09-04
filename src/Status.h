@@ -9,7 +9,7 @@
 
 static const string BUFF_TXT_PATH = "../data/skill.txt";
 static const string SAVE_STATUS_PATH = "../save/saveStatus.txt";
-static const string READ_MONSTER_STATUS_PATH = "../data/monsterStatus.txt";
+static const string READ_MONSTER_STATUS_PATH = "../data/characterStatus.txt";
 
 class Status {
 public:
