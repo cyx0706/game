@@ -19,12 +19,14 @@ class Mission {
 public:
     explicit Mission(int id);
 
+    void showDescription();
     void checkFinished();
 
 public:
     int id;
     string nameEN;
     string nameCN;
+    string description;
     bool isAccepted;
     bool isFinished;
     bool isProcess;

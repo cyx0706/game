@@ -10,6 +10,7 @@
 #include "Character.h"
 #include "global.h"
 #include "templateHeader.h"
+#include "Client.h"
 
 extern Player player;
 
@@ -62,6 +63,7 @@ Mission::Mission(int id) {
     this->id = id;
     this->nameCN = data["nameCN"];
     this->nameEN = data["nameEN"];
+    this->description = data["description"];
     this->bonusMoney = fromString<int>(data["bonusMoney"]);
     this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
     this->assigner = data["assigner"];
@@ -85,6 +87,17 @@ Mission::Mission(int id) {
             this->requiredItem.insert(pair(fromString<int>(one.first), fromString<int>(one.second)));
         }
     }
+}
+
+/*
+ * @brief 输出任务信息
+ */
+void Mission::showDescription() {
+    cout << "任务名称:\t" << this->nameCN << " " << this->nameEN << endl;
+    cout << "委托人:\t" << this->assigner << endl;
+    cout << "简介:\t" <<  this->description << endl;
+
+    cout << "奖励:\t" << this->bonusMoney<< "金钱 " << this->bonusExperiencePoint << "经验" << endl;
 }
 
 /*
@@ -116,4 +129,6 @@ void Mission::checkFinished() {
     player.addMoney(this->bonusMoney);
     player.addExp(this->bonusExperiencePoint);
 }
+
+
 

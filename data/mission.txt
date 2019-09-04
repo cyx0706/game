@@ -1,0 +1,92 @@
+id 1
+nameCN 讨伐狼人
+nameEN attack-werewolf
+description 随着黑夜的降临，一声声响彻云空的狼啸颤动着人们脆弱的内心，王城陷入极度恐慌。冒险者是时候展示你的风采了，一战成名。\n要求: 白眼狼皮 x 1
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 战士长
+307 1
+
+id 2
+nameCN 讨伐森人
+nameEN attack-elf
+description 那片茂密的丛林已有数万年的历史，其中生活着与世无争的森人，森人将这片森林视为圣地，任何人都不允许接近，千年以来人类和森人都和平相处，最近森人村落爆发了严重的瘟疫，他们认定是人类给他们带来的灾难，屠杀了数以千万的冒险者。这种情况不允许再发生了，冒险者给他们一个明确的答案。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 战士长
+
+id 3
+nameCN 探索失落之地
+nameEN explore-lostArea
+description 那是一片寂静的土地，人类繁盛以来就再也没有人踏足，到处都充满了神秘诡异的气息，寒风刺骨，树叶四散，一副人家地狱的样子；但是相传这是超古代文明的墓地，埋葬着奇妙富有魔力的物品。冒险者去探索这一切吧。\n要求: 愚者之锁 x 2
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 战士长
+304 2
+
+id 4
+nameCN 讨伐龙
+nameEN attack-dragon
+description 巨龙掳走掳公主，打败邪恶的巨龙。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 战士长
+
+id 5
+nameCN 和神秘人交流
+nameEN talk-with-mysterious-person
+description 这个神秘人似乎了解这个世界的真相，但一切仍在一片迷雾之中。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 神秘人
+
+id 6
+nameCN 神秘人的委托
+nameEN commitment-of-mysterious-person
+description 神秘人好像需要一些物品，这是打听到世界真相的好机会。\n要求:月光草 x 2、兽皮 x 1、蘑菇 x  2
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 神秘人
+303 2
+305 1
+306 2
+
+id 7
+nameCN 大祭司的阴谋
+nameEN plot-of-chief-priest
+description Wow，这个世界真凶险。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner
+
+id 8
+nameCN 寻找阿瓦隆
+nameEN find-Avalon
+description 探索那片神秘地带。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner
+
+id 9
+nameCN 梅林的试炼
+nameEN challenge-of-Merlin
+description 进入强者世界的试炼。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner
+
+id 10
+nameCN 拜访蜥蜴人
+nameEN visit-lizard
+description 蜥蜴人。。。。。。。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner
+
+id 11
+nameCN 公主的委托
+nameEN commitment-of-Princess
+description 这才是真相，等着吧，勇者要拯救世界。
+bonusMoney 200
+bonusExperiencePoint 200
+assigner 公主
