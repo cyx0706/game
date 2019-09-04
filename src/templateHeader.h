@@ -65,7 +65,6 @@ template <class T>
 bool Package<T>::deleteItem(int itemId) {
     for (auto iter = items.begin(); iter != items.end() ; iter++) {
         if ((*iter).id == itemId){
-            if()
             items.erase(iter);
             return true;
         }
