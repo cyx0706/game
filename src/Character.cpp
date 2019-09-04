@@ -1167,6 +1167,8 @@ void NPC::assignQuest(Player &player) {
             questList[0].isAccepted = true;
             questList[0].isProcess = true;
             player.addMission(questList[0]);
+            // 删除这个任务
+            questList.erase(questList.begin());
             // 接任务时的对话
             cout << talkContent[questList[0].id].start << endl;
             cout << "接受了任务" << endl;
@@ -1248,6 +1250,7 @@ void NPC::talk(Player &player) {
  * @param player:玩家的引用
  * @return 是否会发生战斗
  */
+
 //TODO:加入检查
 bool NPC::forceBattleCheck(Player &player) {
     // 拥有皇城通行证
