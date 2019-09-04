@@ -48,6 +48,7 @@ bool Package<T>::addItem(int itemId, int number) {
         for (auto iter = this->items.begin();  iter != this->items.end() ; iter++) {
             if ((*iter).id == itemId){
                 (*iter).num += number;
+                return true;
             }
         }
         T item(itemId, number);
@@ -77,7 +78,6 @@ bool Package<T>::deleteItem(int itemId) {
 template <class T>
 void Package<T>::showItems() {
     for (auto iter = this->items.begin();  iter != this->items.end() ; iter++) {
-        cout << "展示背包的所有物品" << endl;
         (*iter).showDescription();
     }
 }
@@ -148,9 +148,17 @@ string toString(const T &v){
 
 template <class T>
 T fromString(const string& str){
+    if (str[0] == '-'){
+        istringstream is(str.substr(1));
+        int v;
+        is >> v;
+        return -v;
+    }
     istringstream is(str); // 创建字符串输入流
     T v;
     is >> v; // 从字符串输入流中读取变量v
     return v;
 }
+
+
 #endif //GAME_TEMPLATEHEADER_H

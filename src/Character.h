@@ -12,6 +12,7 @@
 #include "Item.h"
 #include "Skill.h"
 #include "Mission.h"
+#include "Map.h"
 #include "global.h"
 
 
@@ -81,6 +82,8 @@ public:
     Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
+    void showSkills();
+    void battleBagShow(SCOORD &pos);
     void playerMenu(); //提示命令
 
 
@@ -92,7 +95,8 @@ public:
     void deleteItem(int itemId, int number = 1);
     void eraseItem(int itemId);
     int getItem(int itemId);
-    Drug* useDrug(string& name);
+    bool showItem(int itemId);
+    bool useDrug(string& name, Character& character);
 
     bool isDead() override ;
     void deadScene(); // 死亡场景
@@ -112,7 +116,7 @@ private:
     Weapon weapon;
     Armor armor;
     int Lv;
-    map<string, int>killedMonster;
+//    map<string, int>killedMonster;
 };
 
 class Monster : public Character {

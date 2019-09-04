@@ -83,10 +83,14 @@ mission 17
 
 
 -系统指令
-save 19
+save 18
 / save
 // 存档，战斗时无法使用
 
-accept 20
-/ accept
+accept 19
+/ accept_mission
 // 接受任务
+
+finish 20
+/ finish_mission
+// 完成任务

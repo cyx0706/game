@@ -12,6 +12,7 @@
 #include <string>
 #include <regex>
 #include <map>
+#include <iomanip>
 
 using std::cout;
 using std::cin;
@@ -37,6 +38,9 @@ using std::time;
 using std::srand;
 using std::transform;
 using std::istream;
+using std::setw;
+using std::setiosflags;
+using std::ios_base;
 /*
  * 全局变量存到这里
  */

@@ -34,10 +34,10 @@ Character::Character(Status status,
                      int fallingExp,
                      int fallingMoney) {
     this->status = status;
-    this->id = std::move(id);
-    this->nameEN = std::move(nameEN);
-    this->nameCN = std::move(nameCN);
-    this->description = std::move(description);
+    this->id = id;
+    this->nameEN = nameEN;
+    this->nameCN = nameCN;
+    this->description = description;
     this->mapLocation = location;
     this->displayChar = display;
     this->fallingExp = fallingExp;
@@ -49,14 +49,13 @@ Character::Character(Status status,
  * 所有的初始化为空
  *
  */
-Character::Character() {
+Character::Character():mapLocation({1,1,1}) {
     Status status1;
     this->status = status1;
     this->nameCN = "";
     this->nameEN = "";
     this->fallingMoney = 0;
     this->fallingExp = 0;
-    this->mapLocation = {1, 1, 1};
     this->description = "";
     this->displayChar = '\0';
 }
@@ -81,7 +80,7 @@ void Character::showDescription() {
 // ---------------------Monster类-----------------------
 
 Monster::Monster(string id) :Character(){
-    this->id = std::move(id);
+    this->id = id;
     ifstream f(READ_MONSTER_PATH);
     string str;
 
@@ -102,8 +101,16 @@ Monster::Monster(string id) :Character(){
     this->fallingExp = fromString<int>(data["fallingExp"]);
     this->displayChar = fromString<char>(data["displayChar"]);
 
+    string items = data["fallingItem"];
+    if (items != "None"){
+        vector<string>temp;
+        temp = Tool::split(items, ' '); // 空格隔开
+        for (auto iter = temp.begin(); iter != temp.end(); iter++) {
+            Item aItem(fromString<int>(*iter));
+            this->fallingItem.push_back(aItem);
+        }
+    }
     f.close();
-
     status.loadStatus(id,READ_MONSTER_STATUS_PATH);
 }
 
@@ -121,14 +128,14 @@ Player::Player() :Character(){
     this->Lv = 1;
     this->weapon = Weapon();
     this->armor = Armor();
-    this->maxMP = 100;
+    this->maxMP = 150;
     this->maxMP = 100;
     this->status.HP = 150;
     this->status.MP = 100;
     this->status.ATK = 20;
     this->status.DEF = 20;
     this->status.Speed = 5;
-    this->status.Critical = 10;
+    this->status.Critical = 50;
     this->status.Phy = 5;
 }
 
@@ -167,10 +174,13 @@ void Player::addExp(int addition) {
  */
 void Player::levelUp() {
     int nextLvExp = 100 * (Lv + 1);
-    while (experiencePoint > nextLvExp){
+    while (experiencePoint >= nextLvExp){
         experiencePoint -= nextLvExp;
         cout << nameCN << "升级了" << endl;
         Lv += 1;
+        if (Lv > 20){
+            cout << "达到了最高等级" << endl;
+        }
         this->status.DEF += 5;
         this->status.ATK += 5;
         this->maxHP += 15;
@@ -181,6 +191,8 @@ void Player::levelUp() {
         if (Lv == 3){
             // 学习新的技能
             cout << "学会了新的技能" << endl;
+            Skill newSkill("B04");
+            this->skills.push_back(newSkill);
         }
         nextLvExp = 100 * (Lv + 1);
     }
@@ -262,6 +274,53 @@ bool Player::equipWeapon(string& name) {
 }
 
 /*
+ * @brief 给定物品展示物品的详细信息
+ */
+bool Player::showItem(int itemId) {
+    if (itemId < 100){
+        // 武器
+        for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 200){
+        // 防具
+        for (auto iter = armorBag.items.begin(); iter != armorBag.items.end(); iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 300){
+        // 药品
+        for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    if (itemId < 400){
+        // 物品
+        for (auto iter = itemBag.items.begin(); iter != itemBag.items.end() ; iter++) {
+            if (iter->id == itemId){
+                iter->showDescription();
+                return true;
+            }
+        }
+        return false;
+    }
+    return false;
+}
+
+/*
  * @brief 展示防具背包
  */
 void Player::showArmors() {
@@ -283,6 +342,7 @@ void Player::showDrugs() {
     cout << "玩家的药物" << endl;
     drugBag.showItems();
 }
+
 /*
  * @brief 展示物品背包
  */
@@ -507,11 +567,11 @@ int Player::getItem(int itemId) {
  */
 bool Player::isDead() {
     if (this->status.HP <= 0){
-        char input;
+        string input;
         cout << "你处于濒死状态" << endl;
         cout << "要复活吗(y/n):";
         cin >> input;
-        if (input == 'y'){
+        if (input == "y"){
             this->status.HP += 100;
             return false;
         }
@@ -606,11 +666,19 @@ void Player::save() {
  * @param buff:的引用
  */
 void Player::addBuff(Buff &buff) {
-    for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
-        if ((*iter).id == buff.id){
-            (*iter).duration += buff.duration;
-            break;
+    if (buffs.empty()){
+        buffs.push_back(buff);
+    }
+    else{
+        // 存在buff,先判断是否重叠
+        for (auto iter = buffs.begin(); iter != buffs.end() ; iter++) {
+            if ((*iter).name == buff.name){
+                (*iter).duration += buff.duration - 1;
+                return;
+            }
         }
+        // 不重叠
+        buffs.push_back(buff);
     }
     this->status.Critical += buff.Critical;
     this->status.Speed += buff.Speed;
@@ -637,14 +705,30 @@ void Player::deleteBuff(Buff &buff) {
  *
  * @param 传入一个药物的名字
  */
-Drug* Player::useDrug(string& name) {
+bool Player::useDrug(string& name, Character &character) {
     for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
         if ((*iter).nameEN == name){
-            this->drugBag.deleteItem((*iter).id);
-            return &(*iter);
+            this->drugBag.deleteItem((*iter).id, 1);
+            if((*iter).playerTarget){
+                this->status.HP += (*iter).HP;
+                if (status.HP > maxHP){
+                    status.HP = maxHP;
+                }
+                cout << "恢复到了" << status.HP << "血" << endl;
+                this->status.MP += (*iter).MP;
+                if (status.MP > maxMP){
+                    status.MP = maxMP;
+                }
+                cout << "恢复到了" << status.MP << "蓝" << endl;
+            }
+            else{
+                character.status.HP -= iter->HP;
+                cout << "造成" << iter->HP << "点伤害" << endl;
+            }
+            return true;
         }
     }
-    return nullptr;
+    return false;
 }
 /*
  * @brief 玩家死亡的场景
@@ -802,6 +886,30 @@ void Player::load() {
     os.close();
 
     status.loadStatus("player",SAVE_STATUS_PATH);
+}
+
+void Player::battleBagShow(SCOORD& pos) {
+    if (!this->drugBag.items.empty()){
+        for (auto iter = drugBag.items.begin(); iter != drugBag.items.end() ; iter++) {
+            Map::gotoxy(pos);
+            cout << iter->nameCN << "\t" << iter->nameEN << "\t" << " X " << iter->num;
+            pos.Y++;
+        }
+    }
+    else{
+        Map::gotoxy(pos);
+        cout << "\t\t无物品" << endl;
+        pos.Y++;
+    }
+
+}
+/*
+ * @brief 展示玩家的技能的信息
+ */
+void Player::showSkills() {
+    for (auto iter = skills.begin(); iter != skills.end() ; iter++) {
+        cout << iter->nameCN << "(" << iter->nameEN << ")" << endl;
+    }
 }
 // -----------------------NPC类-----------------------
 

@@ -1,20 +1,21 @@
 id A01
 nameEN star-buster
 nameCN 星爆弃疗斩
-description 造成150点伤害，自己的HP减15,消耗30MP
+description 造成70点伤害，消耗30MP
 duration 0
-HP -15
-MP -30
+HP 0
+MP 30
 Phy 0
-ATK 150
+ATK 70
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0
 
 id A02
 nameEN one-hit-999
 nameCN 一刀999
-description 造成999点伤害，不消耗10MP
+description 造成999点伤害，不消耗MP
 duration 0
 HP 0
 MP 0
@@ -22,7 +23,8 @@ Phy 0
 ATK 999
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0
 
 id A03
 nameEN jump-repetition
@@ -35,7 +37,8 @@ Phy 0
 ATK 0
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0
 
 id A04
 nameEN girl-singing
@@ -43,25 +46,27 @@ nameCN 女人唱歌
 description 造成15点伤害，消耗10MP
 duration 0
 HP 0
-MP -10
+MP 10
 Phy 0
 ATK 15
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0
 
 id B01
 nameEN release-name
 nameCN 真名解放
-description 觉醒，自身攻击+100，mp减少50,持续3回合
+description 觉醒，自身攻击+10，mp减少20,持续3回合
 duration 3
 HP 0
-MP -50
+MP 20
 Phy 0
 ATK 0
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 10
 
 id B02
 nameEN attack-gesture
@@ -69,38 +74,41 @@ nameCN 攻击态势
 description 自身攻击小幅度上升,消耗5MP，持续2回合
 duration 2
 HP 0
-MP -5
+MP 5
 Phy 0
-ATK +5
+ATK 0
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 5
 
 id B04
 nameEN defend-gesture
 nameCN 防御态势
-description 自身防御上升+5,消耗5mp，持续2回合
+description 自身防御上升+5,消耗10mp，持续2回合
 duration 2
 HP 0
-MP -5
+MP 10
 Phy 0
 ATK 0
 Speed 0
 Critical 0
-DEF +5
+buffDEF 5
+buffATK 0
 
 id H01
 nameEN health
 nameCN 治疗
-description 恢复HP值10，消耗5MP
+description 恢复HP值20，消耗15MP
 duration 0
-HP +5
-MP -5
+HP 60
+MP 15
 Phy 0
 ATK 0
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0
 
 id H02
 nameEN poison-talk
@@ -113,4 +121,5 @@ Phy 0
 ATK 0
 Speed 0
 Critical 0
-DEF 0
+buffDEF 0
+buffATK 0

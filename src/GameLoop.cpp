@@ -6,6 +6,7 @@
 #include "Tool.h"
 #include "Scene.h"
 #include <algorithm>
+#include <iomanip>
 #include <fstream>
 #include "Status.h"
 #include "Character.h"
@@ -42,7 +43,8 @@ void GameLoop::mapLoop() {
             if (input == ESC){
                 system("cls"); // 清空屏幕
                 commandLoop();
-                break;
+                mapNow->initPos = uPos;
+                mapNow->initMap();
             }
             if(input == SPACE){
                 int branch = mapNow->checkEvent();
@@ -69,24 +71,11 @@ void GameLoop::mapLoop() {
  * 输入esc命令切换,在mapLoop里被调用
  */
 void GameLoop::commandLoop() {
-    string input;
-    while (true){
-        int index = 0;
-        getline(cin, input);
-        string s = input;
-        if (!s.empty()){
-            // 循环删除所有的空格
-            while ((index = s.find(' ', index)) != string::npos){
-                s.erase(index); // 删除空格
-            }
-        }
-        if (s == "esc"){
-            return; // 返回地图循环
-        }
-        else{
-            client.base(input, commonBannedCommands, 0);
-        }
-    }
+    player.playerMenu();
+    Map::setCursorStatus(true);
+    client.base();
+    Map::setCursorStatus(false);
+    system("cls");
 }
 
 // 初始化
@@ -94,16 +83,19 @@ void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     mapNow = make_unique<Map>();
     mapNow->load(1);
+    Skill skill1("A01");
+    player.skills.push_back(skill1);
+    Skill skill2("B01");
+    player.skills.push_back(skill2);
+    Skill skill3("H01");
+    player.skills.push_back(skill3);
+    Skill skill4("H02");
+    player.skills.push_back(skill4);
+    player.maxMP = 100;
+    player.maxHP = 150;
+    player.addItem(201, 2);
 }
-// 游戏的主循环
-//void GameLoop::loop() {
-//    initGame();
-//    while (TRUE){
-//        mapLoop();
-//        //commandLoop
-//    }
-//
-//}
+
 void GameLoop::gameInterface(){
     string title = "暴咕攻城狮的异世界狂想曲";
     auto x = short(screenInfo.dwSize.X - title.length() / 2);
@@ -173,47 +165,143 @@ void GameLoop::gameStart() {
 void GameLoop::battleLoop(Character &character) {
     bool playerTurn = true;
     bool enemyTurn = false;
+    int damage;
+    SCOORD curPos;
     system("cls");
 
-    int damage;
-    cursorInfo.bVisible = true;
-    SetConsoleCursorInfo(hOut, &cursorInfo);
+    cout << "遭遇怪物" << endl;
     if (character.status.Speed > player.status.Speed){
-        playerTurn = false;
+        playerTurn = true;
+        enemyTurn = false;
         damage = character.status.ATK - player.status.DEF;
         if (damage <= 0){
             damage = 1;
         }
         cout << "敌人的先制攻击, 造成了" << damage << "点伤害" << endl;
+        player.status.HP -= damage;
         if(player.isDead()){
-            // 死亡场景
+            player.deadScene();
             return;
         }
         else{
             cout << "玩家剩余血量:" << player.status.HP << endl;
         }
     }
+    system("pause");
+    system("cls");
+
     int turn = 0; // 回合数
     while (true){
         turn += 1;
-        cout << "回合:" << turn << endl;
-        // 判断buff是否过期
-        for (auto iter = player.buffs.begin(); iter != player.buffs.end() ; iter++) {
+
+        // 战斗界面
+        for (int i = 0; i < 80; i++) {
+            cout << "*";
+        }
+        cout << endl;
+        for (short k = 1; k < 20; k++) {
+            curPos = {40, k};
+            Map::gotoxy(curPos);
+            cout << "*";
+        }
+        curPos = {0, 20};
+        Map::gotoxy(curPos);
+        for (int i = 0; i < 80; i++) {
+            cout << "*";
+        }
+        // 信息输出
+        curPos = {7,1};
+        Map::gotoxy(curPos);
+        cout << "敌人:" << character.nameCN << "("  << character.nameEN << ")";
+        curPos.Y = 2;
+        Map::gotoxy(curPos);
+        cout << "-> HP:" << character.status.HP;
+        curPos.Y = 3;
+        Map::gotoxy(curPos);
+        cout << "-> MP:" << character.status.MP;
+        curPos.Y = 4;
+        Map::gotoxy(curPos);
+        cout << "-> ATK:" << character.status.ATK;
+        curPos.Y = 5;
+        Map::gotoxy(curPos);
+        cout << "-> DEF:" << character.status.DEF;
+        curPos.Y = 6;
+        Map::gotoxy(curPos);
+        cout << "--------------------" << endl;
+        curPos.Y = 7;
+        Map::gotoxy(curPos);
+        cout << "玩家: " << player.nameCN << endl;
+        curPos.X = 7;
+        curPos.Y++;
+        Map::gotoxy(curPos);
+        cout << "BUFF:";
+        curPos.Y++;
+        Map::gotoxy(curPos);
+        for (auto iter = player.buffs.begin(); iter != player.buffs.end();) {
             // 只有为0才过期
             if ((*iter).duration != 0){
                 (*iter).duration--;
-                player.deleteBuff((*iter));
+                if (iter->duration == 0){
+                    player.deleteBuff((*iter));
+                    player.buffs.erase(iter);
+                    continue;
+                }
+                else{
+                    cout << iter->name << "剩余" << iter->duration << "回合";
+                    curPos.Y++;
+                    Map::gotoxy(curPos);
+                }
             }
-            else{
-                player.buffs.erase(iter);
+            iter++;
+        }
+        cout << "-> HP:" << player.status.HP;
+        curPos.Y++;
+        Map::gotoxy(curPos);
+        cout << "-> MP:" << player.status.MP;
+        curPos.Y++;
+        Map::gotoxy(curPos);
+        cout << "-> ATK:" << player.status.ATK;
+        curPos.Y++;
+        Map::gotoxy(curPos);
+        cout << "-> DEF:" << player.status.DEF;
+
+        curPos = {50, 1};
+        Map::gotoxy(curPos);
+        cout << "\t\t玩家技能";
+        short y = 2;
+        if (!player.skills.empty()){
+            for (auto j = player.skills.begin(); j <player.skills.end() ; j++) {
+                curPos = {48, y++};
+                Map::gotoxy(curPos);
+                cout << setiosflags(ios_base::left)
+                     << setw(16) << j->nameCN
+                     << setw(16) << j->nameEN
+                     << "消耗MP:" << j->MP;
             }
         }
+        else{
+            curPos = {48, y++};
+            cout << "\t\t无技能";
+        }
+
+        curPos.Y += 2;
+        Map::gotoxy(curPos);
+        cout << "\t\t玩家物品";
+        curPos.Y++;
+        player.battleBagShow(curPos);
+
+        curPos = {0, 21};
+        Map::gotoxy(curPos);
+        cout << "-------------------" << endl;
+        cout << "回合:" << turn << endl;
+        cout << "-------------------" << endl;
+
         // 前置判断使回合可以跳过
         // 玩家回合
         if (playerTurn){
             cout << "玩家的回合:你的行动" << endl;
-            //TODO::调用command分析
-
+            Map::setCursorStatus(true);
+            client.base(character);
             // 下一次是敌人行动
             playerTurn = false;
             enemyTurn = true;
@@ -234,10 +322,14 @@ void GameLoop::battleLoop(Character &character) {
                        player.addItem((*iter).id, (*iter).num);
                    }
                 }
+                system("pause");
+                system("cls");
                 break;
             }
-            else{
-                cout << character.nameCN << "剩余HP: " <<character.status.HP << endl;
+            if (player.isDead()){
+                player.deadScene();
+                system("pause");
+                exit(1);
             }
         }
         if (enemyTurn){
@@ -253,18 +345,19 @@ void GameLoop::battleLoop(Character &character) {
                 damage = 1;
             }
             player.status.HP -= damage;
-            cout << "造成" << damage << "伤害" << endl;
+            cout << character.nameCN << "对你造成" << damage << "伤害" << endl;
             if (player.isDead()){
-                // 调用死亡场景
-                break;
-            }
-            else{
-                cout << player.nameCN << "剩余HP: " << player.status.HP << endl;
+                player.deadScene();
+                system("pause");
+                exit(1);
             }
             // 下一次是玩家行动
             playerTurn = true;
             enemyTurn = false;
         }
+        system("pause");
+        Map::setCursorStatus(false);
+        system("cls");
     }
 }
 

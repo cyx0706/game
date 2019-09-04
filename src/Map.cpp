@@ -38,6 +38,7 @@ bool SCOORD::operator<(const SCOORD &pos) const {
  * @brief 初始化地图
  */
 void Map::initMap() {
+    setCursorStatus(false);
     initChar();
     short temp = 0;
     bool flag = false;
@@ -165,8 +166,6 @@ void Map::initBarrier() {
         ScrollConsoleScreenBuffer(hOut, &CutScr, nullptr, cutPos, &chFill); //移动文本
     }
     SetConsoleTextAttribute(hOut, 0x0f);
-
-    // 画item
 }
 
 
@@ -558,13 +557,16 @@ int Map::checkEvent() {
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
                 Monster aMonster(monsters[barrier[i]]);
-                aMonster.status.HP = 100;
-                aMonster.status.ATK = 50;
                 string tips = "和" + aMonster.nameCN + "对战";
                 char t[80];
                 Tool::stringToChar(tips, t);
                 MessageBox(nullptr, t, "提示", MB_OK);
                 GameLoop::battleLoop(aMonster);
+                string type = "monster";
+                // 删除怪物
+                mapNow->deleteBarrier(barrier[i], type);
+                mapNow->initPos = uPos;
+                mapNow->initMap();
                 return 0;
             }
         }
@@ -601,29 +603,27 @@ bool Map::canEnter(int mapId) {
             return false;
         }
     }
-    else if (mapId == 7){
+    if (mapId == 7){
         // 判断任务2是否完成
         Mission* missionPtr = player.getMission(7);
         if (missionPtr == nullptr || !(missionPtr->isFinished)){
             return false;
         }
     }
-    else if (mapId == 8){
+    if (mapId == 8){
         // 判断是否接受了任务10
         if (!player.getMission(10)){
             return false;
         }
     }
-    else if (mapId == 9){
+    if (mapId == 9){
         // 判断任务3是否完成
         Mission* missionPtr = player.getMission(3);
         if (missionPtr == nullptr || !(missionPtr->isFinished)){
             return false;
         }
     }
-    else {
-        return true;
-    }
+    return true;
 }
 
 /*
