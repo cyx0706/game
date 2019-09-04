@@ -88,9 +88,9 @@ save 19
 // 存档，战斗时无法使用
 
 accept 20
-/ accept
+/ accept_mission
 // 接受任务
 
 finish 21
-/ finish
+/ finish_mission
 // 完成任务

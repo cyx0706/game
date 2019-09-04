@@ -43,8 +43,8 @@ namespace CMD {
         mission,
 
         save,
-        accept,
-        finish,
+        accept_mission,
+        finish_mission,
         };
 }
 

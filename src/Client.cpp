@@ -373,7 +373,8 @@ void Client::base() {
 
             vector<int> bannedCommands = {attack, skill, flee, use,
                                           talk,
-                                          purchase, sell};
+                                          purchase, sell,
+                                          accept_mission, finish_mission};
 
             if (!analyse(commands, bannedCommands)) {
                 continue;
@@ -547,7 +548,8 @@ void Client::base(Character& target) {
             vector<int> bannedCommands = {status, equipment, package, item, equip, takeoff, discard, talk,
                                           maps,
                                           mission,
-                                          save};
+                                          save,
+                                          accept_mission, finish_mission};
 
             if (!analyse(commands, bannedCommands)) {
                 continue;
@@ -645,12 +647,12 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
         return false;
     }
 
-    if (command == accept) {
+    if (command == accept_mission) {
         npc.assignQuest(player);
         return false;
     }
 
-    if (command == finish) {
+    if (command == finish_mission) {
         npc.finishQuest(player);
         return false;
     }
