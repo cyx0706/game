@@ -16,7 +16,7 @@
 #include "global.h"
 
 extern Player player;
-extern unique_ptr<Map>mapNow;
+extern unique_ptr<Map> mapNow;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found
@@ -137,13 +137,14 @@ bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
 
     return false;
 }
+
 /*
  * @brief 分析命令是否可执行
  * 判断: 1. 是否是被禁止的命令 2. 是否是帮助命令 3. 是否是错误命令
  *
  * @param commands 命令行获取的命令(已切片成 vector 类型)
  * @param bannedCommands 被禁止的命令(表示数值)
- * @return true 则为命令基本可以执行，false 则为命令不可执行，重新输入
+ * @return true 则为命令基本可以执行，false 则为命令不可执行，需要重新输入
  */
 bool Client::analyse(vector<string> commands, vector<int>& bannedCommands){
     // 寻找是否在 commandMap 中有对应的命令
@@ -185,7 +186,9 @@ bool Client::analyse(vector<string> commands, vector<int>& bannedCommands){
 }
 
 /*
- * @brief 普通状态的命令执行
+ * @brief 普通状态的执行方法
+ * 接受命令 status skills equipment package item equip takeoff discard maps mission
+ *         help save
  *
  * @param commands 命令行获取的命令(已切片成 vector 类型)
  * @return true 则命令执行完成 false 则命令未执行，重新输入
@@ -195,6 +198,7 @@ bool Client::executeCommand(vector<string> commands) {
     // 表示数值转换为 int 类型
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
 
+    // status 命令
     if (command == status) {
         if (commands.size() != 1) {
             cout << "wrong usage" << endl;
@@ -205,6 +209,17 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // skills 命令
+    if (command == skills) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        player.showSkills();
+        return false;
+    }
+
+    // equipment 命令
     if (command == equipment) {
         if (commands.size() != 1) {
             cout << "wrong usage" << endl;
@@ -215,6 +230,7 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // package 命令
     if (command == package) {
         if (commands.size() != 1) {
             cout << "wrong usage" << endl;
@@ -227,6 +243,7 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // item 命令
     if (command == item) {
         if (commands.size() != 2) {
             cout << "wrong usage" << endl;
@@ -248,6 +265,7 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // equip 命令
     if (command == equip) {
         if (commands.size() != 2) {
             cout << "wrong usage" << endl;
@@ -272,6 +290,7 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // takeoff 命令
     if (command == takeoff) {
         if (commands.size() != 2) {
             cout << "wrong usage" << endl;
@@ -296,6 +315,7 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // discard 命令
     if (command == discard) {
         if (commands.size() != 3) {
             cout << "wrong usage" << endl;
@@ -326,11 +346,20 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // maps 命令
     if (command == maps) {
         mapNow->showDescription();
         return false;
     }
 
+    // mission 命令
+    if (command == mission) {
+        player.showMission();
+
+        return false;
+    }
+
+    // help 命令
     if (command == help) {
         if (commands.size() != 1) {
             cout << "wrong usage" << endl;
@@ -346,16 +375,9 @@ bool Client::executeCommand(vector<string> commands) {
         return false;
     }
 
+    // save 命令
     if (command == save) {
         player.save();
-    }
-
-    if (command == skills) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
-        }
-
-        player.showSkills();
         return false;
     }
 
@@ -363,45 +385,9 @@ bool Client::executeCommand(vector<string> commands) {
 }
 
 /*
- * @brief 普通状态的命令行
- */
-void Client::base() {
-    string str;
-    vector<string> commands;
-
-    while (true) {
-        getline(cin, str);
-        if (str == "esc") {
-            return;
-        }
-
-        str = Tool::clean(str);
-
-        if (!str.empty()) {
-            commands = Tool::split(str, ' ');
-
-            vector<int> bannedCommands = {attack, skill, flee, use,
-                                          talk,
-                                          purchase, sell,
-                                          accept_mission, finish_mission};
-
-            if (!analyse(commands, bannedCommands)) {
-                continue;
-            }
-        }
-        else {
-            cout << "empty command" << endl;
-            continue;
-        }
-
-        if (executeCommand(commands)) {
-            return;
-        }
-    }
-}
-
-/*
- * @brief 战斗状态的命令执行
+ * @brief 战斗状态的执行方法
+ * 接受命令 attack skill flee use
+ *         help
  *
  * @param commands 命令行获取的命令(已切片成 vector 类型)
  * @param target 战斗的对象
@@ -412,6 +398,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
     // 表示数值转换为 int 类型
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
 
+    // attack 命令
     if (command == attack) {
         // attack 命令只含 1 个参数
         // 若有多个参数 即为 错误的用法
@@ -447,6 +434,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
         return true;
     }
 
+    // skill 命令
     if (command == skill) {
         if (commands.size() != 2) {
             cout << "wrong usage" << endl;
@@ -511,6 +499,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
         return false;
     }
 
+    // flee 命令
     if (command == flee) {
         if (commands.size() != 1) {
             cout << "wrong usage" << endl;
@@ -521,6 +510,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
         return false;
     }
 
+    // use 命令
     if (command == use) {
         if (commands.size() != 2) {
             cout << "wrong usage" << endl;
@@ -533,49 +523,36 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
         return true;
     }
+
+    // help 命令
+    if (command == help) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        for (const auto& one: this->commandsMap) {
+            cout << one.first << endl;
+        }
+
+        cout << "you can use" << endl;
+        cout <<"'command' + -h or 'command' + --help" << endl;
+        cout << "look for specific help" << endl;
+        return false;
+    }
+
+    return false;
 }
 
 /*
- * @brief 命令行的 输出 接受 处理
+ * @brief npc交互状态的执行方法
+ * 接受命令 purchase sell talk accept_mission finish_mission
+ *         help
  *
- * @param str 输入的一行命令
- * @param bannedCommands 被禁止的命令
- * @param index 命令操作对象对应的索引位置
+ * @param commands 命令行获取的命令(已切片成 vector 类型)
+ * @param npc 互动的 npc 对象
+ * @return true 则命令执行完成 false 则命令未执行，重新输入
  */
-void Client::base(Character& target) {
-    string str;
-    vector<string> commands;
-
-    while (true) {
-        getline(cin, str);
-
-        str = Tool::clean(str);
-
-        if (!str.empty()) {
-            commands = Tool::split(str, ' ');
-
-            vector<int> bannedCommands = {status, equipment, package, item, equip, takeoff, discard, talk,
-                                          maps,
-                                          mission,
-                                          save,
-                                          accept_mission, finish_mission};
-
-            if (!analyse(commands, bannedCommands)) {
-                continue;
-            }
-        }
-        else {
-            cout << "empty command" << endl;
-            continue;
-        }
-
-        if (battleExecuteCommand(commands, target)) {
-            return;
-        }
-    }
-}
-
-bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
+bool Client::npcExecuteCommand(vector<string> commands, NPC &npc) {
     // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
     // 表示数值转换为 int 类型
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
@@ -626,8 +603,6 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
 
         int itemId = fromString<int>(data[commands[1]]);
 
-
-
         if (itemId < 100) {
             Weapon one(itemId);
             npc.sell(one, fromString<int>(commands[2]), player);
@@ -653,38 +628,71 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
 
     if (command == talk) {
         npc.talk(player);
+
         return false;
     }
 
     if (command == accept_mission) {
         npc.assignQuest(player);
+
         return false;
     }
 
     if (command == finish_mission) {
         npc.finishQuest(player);
+
+        return false;
+    }
+
+    // help 命令
+    if (command == help) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        for (const auto& one: this->commandsMap) {
+            cout << one.first << endl;
+        }
+
+        cout << "you can use" << endl;
+        cout <<"'command' + -h or 'command' + --help" << endl;
+        cout << "look for specific help" << endl;
         return false;
     }
 
     return false;
 }
 
-
-void Client::npcBase(NPC &npc) {
+/*
+ * @brief 普通状态的命令行
+ */
+void Client::base() {
     string str;
     vector<string> commands;
 
     while (true) {
+        // 获得命令行输入
         getline(cin, str);
 
+        // 普通状态可以随时退出命令行
+        // 退出命令为 esc quit exit 任一
+        if (str == "esc" || str == "quit" || str == "exit") {
+            return;
+        }
+
+        // 将命令行获取的命令进行规整
         str = Tool::clean(str);
 
+        // 判断命令规整后是否为空
         if (!str.empty()) {
             commands = Tool::split(str, ' ');
 
+            // 普通状态禁止 战斗命令 和 与npc交互的命令
             vector<int> bannedCommands = {attack, skill, flee, use,
-                                          save};
+                                          purchase, sell, talk, accept_mission, finish_mission};
 
+            // 分析命令 判断: 1. 是否是被禁止的命令 2. 是否是帮助命令 3. 是否是错误命令
+            // 禁止的命令 or 帮助命令 or 错误的命令 则要求重新输入
             if (!analyse(commands, bannedCommands)) {
                 continue;
             }
@@ -693,7 +701,95 @@ void Client::npcBase(NPC &npc) {
             continue;
         }
 
-        if (shopExecuteCommand(commands, npc)) {
+        // 到此 命令行获取的命令基本可执行
+        // 调用 普通状态的执行方法
+        // 执行成功则结束命令行
+        if (executeCommand(commands)) {
+            return;
+        }
+    }
+}
+
+/*
+ * @brief 战斗状态的命令行
+ */
+void Client::base(Character& target) {
+    string str;
+    vector<string> commands;
+
+    while (true) {
+        // 获得命令行输入
+        getline(cin, str);
+
+        // 将命令行获取的命令进行规整
+        str = Tool::clean(str);
+
+        // 判断命令规整后是否为空
+        if (!str.empty()) {
+            commands = Tool::split(str, ' ');
+
+            // 战斗状态禁止 普通命令 、 与npc交互命令 和 保存命令
+            vector<int> bannedCommands = {status, skills, equipment, package, item, equip, takeoff, discard, maps, mission,
+                                          purchase, sell, talk, accept_mission, finish_mission,
+                                          save,
+                                          };
+
+            // 分析命令 判断: 1. 是否是被禁止的命令 2. 是否是帮助命令 3. 是否是错误命令
+            // 禁止的命令 or 帮助命令 or 错误的命令 则要求重新输入
+            if (!analyse(commands, bannedCommands)) {
+                continue;
+            }
+        } else {
+            cout << "empty command" << endl;
+            continue;
+        }
+
+        // 到此 命令行获取的命令基本可执行
+        // 调用 战斗状态的执行方法
+        // 执行成功则结束命令行
+        if (battleExecuteCommand(commands, target)) {
+            return;
+        }
+    }
+}
+
+/*
+ * @brief 与NPC互动的命令行
+ */
+void Client::npcBase(NPC &npc) {
+    string str;
+    vector<string> commands;
+
+    while (true) {
+        // 获得命令行输入
+        getline(cin, str);
+
+        // 将命令行获取的命令进行规整
+        str = Tool::clean(str);
+
+        // 判断命令规整后是否为空
+        if (!str.empty()) {
+            commands = Tool::split(str, ' ');
+
+            // 与npc交互状态禁止  普通命令 、战斗命令 和 保存命令
+            vector<int> bannedCommands = {status, skills, equipment, package, item, equip, takeoff, discard, maps, mission,
+                                          attack, skill, flee, use,
+                                          save};
+
+            // 分析命令 判断: 1. 是否是被禁止的命令 2. 是否是帮助命令 3. 是否是错误命令
+            // 禁止的命令 or 帮助命令 or 错误的命令 则要求重新输入
+            if (!analyse(commands, bannedCommands)) {
+                continue;
+            }
+        } else {
+            cout << "empty command" << endl;
+            continue;
+        }
+
+        // 到此 命令行获取的命令基本可执行
+        // 调用 与NPC互动的执行方法
+        // 执行成功则结束命令行
+        if (npcExecuteCommand(commands, npc)) {
             return;
         }
     }
