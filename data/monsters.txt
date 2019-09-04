@@ -33,3 +33,21 @@ fallingExp 250
 fallingMoney 200
 displayChar M
 fallingItem 304
+
+id NY-03
+nameEN werewolf
+nameCN ÀÇÈË
+description Ð×¶ñµÄÀÇÈË
+fallingExp 100
+fallingMoney 200
+displayChar M
+fallingItem 307
+
+id NY-04
+nameEN Fafnir
+nameCN ¾ÞÁú
+description Áú
+fallingExp 0
+fallingMoney 0
+displayChar M
+fallingItem None

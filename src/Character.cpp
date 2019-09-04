@@ -387,25 +387,24 @@ void Player::showMissions() {
     }
 }
 /*
- * @brief 展示单个任务的详细的信息
+ * @brief 展示当前进行中的任务
  *
  * @param missionId: 任务的id
  */
-void Player::showMission(int missionId) {
+void Player::showMission() {
+    cout << "当前进行中的任务:" << endl;
+    bool flag = false;
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
-        if ((*iter).id == missionId){
+        if ((*iter).isProcess){
+            flag = true;
             cout << "任务" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-            cout << "进度:";
-            if ((*iter).isProcess){
-                cout << "进行中" << endl;
-                //TODO:任务的描述
-            }
-            if((*iter).isFinished){
-                cout << "完成" << endl;
-            }
-
+            // TODO:任务描述
         }
     }
+    if (!flag){
+        cout << "没有进行中的任务!" << endl;
+    }
+
 }
 /*
  * @brief 获取任务
@@ -809,13 +808,162 @@ void Player::showSkills() {
 }
 // -----------------------NPC类-----------------------
 
+/*
+ * @brief 保存npc, 会自动判断是否需要保存的
+ * 存储任务交给玩家的存储
+ * 商店由于静态单独保存
+ */
+void NPC::save() {
+    if (this->needSave){
+        ofstream fp;
+        fp.open(SAVE_NPC_PATH);
+        fp << "id" << " " << this->id << endl;
+        fp << "nameCN" << " " << this->nameCN << endl;
+        fp << "shopStatus" << " " << this->shopStatus << endl;
+        fp << "missionStatus" << " " << this->missionStatus << endl;
+        fp << "bar" << " " << this->bar << endl;
+        fp << "isVisible" << " " << this->isVisible;
+        // TODO:从存档存档里读入任务
+        fp.close();
+    }
+}
+
+/*
+ * @brief 载入npc的动态的属性
+ * 必须要先构造npc
+ * 文件里存在id的npc
+ * 有些npc不需要一些基本属性,就按照默认的设定来
+ * <!重要>只有需要读取的时候再调用
+ * 商店由于静态单独加载
+ */
+void NPC::load() {
+    // 需要读取
+    ifstream fp;
+    fp.open(SAVE_NPC_PATH);
+    string str;
+    while (getline(fp, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "id" && idLine[1] == this->id) {
+                break;
+            }
+        }
+    }
+    map<string, string> data = Tool::dataMap(fp);
+
+    this->shopStatus = fromString<bool>(data["shopStatus"]);
+    this->battleStatus = fromString<bool>(data["battleStatus"]);
+    this->missionStatus = fromString<bool>(data["missionStatus"]);
+    this->bar = fromString<bool>(data["bar"]);
+    this->isVisible = fromString<bool>(data["isVisible"]);
+    vector<string>missions = Tool::split(data["quests"], ',');
+
+    // TODO:从Missiond的存档里读入对应的id
+    fp.close();
+
+}
+
+/*
+ * @brief 重载流来读取npc的静态信息
+ * 关于文件内的key需要注意:
+ * -必须严格按照现在的格式,无法自由修改key
+ * end结尾
+ * 关于文件内的talk需要注意:
+ * -满足格式 <id>:<type>:<sentence>
+ * -当id为0时说明为日常对话,此时type参数暂时无用
+ * -当id不为0时表示任务的id,此时type对应结构体TalkContent的3个字符串
+ * -<!重要>id的顺序一定要0在第一个,相同id的不分顺序,但一定要在一起
+ */
+istream& operator>>(istream &fpStream, NPC &npc) {
+    string temp;
+    string line;
+    vector<string>t;
+    TalkContent talkContent = {"", "", ""};
+    int missionId;
+    fpStream >> temp >> npc.nameCN;
+    fpStream >> temp >> npc.nameEN;
+    fpStream >> temp >> npc.description;
+    fpStream >> temp >> npc.mapLocation.x;
+    fpStream >> temp >> npc.mapLocation.y;
+    fpStream >> temp >> npc.mapLocation.mapId;
+    fpStream >> temp >> npc.displayChar;
+    fpStream >> temp >> npc.fallingExp;
+    fpStream >> temp >> npc.fallingMoney;
+    fpStream >> temp >> npc.needSave;
+    int lastId = 0;
+    while (temp != "end"){
+        fpStream >> temp >> line;
+
+        t = Tool::split(line, ':');
+
+        missionId = fromString<int>(t[0]);
+        // 读取的id不同, 说明可以存一波了
+        if (lastId != missionId){
+            npc.talkContent.insert(make_pair(lastId, talkContent));
+            // 清空
+            talkContent = {"", "", ""};
+        }
+
+        if (missionId != 0){
+            if (t[1] == "start"){
+                talkContent.start = t[2];
+            }
+            if(t[1] == "end"){
+                talkContent.end = t[2];
+            }
+            // TODO:增加任务进行中的对话
+            if (t[1] == "process"){
+                talkContent.process = "快去";
+            }
+        }
+        else{
+            // 平时对话就直接调用start
+            talkContent.start = t[2];
+        }
+        lastId = missionId;
+    }
+    return fpStream;
+}
+
+
 NPC::NPC(string id):Character() {
-    this->id = std::move(id);
-    //TODO:读取文件初始化
-    this->shopStatus = false;
-    this->battleStatus = false;
-    this->missionStatus = false;
-    this->isVisible = true;
+    this->id = id;
+    this->needSave = false;
+    ifstream fp;
+    string line;
+    fp.open(NPC_FILE_PATH);
+    while (fp.peek() != EOF){
+        getline(fp, line);
+        if (line == "------"){
+            getline(fp, line);
+            vector<string>t = Tool::split(line, ' ');
+            if (t[0] == "id" && t[1] == id){
+                fp >> *this;
+                fp.close();
+                if (this->needSave){
+                    this->load();
+                }
+                else{
+                    this->missionStatus = false;
+                    this->battleStatus = false;
+                    this->shopStatus = false;
+                    this->bar = false;
+                    this->isVisible = false;
+                }
+                break;
+            }
+            else{
+                continue;
+            }
+        }
+        else{
+            continue;
+        }
+    }
+    // 应该替换为try-catch更好?
+    fp.close();
+    cout << "Error";
+    exit(1);
 }
 
 /*
@@ -902,7 +1050,7 @@ void NPC::assignQuest(Player &player) {
             }
             else{
                 // 接任务时的对话
-                cout << talkContent[questList[i].id][0] << endl;
+                cout << talkContent[questList[i].id].start << endl;
                 cout << "接受了任务" << endl;
                 return;
             }
@@ -955,19 +1103,26 @@ bool NPC::getVisibility() {
  */
 void NPC::talk(Player &player) {
     // 可以发任务的才有不同的对话
+
+    // 精灵的对话的特殊检查
+    if (this->id == "NN-10"){
+        if (player.getItem(302) != 0){
+            cout << "王国的走狗, 我和你没什么好说的" << endl;
+        }
+    }
     if (missionStatus){
         Mission *mission = player.getMission(this->id);
         if (mission != nullptr){
             int id = mission->id;
             if(mission->isProcess){
                 // 进行中时的对话
-                cout << talkContent[id][1] << endl;
+                cout << talkContent[id].process << endl;
                 return;
             }
         }
     }
-    // 平时谈话
-    cout << talkContent[0][0] << endl;
+    // 平时谈话, 注意平时谈话是start
+    cout << talkContent[0].start << endl;
 }
 
 /*
@@ -976,11 +1131,12 @@ void NPC::talk(Player &player) {
  * @param player:玩家的引用
  * @return 是否会发生战斗
  */
+//TODO:加入检查
 bool NPC::forceBattleCheck(Player &player) {
     // 拥有皇城通行证
-    if (player.getItem(302) != 0){
+    if (this->battleStatus){
         // 检查npc战斗状态
-        if (this->battleStatus){
+        if (player.getItem(302) != 0){
             cout << "没有什么好说的" << endl;
             return true;
         }
