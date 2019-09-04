@@ -16,7 +16,7 @@
 #include "global.h"
 
 extern Player player;
-extern Map mapNow;
+extern unique_ptr<Map>mapNow;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found
@@ -327,7 +327,7 @@ bool Client::executeCommand(vector<string> commands) {
     }
 
     if (command == maps) {
-        mapNow.showDescription();
+        mapNow->showDescription();
         return false;
     }
 
