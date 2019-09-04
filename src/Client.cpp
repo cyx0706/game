@@ -350,6 +350,15 @@ bool Client::executeCommand(vector<string> commands) {
         player.save();
     }
 
+    if (command == skills) {
+        if (commands.size() != 1) {
+            cout << "wrong usage" << endl;
+        }
+
+        player.showSkills();
+        return false;
+    }
+
     return false;
 }
 

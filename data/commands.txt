@@ -94,3 +94,7 @@ accept 19
 finish 20
 / finish_mission
 // 完成任务
+
+skills 21
+/ skills
+// 查看个人技能
