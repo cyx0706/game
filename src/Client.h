@@ -45,6 +45,8 @@ namespace CMD {
         save,
         accept_mission,
         finish_mission,
+
+        skills,
         };
 }
 
