@@ -48,6 +48,7 @@ bool Package<T>::addItem(int itemId, int number) {
         for (auto iter = this->items.begin();  iter != this->items.end() ; iter++) {
             if ((*iter).id == itemId){
                 (*iter).num += number;
+                return true;
             }
         }
         T item(itemId, number);
@@ -64,6 +65,7 @@ template <class T>
 bool Package<T>::deleteItem(int itemId) {
     for (auto iter = items.begin(); iter != items.end() ; iter++) {
         if ((*iter).id == itemId){
+            if()
             items.erase(iter);
             return true;
         }

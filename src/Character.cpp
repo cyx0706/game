@@ -708,7 +708,7 @@ void Player::deleteBuff(Buff &buff) {
 bool Player::useDrug(string& name, Character &character) {
     for (auto iter = drugBag.items.begin(); iter != drugBag.items.end(); iter++) {
         if ((*iter).nameEN == name){
-            this->drugBag.deleteItem((*iter).id);
+            this->drugBag.deleteItem((*iter).id, 1);
             if((*iter).playerTarget){
                 this->status.HP += (*iter).HP;
                 if (status.HP > maxHP){
