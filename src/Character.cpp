@@ -637,7 +637,7 @@ void Player::save() {
     }
     of << endl;
 
-    //保存player的weapon
+    //保存player的armor
     of << "type" << " " << "armor" << endl;
     for (auto & item : armorBag.items) {
         of << item.id << endl;
@@ -646,7 +646,7 @@ void Player::save() {
 
     //保存player的drug
     of << "type" << " " << "drug" << endl;
-    for (auto & item : armorBag.items) {
+    for (auto & item : drugBag.items) {
         of << item.id << endl;
     }
     of << endl;
@@ -738,6 +738,7 @@ void Player::deadScene() {
     cout << "菜" << endl;
 }
 
+//player读档
 void Player::load() {
     ifstream os;
     os.open(SAVE_PLAYER_PATH);
@@ -770,7 +771,7 @@ void Player::load() {
     this->Lv = fromString<int>(data["Lv"]);
     data.clear();
 
-    //读取位置
+    //读取位置属性值
     while (getline(os, str)) {
         if (!str.empty()) {
             vector<string> idLine = Tool::split(str);
@@ -781,7 +782,110 @@ void Player::load() {
     }
     // 将 对应 type 行到下一个空行之间的内容读取为键值对
     data = Tool::dataMap(os);
+
+    this->mapLocation.y = fromString<int>(data["y"]);
+    this->mapLocation.x = fromString<int>(data["x"]);
+    this->mapLocation.mapId = fromString<int>(data["mapId"]);
+    data.clear();
+
+    //读取skill
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "skill") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的skills按照id赋值
+    while (getline(os, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            skills.emplace_back(str);
+        } else {
+            break;
+        }
+    }
+
+    //读取weapon
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "weapon") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的weapon按照id赋值
+    while (getline(os, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            weaponBag.addItem(fromString<int>(str),1);
+        } else {
+            break;
+        }
+    }
+
+    //读取armor
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "armor") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的armor按照id赋值
+    while (getline(os, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            armorBag.addItem(fromString<int>(str),1);
+        } else {
+            break;
+        }
+    }
+
+    //读取drug
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "drug") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的drug按照id赋值
+    while (getline(os, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            drugBag.addItem(fromString<int>(str),1);
+        } else {
+            break;
+        }
+    }
+
+    //读取item
+    while (getline(os, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "item") {
+                break;
+            }
+        }
+    }
+    // 将 对应 type 行到下一个空行之间的item按照id赋值
+    while (getline(os, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            itemBag.addItem(fromString<int>(str),1);
+        } else {
+            break;
+        }
+    }
+
     os.close();
+
+    status.loadStatus("player",SAVE_STATUS_PATH);
 }
 
 void Player::battleBagShow(SCOORD& pos) {
