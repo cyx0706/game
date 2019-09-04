@@ -408,10 +408,10 @@ void Player::showMission() {
 }
 /*
  * @brief 获取任务
- * 获取的是最前面的未完成的任务
+ * 获取的是委托人的第一个未完成的任务
  * @param assigner: 委托人的id
  */
-Mission* Player::getMission(string assignerId) {
+Mission* Player::getMission(string &assignerId) {
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
         if ((*iter).assigner == assignerId && !((*iter).isFinished)){
             return &(*iter);
@@ -907,7 +907,7 @@ void Player::battleBagShow(SCOORD& pos) {
  */
 void Player::showSkills() {
     for (auto iter = skills.begin(); iter != skills.end() ; iter++) {
-        cout << iter->nameCN << "(" << iter->nameEN << ")" << endl;
+        cout << iter->nameCN << "(" << iter->nameEN << ")" << iter->description << endl;
     }
 }
 // -----------------------NPC类-----------------------
@@ -926,8 +926,16 @@ void NPC::save() {
         fp << "shopStatus" << " " << this->shopStatus << endl;
         fp << "missionStatus" << " " << this->missionStatus << endl;
         fp << "bar" << " " << this->bar << endl;
-        fp << "isVisible" << " " << this->isVisible;
-        // TODO:从存档存档里读入任务
+        fp << "isVisible" << " " << this->isVisible << endl;
+        fp << "quests";
+        for (unsigned int i = 0; i < questList.size(); i++) {
+            fp << questList[i].id;
+            if (i == questList.size()-1){
+                continue;
+            }
+            cout << ",";
+        }
+        cout << endl;
         fp.close();
     }
 }
@@ -961,8 +969,12 @@ void NPC::load() {
     this->bar = fromString<bool>(data["bar"]);
     this->isVisible = fromString<bool>(data["isVisible"]);
     vector<string>missions = Tool::split(data["quests"], ',');
+    // 读取未完成的任务
+    for (auto iter = missions.begin(); iter != missions.end(); iter++) {
+        Mission remainMission(fromString<int>(*iter));
+        this->questList.push_back(remainMission);
+    }
 
-    // TODO:从Missiond的存档里读入对应的id
     fp.close();
 
 }
@@ -1142,22 +1154,23 @@ void NPC::showDescription() {
  */
 void NPC::assignQuest(Player &player) {
     if (!missionStatus){
-        cout << "无法发布任务" << endl;
+        cout << "无任务" << endl;
         return;
     }
-    for (unsigned int i = 0; i < questList.size(); i++) {
-        //第一个未接受的任务
-        if(!questList[i].isAccepted){
-            if (!player.addMission(questList[i])){
-                cout << "任务接受过了" << endl;
-                return;
-            }
-            else{
-                // 接任务时的对话
-                cout << talkContent[questList[i].id].start << endl;
-                cout << "接受了任务" << endl;
-                return;
-            }
+    if(!questList.empty()){
+        if (player.getMission(this->nameEN)){
+            cout << "当前委托人进行的任务未完成" << endl;
+            return;
+        }
+        else {
+            // 任务已经接受并且进行中
+            questList[0].isAccepted = true;
+            questList[0].isProcess = true;
+            player.addMission(questList[0]);
+            // 接任务时的对话
+            cout << talkContent[questList[0].id].start << endl;
+            cout << "接受了任务" << endl;
+            return;
         }
     }
     cout << "没有任务可以接了" << endl;
@@ -1176,7 +1189,7 @@ void NPC::finishQuest(Player &player) {
     Mission* acceptedMission = player.getMission(this->id);
     // 判断是否获取成功
     if (acceptedMission == nullptr){
-        cout << "没有要提交的任务" << endl;
+        cout << "没有可以提交的任务" << endl;
     }
     else{
         // 检查是否可以提交

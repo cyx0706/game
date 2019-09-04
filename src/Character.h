@@ -79,7 +79,7 @@ public:
 
     void showMissions();
     void showMission();
-    Mission* getMission(string assignerId); // 返回任务
+    Mission* getMission(string& assignerId); // 返回任务
     Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
