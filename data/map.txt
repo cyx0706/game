@@ -121,8 +121,8 @@
 [doorPosTop] 10:7:{10,18}
 [doorPosBottom] 10:8:{10,18}
 [barrier] {5,3} {10,5} {7,7}
-[monster] None
-[npc] NN-16:{10,5} NN-15:{7,7} NY-04:{5,3}
+[monster] NY-04:{5,3}
+[npc] NN-16:{10,5} NN-15:{7,7}
 [item] None
 
 

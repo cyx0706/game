@@ -148,9 +148,17 @@ string toString(const T &v){
 
 template <class T>
 T fromString(const string& str){
+    if (str[0] == '-'){
+        istringstream is(str.substr(1));
+        int v;
+        is >> v;
+        return -v;
+    }
     istringstream is(str); // 创建字符串输入流
     T v;
     is >> v; // 从字符串输入流中读取变量v
     return v;
 }
+
+
 #endif //GAME_TEMPLATEHEADER_H

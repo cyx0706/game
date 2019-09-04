@@ -102,6 +102,8 @@ void GameLoop::initGame() {
     player.skills.push_back(skill2);
     Skill skill3("H01");
     player.skills.push_back(skill3);
+    Skill skill4("H02");
+    player.skills.push_back(skill4);
 }
 // 游戏的主循环
 //void GameLoop::loop() {
@@ -186,8 +188,12 @@ void GameLoop::battleLoop(Character &character) {
     int damage;
     cursorInfo.bVisible = true;
     SetConsoleCursorInfo(hOut, &cursorInfo);
+    cout << player.nameCN  << "   VS   " << character.nameCN << endl;
+    cout << "敌人血量" << character.status.HP << endl;
+    cout << endl;
     if (character.status.Speed > player.status.Speed){
-        playerTurn = false;
+        playerTurn = true;
+        enemyTurn = false;
         damage = character.status.ATK - player.status.DEF;
         if (damage <= 0){
             damage = 1;
@@ -231,7 +237,6 @@ void GameLoop::battleLoop(Character &character) {
             cout << "玩家的回合:你的行动" << endl;
             client.base(character);
             // 下一次是敌人行动
-
             playerTurn = false;
             enemyTurn = true;
 

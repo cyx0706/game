@@ -5,6 +5,7 @@ description 无
 fallingExp 50
 fallingMoney 100
 displayChar M
+fallingItem None
 
 id MY-02
 nameEN slime
@@ -13,6 +14,7 @@ description 无
 fallingExp 150
 fallingMoney 100
 displayChar M
+fallingItem None
 
 id MY-03
 nameEN shadow-wolf
@@ -20,6 +22,8 @@ nameCN 影狼
 description 无
 fallingExp 50
 fallingMoney 50
+displayChar M
+fallingItem 305
 
 id MY-04
 nameEN lost-heart
@@ -27,3 +31,5 @@ nameCN 失心者
 description 无
 fallingExp 200
 fallingMoney 200
+displayChar M
+fallingItem 304

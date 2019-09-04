@@ -92,6 +92,7 @@ public:
     void deleteItem(int itemId, int number = 1);
     void eraseItem(int itemId);
     int getItem(int itemId);
+    bool showItem(int itemId);
     bool useDrug(string& name, Character& character);
 
     bool isDead() override ;
@@ -112,7 +113,7 @@ private:
     Weapon weapon;
     Armor armor;
     int Lv;
-    map<string, int>killedMonster;
+//    map<string, int>killedMonster;
 };
 
 class Monster : public Character {
