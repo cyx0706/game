@@ -17,6 +17,7 @@ public:
     static void mapLoop();
     static void initGame();
     static void gameStart();
+    static void npcLoop(NPC &talkedNPC);
 //    static void loop();
     static void commandLoop();
     static void gameInterface();

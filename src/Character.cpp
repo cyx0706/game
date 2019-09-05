@@ -1007,8 +1007,9 @@ istream& operator>>(istream &fpStream, NPC &npc) {
     fpStream >> temp >> npc.fallingMoney;
     fpStream >> temp >> npc.needSave;
     int lastId = 0;
+    fpStream >> temp;
     while (temp != "end"){
-        fpStream >> temp >> line;
+         fpStream >> line;
 
         t = Tool::split(line, ':');
 
@@ -1035,8 +1036,14 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         else{
             // 平时对话就直接调用start
             talkContent.start = t[2];
+
         }
         lastId = missionId;
+        fpStream >> temp;
+        if (temp == "end"){
+            // 后面没有了
+            npc.talkContent.insert(make_pair(missionId, talkContent));
+        }
     }
     return fpStream;
 }
@@ -1066,7 +1073,7 @@ NPC::NPC(string id):Character() {
                     this->bar = false;
                     this->isVisible = false;
                 }
-                break;
+                return;
             }
             else{
                 continue;
@@ -1087,6 +1094,8 @@ NPC::NPC(string id):Character() {
  */
 void NPC::NPCMenu() {
     cout << this->nameCN << ":" << endl;
+    cout << this->description << endl;
+    cout << "可以对话" << endl;
     if (this->bar){
         cout << "你可以在这里休息" << endl;
     }
@@ -1107,7 +1116,7 @@ void NPC::buy(int itemId, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
     }
-    if (this->store.buy(itemId, number, player.money)){
+    if (store.buy(itemId, number, player.money)){
         cout << "买入成功" << endl;
         player.addItem(itemId, number);
     }
@@ -1125,7 +1134,7 @@ void NPC::sell(Item &item, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
     }
-    this->store.sell(item, number, player.money);
+    store.sell(item, number, player.money);
 }
 
 /*

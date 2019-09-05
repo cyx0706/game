@@ -17,7 +17,7 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern Player player;
-//extern vector<NPC>globalNPC;
+extern vector<NPC>globalNPC;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
@@ -551,7 +551,19 @@ int Map::checkEvent() {
             // TODO:NPC对话的接口调用
             auto resultNPC = npcs.find(barrier[i]);
             if (resultNPC != npcs.end()){
-                MessageBox(nullptr, "和NPC对话", "提示", MB_OK);
+                for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
+                    if (iter->id == resultNPC->second){
+                        string tips = "和NPC" + iter->nameCN + "对话";
+                        char t[50];
+                        Tool::stringToChar(tips, t);
+                        MessageBox(nullptr, t, "提示", MB_OK);
+                        GameLoop::npcLoop(*iter);
+                        // 恢复地图
+                        mapNow->initPos = uPos;
+                        mapNow->initMap();
+                        break;
+                    }
+                }
                 return 1;
             }
             auto resultMonster = monsters.find(barrier[i]);
