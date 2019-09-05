@@ -66,8 +66,9 @@ Character::Character():mapLocation({1,1,1}) {
  * @return 返回bool类型, true表示死亡
  */
 bool Character::isDead() {
-    return (this->status.HP < 0);
+    return (this->status.HP <= 0);
 }
+
 
 /*
  * @brief 展示信息
@@ -1081,7 +1082,7 @@ NPC::NPC(string id):Character() {
                     this->battleStatus = false;
                     this->shopStatus = false;
                     this->bar = false;
-                    this->isVisible = false;
+                    this->isVisible = true;
                 }
                 return;
             }
@@ -1116,6 +1117,9 @@ void NPC::NPCMenu() {
     }
     if (this->missionStatus){
         cout << "可以接任务" << endl;
+        for (auto iter = questList.begin(); iter != questList.end(); iter++) {
+            cout << iter->id << iter->nameCN << endl;
+        }
     }
 }
 

@@ -35,7 +35,6 @@ bool SCOORD::operator<(const SCOORD &pos) const {
 bool SCOORD::operator==(const SCOORD &pos) {
     return this->X == pos.X && this->Y == pos.Y;
 }
-
 bool SCOORD::operator==(const SCOORD &pos) const {
     return this->X == pos.X && this->Y == pos.Y;
 }
@@ -585,22 +584,28 @@ int Map::checkEvent() {
                 return 2;
             }
             // npc对话
-            auto resultNPC = npcs.find(barrier[i]);
-            if (resultNPC != npcs.end()){
-                for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
-                    if (iter->id == resultNPC->second){
-                        string tips = "和NPC" + iter->nameCN + "对话";
-                        char t[50];
-                        Tool::stringToChar(tips, t);
-                        MessageBox(nullptr, t, "提示", MB_OK);
-                        GameLoop::npcLoop(*iter);
-                        // 恢复地图
-                        mapNow->initPos = uPos;
-                        mapNow->initMap();
-                        break;
+            // 使用find有时会出错
+            for (auto resultNPC = npcs.begin(); resultNPC != npcs.end() ; resultNPC++) {
+                if (resultNPC->first == barrier[i]){
+                    for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
+                        if (iter->id == resultNPC->second){
+                            string tips = "和" + iter->nameCN + "对话";
+                            char t[50];
+                            Tool::stringToChar(tips, t);
+                            MessageBox(nullptr, t, "提示", MB_OK);
+                            GameLoop::npcLoop(*iter);
+                            // 恢复地图并修正偏差
+                            mapNow->initMap();
+                            mapNow->clean(mapNow->initPos);
+                            mapNow->gotoxy(uPos);
+                            break;
+                        }
                     }
+                    return 1;
                 }
-                return 1;
+                else{
+                    continue;
+                }
             }
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){

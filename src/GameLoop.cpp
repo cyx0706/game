@@ -53,8 +53,9 @@ void GameLoop::mapLoop() {
                 }
                 if (branch == 0){
                     string barrierType = "monster";
-                    mapNow->deleteBarrier(uPos, barrierType);
+//                    mapNow->deleteBarrier(uPos, barrierType);
                 }
+                mapNow->clean(uPos);
                 mapNow->print();
             }
             else{
@@ -163,9 +164,9 @@ void GameLoop::gameStart() {
 void GameLoop::npcLoop(NPC &talkedNPC) {
     system("cls");
     Map::setCursorStatus(true);
-    talkedNPC.showDescription();
     talkedNPC.NPCMenu();
     client.npcBase(talkedNPC);
+    system("cls");
 }
 /*
  * @brief 战斗循环直到一方死亡结束

@@ -233,7 +233,7 @@ nameCN ´ó¼ÀË¾
 nameEN high-priest
 description ÎÞ
 locationX 5
-locationY 6
+locationY 3
 locationMap 1
 display N
 fallingExp 0
