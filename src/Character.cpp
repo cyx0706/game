@@ -602,6 +602,10 @@ void Player::save() {
     m_map["days"] = toString<int>(days);
     m_map["money"] = toString<int>(money);
     m_map["Lv"] = toString<int>(Lv);
+    m_map["maxHP"] = toString<int>(maxHP);
+    m_map["maxMP"] = toString<int>(maxMP);
+    m_map["weapon"] = toString<int>(weapon.id);
+    m_map["armor"] = toString<int>(armor.id);
     auto iter = m_map.begin();
     for(iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
@@ -773,6 +777,10 @@ void Player::load() {
     this->days = fromString<int>(data["days"]);
     this->money = fromString<int>(data["money"]);
     this->Lv = fromString<int>(data["Lv"]);
+    this->maxMP = fromString<int>(data["maxMP"]);
+    this->maxHP = fromString<int>(data["maxHP"]);
+    weapon = Weapon(fromString<int>(data["weapon"]),1);
+    armor = Armor(fromString<int>(data["armor"]),1);
     data.clear();
 
     //读取位置属性值
