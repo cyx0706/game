@@ -17,8 +17,8 @@ id NN-02
 nameCN Õ½Ê¿³¤
 nameEN chief-soldier
 description Õ½Á¦¼ÆÁ¿µ¥Î»
-locationX 4
-locationY 2
+locationX 7
+locationY 16
 locationMap 1
 display N
 fallingExp 0
@@ -35,6 +35,23 @@ talk 3:start:ÎÒÃÇµÄÊ¿±øÔÚ½ø¾üÄ§Íõ³ÇÊ±ÔÚÊ§ÂäÖ®µØÃÔÂ·ÁË£¬ÎÒÏ£ÍûÄã×÷Îª³âºòÀ´Ì½Ë÷Ò»Ì
 talk 3:process:¿ìÈ¥°É
 talk 3:end:°ïÉÏ´óÃ¦ÁË£¬¹úÍõ±İÏÂÒ»¶¨»á¸ßĞËµÄ
 talk 4:start:ÕâÊÇ×îºóµÄ¾öÕ½ÁË£¬ÎÒÃÇµÄÇ°·æ²¿¶ÓÒÑ¾­´òÈëÄ§Íõ³ÇÁË£¬´òÆğ¾«Éñ£¬ÉÙÄê£¬¸ÃÄãÉÏÁË£¡
+end
+------
+id NN-03
+nameCN ÉñÃØÈË
+nameEN mystery-person
+description ÎŞ
+locationX 9
+locationY 17
+locationMap 2
+display N
+fallingExp 0
+fallingMoney 0
+needSave 1
+talk 0:common:ÈçÄãËù¼û£¬ÎÒÊÇÒ»Î»ÈÈĞÄÊĞÃñ
+talk 5:end:ÊÇ°£ÒÁÄÈÈÃÄãÀ´ÕÒÎÒµÄ°É£¬ÎÒÃÇ½øÎİÂıÂıÌ¸
+talk 6:start:ÆäÊµÎÒÀ´ÕâÀïÊÇÏëÖÎÁÆÎÒµÄ¼²²¡£¬ÄãÈç¹ûÔ¸Òâ°ïÎÒ£¬ÎÒ¿ÉÒÔ°ïµ½ÄãµÄÃ¦
+talk 6:end:ÎÒ¸ÃÔõÃ´»Ø±¨Äã£¬ÕâÑù°É£¬ÎÒ¸øÄãĞ´·âĞÅ£¬ÄãÈ¥ÕÒ¾«ÁéÅ®Íõ£¬Ëı»áÖ¸ÒıÄã»ØÈ¥µÄ·½Ïò
 end
 ------
 id NN-04
@@ -64,23 +81,6 @@ fallingExp 0
 fallingMoney 0
 needSave 0
 talk 0:common:¶Ô¡­¶Ô²»¡­¶Ô²»Æğ£¬ÎÒÍü¼ÇÁËÎÒµÄÃû×ÖºÍÊ¹Ãü£¬¶Ô²»Æğ¡­¡­
-end
-------
-id NN-03
-nameCN ÉñÃØÈË
-nameEN mystery-person
-description ÎŞ
-locationX 9
-locationY 17
-locationMap 2
-display N
-fallingExp 0
-fallingMoney 0
-needSave 1
-talk 0:common:ÈçÄãËù¼û£¬ÎÒÊÇÒ»Î»ÈÈĞÄÊĞÃñ
-talk 5:end:ÊÇ°£ÒÁÄÈÈÃÄãÀ´ÕÒÎÒµÄ°É£¬ÎÒÃÇ½øÎİÂıÂıÌ¸
-talk 6:start:ÆäÊµÎÒÀ´ÕâÀïÊÇÏëÖÎÁÆÎÒµÄ¼²²¡£¬ÄãÈç¹ûÔ¸Òâ°ïÎÒ£¬ÎÒ¿ÉÒÔ°ïµ½ÄãµÄÃ¦
-talk 6:end:ÎÒ¸ÃÔõÃ´»Ø±¨Äã£¬ÕâÑù°É£¬ÎÒ¸øÄãĞ´·âĞÅ£¬ÄãÈ¥ÕÒ¾«ÁéÅ®Íõ£¬Ëı»áÖ¸ÒıÄã»ØÈ¥µÄ·½Ïò
 end
 ------
 id NN-07
@@ -233,7 +233,7 @@ nameCN ´ó¼ÀË¾
 nameEN high-priest
 description ÎŞ
 locationX 5
-locationY 6
+locationY 3
 locationMap 1
 display N
 fallingExp 0

@@ -66,8 +66,9 @@ Character::Character():mapLocation({1,1,1}) {
  * @return 返回bool类型, true表示死亡
  */
 bool Character::isDead() {
-    return (this->status.HP < 0);
+    return (this->status.HP <= 0);
 }
+
 
 /*
  * @brief 展示信息
@@ -601,8 +602,12 @@ void Player::save() {
     m_map["days"] = toString<int>(days);
     m_map["money"] = toString<int>(money);
     m_map["Lv"] = toString<int>(Lv);
+    m_map["maxHP"] = toString<int>(maxHP);
+    m_map["maxMP"] = toString<int>(maxMP);
+    m_map["weapon"] = toString<int>(weapon.id);
+    m_map["armor"] = toString<int>(armor.id);
     auto iter = m_map.begin();
-    for(; iter != m_map.end(); iter ++){
+    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -613,7 +618,7 @@ void Player::save() {
     m_map["mapId"] = toString<int>(mapLocation.mapId);
     m_map["x"] = toString<int>(mapLocation.x);
     m_map["y"] = toString<int>(mapLocation.y);
-    for(; iter != m_map.end(); iter ++){
+    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -632,32 +637,36 @@ void Player::save() {
     //保存player的weapon
     of << "type" << " " << "weapon" << endl;
     for (auto & item : weaponBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的armor
     of << "type" << " " << "armor" << endl;
     for (auto & item : armorBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的drug
     of << "type" << " " << "drug" << endl;
     for (auto & item : drugBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的item
     of << "type" << " " << "item" << endl;
     for (auto & item : itemBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     of.close();
+
+    for (auto & quest : quests) {
+        quest.saveMission("player",SAVE_MISSION_PATH);
+    }
 }
 /*
  * @brief buff值累计入玩家的属性
@@ -768,6 +777,10 @@ void Player::load() {
     this->days = fromString<int>(data["days"]);
     this->money = fromString<int>(data["money"]);
     this->Lv = fromString<int>(data["Lv"]);
+    this->maxMP = fromString<int>(data["maxMP"]);
+    this->maxHP = fromString<int>(data["maxHP"]);
+    weapon = Weapon(fromString<int>(data["weapon"]),1);
+    armor = Armor(fromString<int>(data["armor"]),1);
     data.clear();
 
     //读取位置属性值
@@ -816,14 +829,12 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的weapon按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            weaponBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    map<string,string>::iterator iter;
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        weaponBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取armor
     while (getline(os, str)) {
@@ -835,14 +846,11 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的armor按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            armorBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        armorBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取drug
     while (getline(os, str)) {
@@ -854,14 +862,11 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的drug按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            drugBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        drugBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取item
     while (getline(os, str)) {
@@ -873,18 +878,23 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的item按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            itemBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        itemBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     os.close();
 
     status.loadStatus("player",SAVE_STATUS_PATH);
+
+    ifstream ifstream1(SAVE_MISSION_PATH);
+    int i = 0;
+    while (!ifstream1.eof()){
+        quests[i].loadMission(ifstream1,"player",SAVE_MISSION_PATH);
+        i += 1;
+    }
+    ifstream1.close();
 }
 
 void Player::battleBagShow(SCOORD& pos) {
@@ -974,7 +984,6 @@ void NPC::load() {
         Mission remainMission(fromString<int>(*iter));
         this->questList.push_back(remainMission);
     }
-
     fp.close();
 
 }
@@ -1006,11 +1015,13 @@ istream& operator>>(istream &fpStream, NPC &npc) {
     fpStream >> temp >> npc.fallingExp;
     fpStream >> temp >> npc.fallingMoney;
     fpStream >> temp >> npc.needSave;
+    NPC::readLastLine += 10;
     int lastId = 0;
     fpStream >> temp;
     while (temp != "end"){
-         fpStream >> line;
-
+        fpStream >> line;
+        // 读入信息说明读完了这一行
+        NPC::readLastLine++;
         t = Tool::split(line, ':');
 
         missionId = fromString<int>(t[0]);
@@ -1043,6 +1054,8 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         if (temp == "end"){
             // 后面没有了
             npc.talkContent.insert(make_pair(missionId, talkContent));
+            // end占一行
+            NPC::readLastLine++;
         }
     }
     return fpStream;
@@ -1054,11 +1067,18 @@ NPC::NPC(string id):Character() {
     this->needSave = false;
     ifstream fp;
     string line;
+    int round = 0;
     fp.open(NPC_FILE_PATH);
+    while (round < NPC::readLastLine){
+        getline(fp, line);
+        round++;
+    }
     while (fp.peek() != EOF){
         getline(fp, line);
+        readLastLine++;
         if (line == "------"){
             getline(fp, line);
+            readLastLine++;
             vector<string>t = Tool::split(line, ' ');
             if (t[0] == "id" && t[1] == id){
                 fp >> *this;
@@ -1071,7 +1091,7 @@ NPC::NPC(string id):Character() {
                     this->battleStatus = false;
                     this->shopStatus = false;
                     this->bar = false;
-                    this->isVisible = false;
+                    this->isVisible = true;
                 }
                 return;
             }
@@ -1085,7 +1105,9 @@ NPC::NPC(string id):Character() {
     }
     // 应该替换为try-catch更好?
     fp.close();
-    cout << "Error";
+    cout << NPC::readLastLine;
+    cout << this->id;
+    system("pause");
     exit(1);
 }
 
@@ -1104,6 +1126,9 @@ void NPC::NPCMenu() {
     }
     if (this->missionStatus){
         cout << "可以接任务" << endl;
+        for (auto iter = questList.begin(); iter != questList.end(); iter++) {
+            cout << iter->id << iter->nameCN << endl;
+        }
     }
 }
 
@@ -1220,6 +1245,7 @@ void NPC::setVisibility(bool isVisible) {
 /*
  * @brief 获取npc是否隐藏
  * 地图函数需要调用
+ * @return true表示可以显示
  */
 bool NPC::getVisibility() {
     return this->isVisible;

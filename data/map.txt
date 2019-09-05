@@ -8,9 +8,9 @@
 [edgeRight] 20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20
 [doorPosTop] None
 [doorPosBottom] 10:2:{10,1}
-[barrier] {5,6} {5,3} {4,2}
+[barrier] {5,6} {5,3} {7,16}
 [monster] None
-[npc] NN-01:{5,6} NY-01:{5,3} NN-02:{4,2}
+[npc] NN-01:{5,6} NY-01:{5,3} NN-02:{7,16}
 [item] None
 ---
 [id] 2

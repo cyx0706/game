@@ -135,6 +135,11 @@ struct TalkContent{
 
 class NPC : public Character{
 public:
+
+    map<int, TalkContent>talkContent; //不同任务的不同对话
+    bool missionStatus;
+    static int readLastLine;
+
     explicit NPC(string id); // 根据id读取文件构造
     friend istream& operator>>(istream &fpStream, NPC &npc);
     void NPCMenu();
@@ -147,8 +152,6 @@ public:
     bool getVisibility();
     bool isDead() override ;
     void showDescription() override ;
-    map<int, TalkContent>talkContent; //不同任务的不同对话
-    bool missionStatus;
     bool forceBattleCheck(Player &player);
     void save();
     void load();
