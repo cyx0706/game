@@ -11,6 +11,7 @@
 #include "global.h"
 
 static const string MISSION_TXT_PATH = "../data/mission"; // NOLINT
+static const string SAVE_MISSION_PATH = "../save/saveMission";
 
 /*
  * @brief »ŒŒÒ¿‡
@@ -20,6 +21,10 @@ public:
     explicit Mission(int id);
 
     void checkFinished();
+
+    void loadMission(ifstream& f,string owner, string path);
+
+    void saveMission(string owner, string path);
 
 public:
     int id;

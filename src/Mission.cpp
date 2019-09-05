@@ -117,3 +117,95 @@ void Mission::checkFinished() {
     player.addExp(this->bonusExperiencePoint);
 }
 
+void Mission::saveMission(string owner, string path) {
+    ofstream of;
+    of.open(path);
+    map<string,string> m_map;
+    //保存player的单项属性
+    m_map["owner"] = owner;
+    m_map["id"] = toString<int>(id);
+    m_map["nameEN"] = nameEN;
+    m_map["nameCN"] = nameCN;
+    m_map["isAccepted"] = toString<bool>(isAccepted);
+    m_map["isFinished"] = toString<bool>(isFinished);
+    m_map["isProcess"] = toString<bool>(isProcess);
+    m_map["bonusMoney"] = toString<int>(bonusMoney);
+    m_map["bonusExperiencePoint"] = toString<int>(bonusExperiencePoint);
+    m_map["assigner"] = assigner;
+
+    auto iter = m_map.begin();
+    for(; iter != m_map.end(); iter ++){
+        of << iter->first << " " << iter->second << endl;
+    }
+    of << "type requiredItem" << endl;
+    auto iterator = requiredItem.begin();
+    for(;iterator != requiredItem.end(); iterator ++){
+        of << iterator->first << " " << iterator->second << endl;
+    }
+    m_map.clear();
+    of << endl;
+    of.close();
+}
+
+void Mission::loadMission(ifstream& f,string owner, string path) {
+    //ifstream f(path);
+    string str;
+
+    // 找到对应 owner 处
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "owner" && idLine[1] == owner) {
+                break;
+            }
+        }
+    }
+    // 读取为键值对
+    map<string, string> data;
+
+    while (getline(f, str)) {
+        // 读到空行结束
+        if (!str.empty() || str != "requiredItem") {
+            vector<string> keyValue = Tool::split(str);
+
+            data.insert(pair<string, string>(keyValue[0], keyValue[1]));
+        } else {
+            break;
+        }
+    }
+
+    this->id = id;
+    this->nameCN = data["nameCN"];
+    this->nameEN = data["nameEN"];
+    this->isProcess = Tool::boolFromString(data["isProcess"]);
+    this->isFinished = Tool::boolFromString(data["isFinished"]);
+    this->isAccepted = Tool::boolFromString(data["isAccepted"]);
+    this->bonusMoney = fromString<int>(data["bonusMoney"]);
+    this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
+    this->assigner = data["assigner"];
+
+    data.clear();
+
+    // 找到对应 type 处
+    while (getline(f, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "type" && idLine[1] == "requiredItem") {
+                break;
+            }
+        }
+    }
+    while (getline(f, str)) {
+        // 读到空行结束
+        if (!str.empty()) {
+            vector<string> keyValue = Tool::split(str);
+
+            requiredItem.insert(pair<int, int>(fromString<int>(keyValue[0]), fromString<int>(keyValue[1])));
+        } else {
+            break;
+        }
+    }
+
+    f.close();
+}
+

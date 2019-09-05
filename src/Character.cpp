@@ -603,7 +603,7 @@ void Player::save() {
     m_map["money"] = toString<int>(money);
     m_map["Lv"] = toString<int>(Lv);
     auto iter = m_map.begin();
-    for(; iter != m_map.end(); iter ++){
+    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -614,7 +614,7 @@ void Player::save() {
     m_map["mapId"] = toString<int>(mapLocation.mapId);
     m_map["x"] = toString<int>(mapLocation.x);
     m_map["y"] = toString<int>(mapLocation.y);
-    for(; iter != m_map.end(); iter ++){
+    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -633,32 +633,36 @@ void Player::save() {
     //保存player的weapon
     of << "type" << " " << "weapon" << endl;
     for (auto & item : weaponBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的armor
     of << "type" << " " << "armor" << endl;
     for (auto & item : armorBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的drug
     of << "type" << " " << "drug" << endl;
     for (auto & item : drugBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     //保存player的item
     of << "type" << " " << "item" << endl;
     for (auto & item : itemBag.items) {
-        of << item.id << endl;
+        of << toString(item.id) << " " << toString(item.num) << endl;
     }
     of << endl;
 
     of.close();
+
+    for (auto & quest : quests) {
+        quest.saveMission("player",SAVE_MISSION_PATH);
+    }
 }
 /*
  * @brief buff值累计入玩家的属性
@@ -817,14 +821,12 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的weapon按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            weaponBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    map<string,string>::iterator iter;
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        weaponBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取armor
     while (getline(os, str)) {
@@ -836,14 +838,11 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的armor按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            armorBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        armorBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取drug
     while (getline(os, str)) {
@@ -855,14 +854,11 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的drug按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            drugBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        drugBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     //读取item
     while (getline(os, str)) {
@@ -874,18 +870,23 @@ void Player::load() {
         }
     }
     // 将 对应 type 行到下一个空行之间的item按照id赋值
-    while (getline(os, str)) {
-        // 读到空行结束
-        if (!str.empty()) {
-            itemBag.addItem(fromString<int>(str),1);
-        } else {
-            break;
-        }
+    data = Tool::dataMap(os);
+    for (iter = data.begin(); iter != data.end(); iter ++) {
+        itemBag.addItem(fromString<int>(iter->first),fromString<int>(iter->second));
     }
+    data.clear();
 
     os.close();
 
     status.loadStatus("player",SAVE_STATUS_PATH);
+
+    ifstream ifstream1(SAVE_MISSION_PATH);
+    int i = 0;
+    while (!ifstream1.eof()){
+        quests[i].loadMission(ifstream1,"player",SAVE_MISSION_PATH);
+        i += 1;
+    }
+    ifstream1.close();
 }
 
 void Player::battleBagShow(SCOORD& pos) {
