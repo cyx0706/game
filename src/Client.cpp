@@ -764,6 +764,12 @@ void Client::npcBase(NPC &npc) {
         // 获得命令行输入
         getline(cin, str);
 
+        // 与NPC互动状态可以随时退出命令行
+        // 退出命令为 esc quit exit 任一
+        if (str == "esc" || str == "quit" || str == "exit") {
+            return;
+        }
+
         // 将命令行获取的命令进行规整
         str = Tool::clean(str);
 
