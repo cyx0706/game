@@ -12,7 +12,6 @@ extern "C"{
 #include <map>
 
 #include "Item.h"
-#include "Character.h"
 #include "global.h"
 
 struct SCOORD:public COORD{

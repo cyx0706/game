@@ -2,6 +2,7 @@
 // Created by cyx on 2019/8/30.
 //
 #include <fstream>
+#include <iomanip>
 #include "Package.h"
 #include "Item.h"
 #include "Character.h"
@@ -11,12 +12,19 @@ extern Player player;
 
 /*
  * @brief 读取文件初始化商店
+ * 物品比较少所以对单个文件读三次, 判断T类型来构造物品
  */
 Shop::Shop() {
     ifstream fp;
     fp.open(SHOP_FILE_PATH);
     fp >> this->weaponPackage;
+    fp.close();
+
+    fp.open(SHOP_FILE_PATH);
     fp >> this->armorPackage;
+    fp.close();
+
+    fp.open(SHOP_FILE_PATH);
     fp >> this->drugPackage;
     fp.close();
 }
@@ -129,38 +137,77 @@ bool Shop::sell(Item &item, int number, int &money) {
  * @brief 商店的菜单
  *
  */
-void Shop::shopMenu() {
-    cout << "武器" << endl
-         << "英文名:名称:价格:数目" << endl;
-    cout << "------------------------------" << endl;
+void Shop::shopMenu(SCOORD &pos) {
+    pos.X+=2; // 右移一些
+    Map::gotoxy(pos);
+    cout << "\t\t\t商店";
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << "\t\t\t武器";
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << setiosflags(ios_base::left);
+    cout << setw(20) << "中文名"
+         << setw(20) << "英文名"
+         << setw(4) << "价格"
+         << setw(4) << "个数";
+
+    pos.Y++;
+    Map::gotoxy(pos);
     for (auto iter = weaponPackage.items.begin();  iter!= weaponPackage.items.end() ; iter++) {
-        cout << (*iter).nameEN << " : "
-             << (*iter).nameCN << " : "
-             << (*iter).boughtPrice << " : "
-             << (*iter).num << endl;
-
+        cout << setw(20) << (*iter).nameCN
+             << setw(20) << (*iter).nameEN
+             << setw(4) << (*iter).boughtPrice
+             << setw(4) << (*iter).num;
+        pos.Y++;
+        Map::gotoxy(pos);
     }
-    cout << "防具" << endl
-         << "英文名:名称:价格:数目" << endl;
-    cout << "------------------------------" << endl;
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << "\t\t\t防具";
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << setw(20) << "中文名"
+         << setw(20) << "英文名"
+         << setw(4) << "价格"
+         << setw(4) << "个数";
+
+    pos.Y++;
+    Map::gotoxy(pos);
     for (auto iter = armorPackage.items.begin();  iter!= armorPackage.items.end() ; iter++) {
-        cout << (*iter).nameEN << " : "
-             << (*iter).nameCN << " : "
-             << (*iter).boughtPrice << " : "
-             << (*iter).num << endl;
-
+        cout << setw(20) << (*iter).nameCN
+             << setw(20) << (*iter).nameEN
+             << setw(4) << (*iter).boughtPrice
+             << setw(4) << (*iter).num;
+        pos.Y++;
+        Map::gotoxy(pos);
     }
-    cout << "药物" << endl
-         << "英文名:名称:价格:数目" << endl;
-    cout << "------------------------------" << endl;
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << "\t\t\t药物";
+
+    pos.Y++;
+    Map::gotoxy(pos);
+    cout << setw(20) << "中文名"
+         << setw(20) << "英文名"
+         << setw(4) << "价格"
+         << setw(4) << "个数";
+
+    pos.Y++;
+    Map::gotoxy(pos);
     for (auto iter = drugPackage.items.begin();  iter!= drugPackage.items.end() ; iter++) {
-        cout << (*iter).nameEN << " : "
-             << (*iter).nameCN << " : "
-             << (*iter).boughtPrice << " : "
-             << "∞" << endl;
-
+        cout << setw(20) << (*iter).nameCN
+             << setw(20) << (*iter).nameEN
+             << setw(4) << (*iter).boughtPrice
+             << setw(4) << "∞";
+        pos.Y++;
+        Map::gotoxy(pos);
     }
-    cout << "使用命令purchase和sell来进行交易" << endl;
 }
 
 /*

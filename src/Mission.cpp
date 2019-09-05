@@ -107,13 +107,13 @@ void Mission::showDescription() {
  * 若 已达到任务完成条件 输出"任务完成  "  从玩家背包中减去 任务所需物品的相应数量
  *                                    给玩家增加 经验 和 金钱
  */
-void Mission::checkFinished() {
+bool Mission::checkFinished() {
     // 遍历 任务所需的相应物品 比较 玩家背包中现有的数量
     for (const auto& one : this->requiredItem) {
         // 如果 玩家背包里对应物品的数量少于所需的数量 输出"任务未完成" return
         if (player.getItem(one.first) < one.second) {
             cout << "任务未完成" << endl;
-            return;
+            return false;
         }
     }
 
@@ -121,13 +121,7 @@ void Mission::checkFinished() {
     for (const auto& one : this->requiredItem) {
         player.deleteItem(one.first, one.second);
     }
-
-    // 任务结算
-    cout << "任务完成" << endl;
-    this->isFinished = true;
-    // 玩家 增加金钱 和 经验
-    player.addMoney(this->bonusMoney);
-    player.addExp(this->bonusExperiencePoint);
+    return true;
 }
 
 

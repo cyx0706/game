@@ -164,7 +164,7 @@ void GameLoop::gameStart() {
 void GameLoop::npcLoop(NPC &talkedNPC) {
     system("cls");
     Map::setCursorStatus(true);
-    talkedNPC.NPCMenu();
+    talkedNPC.NPCMenu(player);
     client.npcBase(talkedNPC);
     system("cls");
 }
@@ -262,7 +262,7 @@ void GameLoop::battleLoop(Character &character) {
                     continue;
                 }
                 else{
-                    cout << iter->name << "剩余" << iter->duration << "回合";
+                    cout << iter->name << "\t剩余" << iter->duration << "回合";
                     curPos.Y++;
                     Map::gotoxy(curPos);
                 }
@@ -323,7 +323,7 @@ void GameLoop::battleLoop(Character &character) {
 
             // 击败敌人
             if (character.isDead()){
-                cout << "你击败了" << character.nameCN << "获得了胜利";
+                cout << "你击败了" << character.nameCN << "获得了胜利" << endl;
                 cout << "获得经验" << character.fallingExp << endl;
                 cout << "获得金钱" << character.fallingMoney << endl;
                 player.addExp(character.fallingExp);

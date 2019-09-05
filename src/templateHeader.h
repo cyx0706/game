@@ -131,7 +131,10 @@ istream& operator>>(istream &fpStream, Package<T> &pack) {
     int number;
     while (fpStream.peek() != EOF){
         fpStream >> temp >> itemId >> number;
-        if (temp == typeid(T).name()){
+        // 获取的类名为数字+类名, 好像这个还和编译器有关
+        string className = typeid(T).name();
+        className = className.substr(1);
+        if (temp == className){
             T item(itemId, number);
             pack.items.push_back(item);
         }

@@ -12,7 +12,6 @@
 #include "Item.h"
 #include "Skill.h"
 #include "Mission.h"
-#include "Map.h"
 #include "global.h"
 
 static const string NPC_FILE_PATH = "../data/npcs.txt"; // 初始化npc的文件
@@ -57,7 +56,6 @@ class Player : public Character {
 public:
 //    Player(Package& package, Armor armor, Weapon weapon, Status status);
     Player();
-    string talkTo;
     int money;
     int maxHP;
     int maxMP;
@@ -79,18 +77,13 @@ public:
 
     void showMissions();
     void showMission();
-    Mission* getMission(string& assignerId); // 返回任务
+    Mission* getMission(string &assignerName); // 返回任务
     Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
     void showSkills();
     void battleBagShow(SCOORD &pos);
     void playerMenu(); //提示命令
-
-
-//    void showKilledMonster();
-//    int getKilledMonster(string id);
-//    void addKilledMonster();
 
     void addItem(int itemId, int number = 1);
     void deleteItem(int itemId, int number = 1);
@@ -117,8 +110,8 @@ private:
     Weapon weapon;
     Armor armor;
     int Lv;
-//    map<string, int>killedMonster;
 };
+
 
 class Monster : public Character {
 public:
@@ -142,7 +135,7 @@ public:
 
     explicit NPC(string id); // 根据id读取文件构造
     friend istream& operator>>(istream &fpStream, NPC &npc);
-    void NPCMenu();
+    void NPCMenu(Player &player);
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);
@@ -163,7 +156,6 @@ private:
     bool bar;
     bool isVisible;
     bool needSave;
-    //方法
 };
 
 

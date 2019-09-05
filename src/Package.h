@@ -5,6 +5,7 @@
 #define GAME_PACKAGE_H
 #include <iostream>
 #include <vector>
+#include "Map.h"
 #include "Item.h"
 #include "global.h"
 #include "templateHeader.h"
@@ -15,7 +16,7 @@ public:
     Shop();
     bool buy(int itemId, int number, int &money);
     bool sell(Item &item, int number, int &money);
-    void shopMenu();
+    void shopMenu(SCOORD &pos);
     void save();
     Package<Weapon> weaponPackage;
     Package<Armor> armorPackage;

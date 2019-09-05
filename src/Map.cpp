@@ -9,8 +9,9 @@
 #include "GameLoop.h"
 #include "Map.h"
 #include "Tool.h"
-#include "global.h"
 #include "templateHeader.h"
+#include "Character.h"
+#include "global.h"
 extern unique_ptr<Map>mapNow;
 extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;

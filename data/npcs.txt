@@ -84,8 +84,8 @@ talk 0:common:对…对不…对不起，我忘记了我的名字和使命，对不起……
 end
 ------
 id NN-07
-nameCN 守卫
-nameEN guard
+nameCN 商人
+nameEN businessman
 description 无
 locationX 15
 locationY 10
@@ -94,7 +94,7 @@ display N
 fallingExp 0
 fallingMoney 0
 needSave 0
-talk 0:common:国王有令，没有通行证的人无法通过
+talk 0:common:来看看吧
 end
 ------
 id NN-08
@@ -231,7 +231,7 @@ end
 id NY-01
 nameCN 大祭司
 nameEN high-priest
-description 无
+description 王国的祭祀
 locationX 5
 locationY 3
 locationMap 1

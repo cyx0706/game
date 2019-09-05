@@ -189,10 +189,15 @@ void Player::levelUp() {
         this->status.Speed += 1;
         this->status.HP = maxHP;
         this->status.MP = maxMP;
-        if (Lv == 3){
+        if (Lv == 2){
             // 学习新的技能
-            cout << "学会了新的技能" << endl;
-            Skill newSkill("B04");
+            cout << "学会了新的技能:攻击态势" << endl;
+            Skill newSkill("B02");
+            this->skills.push_back(newSkill);
+        }
+        if(Lv == 3){
+            cout << "学会新的技能:一刀999" << endl;
+            Skill newSkill("A02");
             this->skills.push_back(newSkill);
         }
         nextLvExp = 100 * (Lv + 1);
@@ -393,13 +398,12 @@ void Player::showMissions() {
  * @param missionId: 任务的id
  */
 void Player::showMission() {
-    cout << "当前进行中的任务:" << endl;
+    cout << "-------当前进行中的任务:-------" << endl;
     bool flag = false;
     for (auto iter = quests.begin(); iter != quests.end(); iter++) {
         if ((*iter).isProcess){
             flag = true;
-            cout << "任务" << (*iter).id << (*iter).nameCN << "(" << (*iter).nameEN << ")" << endl;
-            // TODO:任务描述
+            iter->showDescription();
         }
     }
     if (!flag){
@@ -410,11 +414,14 @@ void Player::showMission() {
 /*
  * @brief 获取任务
  * 获取的是委托人的第一个未完成的任务
- * @param assigner: 委托人的id
+ * @param assigner: 委托人的名字的英文
  */
-Mission* Player::getMission(string &assignerId) {
+Mission* Player::getMission(string &assignerName) {
+    if (quests.empty()){
+        return nullptr;
+    }
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
-        if ((*iter).assigner == assignerId && !((*iter).isFinished)){
+        if ((*iter).assigner == assignerName && !((*iter).isFinished)){
             return &(*iter);
         }
     }
@@ -422,6 +429,9 @@ Mission* Player::getMission(string &assignerId) {
 }
 
 Mission* Player::getMission(int missionId) {
+    if (quests.empty()){
+        return nullptr;
+    }
     for (auto iter = quests.begin(); iter != quests.end() ; iter++) {
         if ((*iter).id == missionId){
             return &(*iter);
@@ -435,16 +445,17 @@ Mission* Player::getMission(int missionId) {
 void Player::showStatus() {
     cout << "玩家姓名:" << this->nameCN << endl;
     cout << "等级:" << this->Lv << endl;
-    cout << "生命:" << this->status.HP;
-    cout << "法力值:" << this->status.MP;
-    cout << "速度:" << this->status.Speed;
-    cout << "防御:" << this->status.DEF;
-    cout << "攻击:" << this->status.ATK << endl;
+    cout << "生命:\t" << this->status.HP << endl;
+    cout << "法力值:\t" << this->status.MP;
+    cout << "速度:\t" << this->status.Speed;
+    cout << "防御:\t" << this->status.DEF;
+    cout << "攻击:\t" << this->status.ATK << endl;
 }
 
 /*
  * @brief 个人信息面板
  */
+//TODO:优化UI
 void Player::playerMenu() {
     cout << "玩家菜单" << endl;
     cout << "你可以使用下面的命令查看个人的信息" << endl;
@@ -888,6 +899,9 @@ void Player::load() {
     status.loadStatus("player",SAVE_STATUS_PATH);
 }
 
+/*
+ * @brief 战斗时背包的显示
+ */
 void Player::battleBagShow(SCOORD& pos) {
     if (!this->drugBag.items.empty()){
         for (auto iter = drugBag.items.begin(); iter != drugBag.items.end() ; iter++) {
@@ -1018,6 +1032,7 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         missionId = fromString<int>(t[0]);
         // 读取的id不同, 说明可以存一波了
         if (lastId != missionId){
+            cout << lastId;
             npc.talkContent.insert(make_pair(lastId, talkContent));
             // 清空
             talkContent = {"", "", ""};
@@ -1078,9 +1093,15 @@ NPC::NPC(string id):Character() {
                     this->load();
                 }
                 else{
+                    // 商店npc
+                    if (id == "NN-07"){
+                        this->shopStatus = true;
+                    }
+                    else{
+                        this->shopStatus = false;
+                    }
                     this->missionStatus = false;
                     this->battleStatus = false;
-                    this->shopStatus = false;
                     this->bar = false;
                     this->isVisible = true;
                 }
@@ -1105,22 +1126,65 @@ NPC::NPC(string id):Character() {
 /*
  * @brief 用户菜单
  */
-void NPC::NPCMenu() {
-    cout << this->nameCN << ":" << endl;
-    cout << this->description << endl;
-    cout << "可以对话" << endl;
-    if (this->bar){
-        cout << "你可以在这里休息" << endl;
-    }
-    if (this->shopStatus){
-        cout << "可以交易" << endl;
-    }
+void NPC::NPCMenu(Player &player) {
+    // 接任务的面板
     if (this->missionStatus){
-        cout << "可以接任务" << endl;
-        for (auto iter = questList.begin(); iter != questList.end(); iter++) {
-            cout << iter->id << iter->nameCN << endl;
+        cout << this->nameCN << endl;
+        cout << this->description << endl;
+        if (player.getMission(this->nameEN) != nullptr){
+            cout << "当前任务进行中" << endl;
+            return;
         }
+        else{
+            cout << "有可以接受的任务:" << endl;
+            cout << questList[0].nameCN << endl;
+        }
+        return;
     }
+
+    // 无商店的状态
+    if (!this->shopStatus){
+        cout << this->nameCN << endl;
+        cout << this->description << endl;
+        return;
+    }
+    // 商店面板
+    // 对话要简单
+    SCOORD curPos = {40, 1};
+    for (int i = 0; i < 90; i++) {
+        cout << "*";
+    }
+    curPos.X = 40;
+    for (int j = 1; j <= 27; j++) {
+        Map::gotoxy(curPos);
+        cout << "*";
+        curPos.Y++;
+    }
+    curPos = {0, 1};
+    for (int j = 1; j < 10; j++) {
+        Map::gotoxy(curPos);
+        cout << "*";
+        curPos.Y++;
+    }
+    Map::gotoxy(curPos);
+    for (int k = 0; k < 40; k++) {
+        cout << "*";
+    }
+
+    curPos = {18,1};
+    Map::gotoxy(curPos);
+    cout << this->nameCN;
+
+    curPos = {10,6};
+    Map::gotoxy(curPos);
+    cout << "你拥有的钱: " << player.money << endl;
+
+    curPos = {41, 1};
+    Map::gotoxy(curPos);
+    store.shopMenu(curPos);
+
+    curPos = {0, 11};
+    Map::gotoxy(curPos);
 }
 
 /*
@@ -1191,12 +1255,12 @@ void NPC::assignQuest(Player &player) {
             // 任务已经接受并且进行中
             questList[0].isAccepted = true;
             questList[0].isProcess = true;
+            // 接任务时的对话
+            cout << talkContent[questList[0].id].start << endl;
             player.addMission(questList[0]);
             // 删除这个任务
             questList.erase(questList.begin());
-            // 接任务时的对话
-            cout << talkContent[questList[0].id].start << endl;
-            cout << "接受了任务" << endl;
+
             return;
         }
     }
@@ -1213,7 +1277,7 @@ void NPC::finishQuest(Player &player) {
         cout << "无法提交任务" << endl;
     }
     // 获取任务
-    Mission* acceptedMission = player.getMission(this->id);
+    Mission* acceptedMission = player.getMission(this->nameEN);
     // 判断是否获取成功
     if (acceptedMission == nullptr){
         cout << "没有可以提交的任务" << endl;
@@ -1221,8 +1285,15 @@ void NPC::finishQuest(Player &player) {
     else{
         // 检查是否可以提交
         // 若可以则要修改任务属性为完成
-        // 由于引用同时修改了npc的任务的属性
-        acceptedMission->checkFinished();
+        if (acceptedMission->checkFinished()){
+            // 任务结算
+            cout << this->talkContent[acceptedMission->id].end << endl;
+            acceptedMission->isFinished = true;
+            acceptedMission->isProcess = false;
+            // 玩家 增加金钱 和 经验
+            player.addMoney(acceptedMission->bonusMoney);
+            player.addExp(acceptedMission->bonusExperiencePoint);
+        }
     }
 }
 

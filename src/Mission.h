@@ -10,7 +10,7 @@
 #include "Item.h"
 #include "global.h"
 
-static const string MISSION_TXT_PATH = "../data/mission"; // NOLINT
+static const string MISSION_TXT_PATH = "../data/mission.txt"; // NOLINT
 
 /*
  * @brief »ŒŒÒ¿‡
@@ -20,7 +20,7 @@ public:
     explicit Mission(int id);
 
     void showDescription();
-    void checkFinished();
+    bool checkFinished();
 
 public:
     int id;
