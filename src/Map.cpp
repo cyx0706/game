@@ -207,20 +207,18 @@ void Map::nextMap(int mapId) {
 bool Map::checkBottomMapTransition() {
     for (int i = 0; i < doorPosBottom.size(); i++) {
         if (uPos.X == doorPosBottom[i]){
+            int t = mapNow->roadTo[uPos];
+            // 不可进入
+            if(!canEnter(t)){
+                string tips = "现在还不能进入";
+                char strPtr[50];
+                Tool::stringToChar(tips, strPtr);
+                MessageBox(nullptr, strPtr, "提示", MB_OK);
+            }
             system("cls");
             cout << "Waiting......";
             Sleep(2000);
             system("cls");
-            int t = mapNow->roadTo[uPos];
-            if (t == 0){
-                for (auto j = mapNow->roadTo.begin(); j != mapNow->roadTo.begin(); j++) {
-                    cout << (*j).second;
-                }
-                cout << "Wrong !" << endl;
-                cout << uPos.X << " " << uPos.Y;
-                Sleep(5000);
-                exit(1);
-            }
             mapNow->nextMap(t);
             // 绘制地图
             mapNow->initMap();

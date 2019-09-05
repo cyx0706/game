@@ -82,6 +82,8 @@ void GameLoop::commandLoop() {
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     NPC::readLastLine = 0; // 初始化
+    player = Player();
+    player.nameCN = "cyx";
     mapNow = make_unique<Map>();
     mapNow->load(1);
     Skill skill1("A01");
@@ -136,10 +138,6 @@ void GameLoop::gameStart() {
             player.nameCN = input;
             player.nameEN = "None";
 
-            Scene scene(1);
-            ifstream fp;
-            fp.open("../src/scene1.txt");
-            fp >> scene; // 展示剧情
             mapLoop();
         }
         else if (input == "load"){
@@ -184,7 +182,7 @@ void GameLoop::battleLoop(Character &character) {
     SCOORD curPos;
     system("cls");
 
-    cout << "遭遇怪物" << endl;
+    cout << "和" << character.nameCN << "的战斗" << endl;
     if (character.status.Speed > player.status.Speed){
         playerTurn = true;
         enemyTurn = false;

@@ -16,12 +16,14 @@ void dynamicScene5();
 
 class Scene {
 public:
+    explicit Scene(int sceneId);
     int sceneId;
     string content;
-    void show();
+    string path;
+    static void show(string& sentence);
     void branch();
+    void displayScene();
     friend istream& operator>>(istream &fpStream, Scene &scene);
-    explicit Scene(int sceneId);
 };
 
 

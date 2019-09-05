@@ -4,54 +4,68 @@
 #include "Scene.h"
 #include "global.h"
 #include "Character.h"
+#include "Client.h"
+#include "GameLoop.h"
 #include <windows.h>
 #include <iostream>
+#include <fstream>
+extern vector<NPC>globalNPC;
 extern Player player;
+extern ifstream sceneFp;
 /*
  * @brief 构造函数,初始化地图的id用于branch的判断
  */
 Scene::Scene(int sceneId) {
     this->sceneId = sceneId;
+    this->path = "../data/";
+    this->path = path +"scene" + toString(sceneId) + ".txt";
 }
 /*
  * @brief 展示读入的剧情,延时50s打印
  *
  */
-void Scene::show() {
-    for (auto i = content.begin(); i != content.end() ; i++) {
-        cout << *i;
-        Sleep(50);
+void Scene::show(string& sentence) {
+    for (auto i = sentence.begin(); i != sentence.end() ; i++) {
+        cout << (*i);
+        Sleep(25);
     }
+    cout << endl;
 }
 /*
- * @brief 从文件读入剧情并展示出来
+ * @brief 迭代文件实现每次读入一行的内容
  *
  * @param fpStream: 输入流的引用, scene:剧情的引用
  */
 istream& operator>>(istream &fpStream, Scene &scene) {
     string temp;
-    fpStream >> temp >> scene.sceneId;
-    while ( temp != "[end]"){
-        fpStream >> temp;
+    fpStream >> temp;
+    if ( temp != "[end]"){
+        fpStream >> scene.content;
         if (temp == "[branch]"){
             scene.branch();
-            continue;
+            return fpStream;
         }
-        // TODO:调用战斗接口
-        if (temp == "[battle]"){
-            //战斗
-            continue;
-        }
-        fpStream >> scene.content;
+
         if (temp == "[template]"){
             int start = scene.content.find_first_of('<');
             int end = scene.content.find_first_of('>');
             // 替换模板为用户名
-            scene.content.replace(start, end - start + 2 ,player.nameCN);
+            scene.content.replace(start, end - start + 1 ,player.nameCN);
         }
-        scene.show();
+        Scene::show(scene.content);
     }
     return fpStream;
+}
+
+void Scene::displayScene() {
+    sceneFp.open(path);
+    string t;
+    int sId;
+    sceneFp >> t >> sId;
+    while (sceneFp.peek()!=EOF){
+        sceneFp >> *this;   // 读入并展示剧情
+    }
+    sceneFp.close();
 }
 
 void Scene::branch() {
@@ -79,23 +93,47 @@ void dynamicScene1(){
     int choose;
     cin >> choose;
     if (choose == 1){
-        cout << "你在角落里发现了一本古怪封装的书\n"
-                "你尝试打开，但书纹丝不动。\n"
-                "这一定是用魔法封印了吧，捡到宝了\n";
+        string t =  "你在角落里发现了一本古怪封装的书。你尝试打开，但书纹丝不动。";
+        Scene::show(t);
         cout << "【系统提示】:获得神秘的日记" << endl;
+        do{
+            cout << "那么，怎么办呢: 1搜查这个屋子, 2前往楼下" << endl;
+            cin >> choose;
+            if (choose == 1){
+                t = "你什么都没有发现";
+                Scene::show(t);
+                cout << endl;
+            }
+        }while (choose != 2);
     }
-    do{
-        cout << "那么，怎么办呢: 1搜查这个屋子, 2前往楼下" << endl;
-        cin >> choose;
-        if (choose == 1){
-            cout << "你什么也没发现" << endl;
-        }
-    }while (choose != 2);
+
 }
 
 void dynamicScene2(){
-    // TODO:调用装备命令行
-    // 判断是否装备上了
+    player.addItem(5);
+    player.addItem(101);
+    while (true){
+        // 判断是否装备上了
+        GameLoop::commandLoop();
+        if(player.getWeapon()->id == 5 && player.getArmor()->id == 101){
+            break;
+        }
+        else{
+            cout << "你需要装备上全村最好的剑和全村最好的甲" << endl;
+            system("pause");
+        }
+    }
+
+    GameLoop::battleLoop(globalNPC[1]); //和战士长打
+    string t = "你合格了,我有一些任务要交给你办";
+    Scene::show(t);
+    t = "【系统提示】:你可以在战士长处接受任务";
+    Scene::show(t);
+    t = "【系统提示】:你获得了皇城的通行证";
+    Scene::show(t);
+    player.addItem(302);
+    system("pause");
+    system("cls");
 }
 
 void dynamicScene3(){

@@ -65,6 +65,10 @@ public:
 
     bool equipArmor(string &name);
     bool equipWeapon(string &name);
+    bool takeOffArmor(string &name);
+    bool takeOffWeapon(string &name);
+    Armor* getArmor();
+    Weapon* getWeapon();
 
     void showArmors();
     void showWeapons();

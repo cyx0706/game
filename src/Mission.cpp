@@ -203,3 +203,6 @@ void Mission::loadMission(ifstream& f,string owner, string path) {
     f.close();
 }
 
+void Mission::showDescription() {
+    cout << this->description << endl;
+}

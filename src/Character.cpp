@@ -9,9 +9,10 @@
 #include "Tool.h"
 #include "templateHeader.h"
 #include "global.h"
-
+#include "GameLoop.h"
+extern vector<NPC>globalNPC;
+extern unique_ptr<Map>mapNow;
 // ----------------------Character类----------------------
-
 /*
  * @brief 完整的构造函数
  *
@@ -206,27 +207,66 @@ void Player::levelUp() {
 }
 
 /*
+ * @brief 脱下装备
+ */
+bool Player::takeOffArmor(string &name) {
+    if (this->armor.id == 0){
+        cout << "当前无装备" << endl;
+        return false;
+    }
+    else{
+        if (this->armor.nameEN != name){
+            cout << "未装备指定的防具" << endl;
+            return false;
+        }
+        if(armorBag.addItem(this->armor.id, 1)){
+            cout << "背包满了" << endl;
+            return false;
+        }
+        else{
+            cout << "成功脱下装备" << this->armor.nameCN << endl;
+            this->armor = Armor();
+            this->status.ATK -= armor.ATK;
+            this->status.DEF -= armor.DEF;
+            this->status.Speed -= armor.Speed;
+            return true;
+        }
+    }
+}
+
+bool Player::takeOffWeapon(string &name) {
+    if (this->weapon.id == 0){
+        cout << "当前无装备" << endl;
+        return false;
+    }
+    else{
+        if (this->weapon.nameEN != name){
+            cout << "未装备指定的防具" << endl;
+            return false;
+        }
+        if(weaponBag.addItem(this->weapon.id, 1)){
+            cout << "背包满了" << endl;
+            return false;
+        }
+        else{
+            cout << "成功脱下装备" << this->weapon.nameCN << endl;
+            // 空装备
+            this->weapon = Weapon();
+            this->status.ATK -= weapon.ATK;
+            this->status.DEF -= weapon.DEF;
+            this->status.Speed -= weapon.Speed;
+            return true;
+        }
+    }
+}
+
+/*
  * @brief 装备防具
  * 卸下防具就是装备空防具
  * @param 命令行传入的字符串name
- * 当name=None时表示卸下防具
  */
 bool Player::equipArmor(string &name) {
     Armor oldArmor = this->armor;
-    // 卸下装备
-    if( name == "None"){
-        if (oldArmor.id == 0){
-            cout << "当前没有装备" << endl;
-            return false;
-        }
-        armorBag.addItem(oldArmor.id, 1);
-        this->status.Speed -= oldArmor.Speed;
-        this->status.DEF -= oldArmor.DEF;
-        this->status.ATK -= oldArmor.ATK;
-        this->armor = Armor();
-        cout << "卸下了" << oldArmor.nameCN << endl;
-        return true;
-    }
     for (auto iter = armorBag.items.begin(); iter != armorBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->armor = *iter;
@@ -235,6 +275,10 @@ bool Player::equipArmor(string &name) {
             this->status.ATK += ((*iter).ATK - oldArmor.ATK);
             this->status.DEF += ((*iter).DEF - oldArmor.DEF);
             this->status.Speed += ((*iter).Speed - oldArmor.Speed);
+            // 当前有装备
+            if (oldArmor.id != 0){
+                cout << "卸下了" << oldArmor.nameCN << endl;
+            }
             cout << "防具" << (*iter).nameCN << "装备成功" << endl;
             return true;
         }
@@ -245,24 +289,10 @@ bool Player::equipArmor(string &name) {
 
 /*
  * @brief 装备武器
- * 卸下武器就是装备空武器
  * @param 命令行传入的字符串name
  */
 bool Player::equipWeapon(string& name) {
     Weapon oldWeapon = this->weapon;
-    if (name == "None"){
-        if (oldWeapon.id == 0){
-            cout << "当前没有装备" << endl;
-            return false;
-        }
-        weaponBag.addItem(oldWeapon.id, 1);
-        this->status.ATK -= oldWeapon.ATK;
-        this->status.DEF -= oldWeapon.DEF;
-        this->status.Speed -= oldWeapon.Speed;
-        this->weapon = Weapon();
-        cout << "卸下了" << oldWeapon.nameCN << endl;
-        return true;
-    }
     for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->weapon = *iter;
@@ -271,6 +301,9 @@ bool Player::equipWeapon(string& name) {
             this->status.ATK += ((*iter).ATK - oldWeapon.ATK);
             this->status.DEF += ((*iter).DEF - oldWeapon.DEF);
             this->status.Speed += ((*iter).Speed - oldWeapon.Speed);
+            if (oldWeapon.id != 0){
+                cout << "卸下了" << oldWeapon.nameCN << endl;
+            }
             cout << "武器" << (*iter).nameCN << "装备成功" << endl;
             return true;
         }
@@ -934,6 +967,15 @@ void Player::showSkills() {
         cout << iter->nameCN << "(" << iter->nameEN << ")" << iter->description << endl;
     }
 }
+
+Armor* Player::getArmor() {
+    return &(this->armor);
+}
+
+Weapon* Player::getWeapon() {
+    return &(this->weapon);
+}
+
 // -----------------------NPC类-----------------------
 
 /*
@@ -999,6 +1041,8 @@ void NPC::load() {
         this->questList.push_back(remainMission);
     }
     fp.close();
+    // 读入属性
+    this->status.loadStatus(this->id, READ_MONSTER_STATUS_PATH);
 
 }
 
@@ -1041,7 +1085,6 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         missionId = fromString<int>(t[0]);
         // 读取的id不同, 说明可以存一波了
         if (lastId != missionId){
-            cout << lastId;
             npc.talkContent.insert(make_pair(lastId, talkContent));
             // 清空
             talkContent = {"", "", ""};
@@ -1136,6 +1179,22 @@ NPC::NPC(string id):Character() {
  * @brief 用户菜单
  */
 void NPC::NPCMenu(Player &player) {
+    // 只有精灵王后才有的一个特殊战斗
+    if (this->id == "NY-02"){
+        if(forceBattleCheck(player)){
+            GameLoop::battleLoop(globalNPC[16]);
+            Mission* mission = player.getMission(2);
+            mission->isProcess = false;
+            mission->isFinished = true;
+            player.addMoney(mission->bonusMoney);
+            player.addExp(mission->bonusExperiencePoint);
+            // 从地图上删除
+            SCOORD npcPos = {short(globalNPC[16].mapLocation.x), short(globalNPC[16].mapLocation.y)};
+            string type = "npc";
+            mapNow->deleteBarrier(npcPos, type);
+            return;
+        }
+    }
     // 接任务的面板
     if (this->missionStatus){
         cout << this->nameCN << endl;
@@ -1356,13 +1415,12 @@ void NPC::talk(Player &player) {
  * @param player:玩家的引用
  * @return 是否会发生战斗
  */
-
-//TODO:加入检查
 bool NPC::forceBattleCheck(Player &player) {
     // 拥有皇城通行证
     if (this->battleStatus){
         // 检查npc战斗状态
         if (player.getItem(302) != 0){
+            // TODO:加入一个场景
             cout << "没有什么好说的" << endl;
             return true;
         }

@@ -11,7 +11,7 @@
 #include "global.h"
 
 static const string MISSION_TXT_PATH = "../data/mission.txt"; // NOLINT
-static const string SAVE_MISSION_PATH = "../save/saveMission";
+static const string SAVE_MISSION_PATH = "../save/saveMission.txt";
 
 /*
  * @brief »ŒŒÒ¿‡

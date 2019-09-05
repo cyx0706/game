@@ -31,10 +31,8 @@ public:
 
 class Buff : public Status{
 public:
-//    explicit Buff(string id);
 
     Buff();
-
     Buff(string name, string description, int duration);
 
     // Ù–‘
@@ -43,8 +41,6 @@ public:
     int duration;
     //∑Ω∑®
     void showDescription();
-    void saveBuff(string owner);
-    void loadBuff(string owner);
 };
 
 #endif //GAME_STATUS_H
