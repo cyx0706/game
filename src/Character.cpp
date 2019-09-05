@@ -974,7 +974,6 @@ void NPC::load() {
         Mission remainMission(fromString<int>(*iter));
         this->questList.push_back(remainMission);
     }
-
     fp.close();
 
 }
@@ -1006,11 +1005,13 @@ istream& operator>>(istream &fpStream, NPC &npc) {
     fpStream >> temp >> npc.fallingExp;
     fpStream >> temp >> npc.fallingMoney;
     fpStream >> temp >> npc.needSave;
+    NPC::readLastLine += 10;
     int lastId = 0;
     fpStream >> temp;
     while (temp != "end"){
-         fpStream >> line;
-
+        fpStream >> line;
+        // 读入信息说明读完了这一行
+        NPC::readLastLine++;
         t = Tool::split(line, ':');
 
         missionId = fromString<int>(t[0]);
@@ -1043,6 +1044,8 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         if (temp == "end"){
             // 后面没有了
             npc.talkContent.insert(make_pair(missionId, talkContent));
+            // end占一行
+            NPC::readLastLine++;
         }
     }
     return fpStream;
@@ -1054,11 +1057,18 @@ NPC::NPC(string id):Character() {
     this->needSave = false;
     ifstream fp;
     string line;
+    int round = 0;
     fp.open(NPC_FILE_PATH);
+    while (round < NPC::readLastLine){
+        getline(fp, line);
+        round++;
+    }
     while (fp.peek() != EOF){
         getline(fp, line);
+        readLastLine++;
         if (line == "------"){
             getline(fp, line);
+            readLastLine++;
             vector<string>t = Tool::split(line, ' ');
             if (t[0] == "id" && t[1] == id){
                 fp >> *this;
@@ -1085,7 +1095,9 @@ NPC::NPC(string id):Character() {
     }
     // 应该替换为try-catch更好?
     fp.close();
-    cout << "Error";
+    cout << NPC::readLastLine;
+    cout << this->id;
+    system("pause");
     exit(1);
 }
 
@@ -1220,6 +1232,7 @@ void NPC::setVisibility(bool isVisible) {
 /*
  * @brief 获取npc是否隐藏
  * 地图函数需要调用
+ * @return true表示可以显示
  */
 bool NPC::getVisibility() {
     return this->isVisible;

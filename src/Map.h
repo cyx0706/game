@@ -18,8 +18,11 @@ extern "C"{
 struct SCOORD:public COORD{
     bool operator<(const SCOORD &pos);
     bool operator>(const SCOORD &pos);
+    bool operator==(const SCOORD &pos);
+
     bool operator<(const SCOORD &pos) const ;
     bool operator>(const SCOORD &pos) const ;
+    bool operator==(const SCOORD &pos) const ;
 };
 
 

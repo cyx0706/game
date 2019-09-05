@@ -18,7 +18,6 @@ public:
     static void initGame();
     static void gameStart();
     static void npcLoop(NPC &talkedNPC);
-//    static void loop();
     static void commandLoop();
     static void gameInterface();
     static void battleLoop(Character &character);
