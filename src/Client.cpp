@@ -557,32 +557,48 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc) {
     // 表示数值转换为 int 类型
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
     if (command == purchase) {
-        if (commands.size() != 2 || commands.size() != 4) {
-            cout << "wrong usage" << endl;
+        if (commands.size() == 2) {
+            ifstream f(NAMEID_TXT_PATH);
+            map<string, string>data = Tool::dataMap(f);
+
+            auto iter = data.find(commands[1]);
+            if (iter == data.end()) {
+                cout << "no such item" << endl;
+                return false;
+            }
+
+            int itemId = fromString<int>(data[commands[1]]);
+
+            if (commands.size() == 2){
+                npc.buy(itemId, 1, player);
+            } else{
+                npc.buy(itemId, fromString<int>(commands[3]), player);
+            }
             return false;
         }
 
-        if (commands.size() == 4 && commands[2] != "-number") {
-            cout << "wrong usage" << endl;
+        if (commands.size() == 4 && commands[2] == "-number")
+        {
+            ifstream f(NAMEID_TXT_PATH);
+            map<string, string>data = Tool::dataMap(f);
+
+            auto iter = data.find(commands[1]);
+            if (iter == data.end()) {
+                cout << "no such item" << endl;
+                return false;
+            }
+
+            int itemId = fromString<int>(data[commands[1]]);
+
+            if (commands.size() == 2){
+                npc.buy(itemId, 1, player);
+            } else{
+                npc.buy(itemId, fromString<int>(commands[3]), player);
+            }
             return false;
         }
 
-        ifstream f(NAMEID_TXT_PATH);
-        map<string, string>data = Tool::dataMap(f);
-
-        auto iter = data.find(commands[1]);
-        if (iter == data.end()) {
-            cout << "no such item" << endl;
-            return false;
-        }
-
-        int itemId = fromString<int>(data[commands[1]]);
-
-        if (commands.size() == 2){
-            npc.buy(itemId, 1, player);
-        } else{
-            npc.buy(itemId, fromString<int>(commands[3]), player);
-        }
+        cout << "wrong usage" << endl;
         return false;
     }
 
