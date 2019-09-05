@@ -13,17 +13,18 @@ HANDLE hOut;
 CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 CONSOLE_CURSOR_INFO cursorInfo;
 unique_ptr<Map>mapNow;
-//vector<NPC>globalNPC(16);
-vector<int>battleBannedCommands = {};
-vector<int>talkBannedCommands = {};
-vector<int>commonBannedCommands = {};
-vector<int>shopBannedCommands = {};
+vector<NPC>globalNPC;
 SCOORD uPos = {1, 1};
+Shop NPC::store = Shop();
+int NPC::readLastLine = 0; // 优化读取
+// NN-05被吃了......
+vector<string>npcName = {"NN-01", "NN-02", "NN-03", "NN-04", "NN-06", "NN-07", "NN-08",
+                         "NN-09", "NN-10", "NN-11", "NN-12", "NN-13", "NN-14", "NN-15", "NN-16",
+                         "NY-01", "NY-02"};
 int main() {
     // 做一些检查工作
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));
-//    std::cout << "Hello, World!" << std::endl;
     GameLoop::initGame();
     GameLoop::mapLoop();
     return 0;

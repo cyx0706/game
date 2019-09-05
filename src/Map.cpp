@@ -17,11 +17,11 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern Player player;
-//extern vector<NPC>globalNPC;
+extern vector<NPC>globalNPC;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
-    return (this->X < pos.X || this->Y < pos.Y);
+    return ((this->X < pos.X) || (this->Y < pos.Y));
 }
 bool SCOORD::operator>(const SCOORD &pos) {
     return !(this->operator<(pos));
@@ -31,6 +31,12 @@ bool SCOORD::operator>(const SCOORD &pos) const {
 }
 bool SCOORD::operator<(const SCOORD &pos) const {
     return this->X < pos.X || this->Y < pos.Y;
+}
+bool SCOORD::operator==(const SCOORD &pos) {
+    return this->X == pos.X && this->Y == pos.Y;
+}
+bool SCOORD::operator==(const SCOORD &pos) const {
+    return this->X == pos.X && this->Y == pos.Y;
 }
 
 
@@ -145,7 +151,6 @@ void Map::initBarrier() {
         auto m = npcs.find(*iter);
         if (m!=npcs.end()){
             // 画npc
-            //TODO:全局NPC里找一下看看是不是不显示
             chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
         }
         m = monsters.find(*iter);
@@ -418,6 +423,37 @@ void Map::load(int mapId) {
        }
     }
     fp.close();
+    // 剔除不显示的npc
+    // 要确保npc位置和地图中保存的一致
+    bool flag = true; //标志位
+    for (auto iter = globalNPC.begin(); iter != globalNPC.end(); iter++) {
+        if (iter->mapLocation.mapId == this->id && !(iter->getVisibility())){
+            // 删除这个npc
+            SCOORD npcPos = {short(iter->mapLocation.x), short(iter->mapLocation.y)};
+            for (auto j = npcs.begin(); j != npcs.end(); j++) {
+                // 确保有这个npc
+                // 确认无误后可以删除
+                if (j->first == npcPos && j->second == iter->nameEN){
+                    npcs.erase(npcPos);
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag){
+                cout << "坐标位置不对应" << endl;
+                cout << iter->nameEN;
+                system("pause");
+                exit(0);
+            }
+            for (auto i = barrier.begin(); i != barrier.end(); i++) {
+                if (*i == npcPos){
+                    // 一次删一个
+                    barrier.erase(i);
+                    break;
+                }
+            }
+        }
+    }
 }
 
 /*
@@ -548,11 +584,28 @@ int Map::checkEvent() {
                 return 2;
             }
             // npc对话
-            // TODO:NPC对话的接口调用
-            auto resultNPC = npcs.find(barrier[i]);
-            if (resultNPC != npcs.end()){
-                MessageBox(nullptr, "和NPC对话", "提示", MB_OK);
-                return 1;
+            // 使用find有时会出错
+            for (auto resultNPC = npcs.begin(); resultNPC != npcs.end() ; resultNPC++) {
+                if (resultNPC->first == barrier[i]){
+                    for (auto iter = globalNPC.begin(); iter != globalNPC.end() ; iter++) {
+                        if (iter->id == resultNPC->second){
+                            string tips = "和" + iter->nameCN + "对话";
+                            char t[50];
+                            Tool::stringToChar(tips, t);
+                            MessageBox(nullptr, t, "提示", MB_OK);
+                            GameLoop::npcLoop(*iter);
+                            // 恢复地图并修正偏差
+                            mapNow->initMap();
+                            mapNow->clean(mapNow->initPos);
+                            mapNow->gotoxy(uPos);
+                            break;
+                        }
+                    }
+                    return 1;
+                }
+                else{
+                    continue;
+                }
             }
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){

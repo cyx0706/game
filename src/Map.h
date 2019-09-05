@@ -18,8 +18,11 @@ extern "C"{
 struct SCOORD:public COORD{
     bool operator<(const SCOORD &pos);
     bool operator>(const SCOORD &pos);
+    bool operator==(const SCOORD &pos);
+
     bool operator<(const SCOORD &pos) const ;
     bool operator>(const SCOORD &pos) const ;
+    bool operator==(const SCOORD &pos) const ;
 };
 
 
@@ -28,7 +31,7 @@ public:
     friend class GameLoop;
     int id;  //根据这个在文件里查找
     char edgeSign;
-    COORD initPos;  // 记录用户的初始化位置
+    SCOORD initPos;  // 记录用户的初始化位置
     void deleteBarrier(SCOORD& pos, string& type);
     void initMap();
     void move(int key); // 用户移动来调用这个

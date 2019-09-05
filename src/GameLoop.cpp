@@ -14,16 +14,15 @@
 #include "Client.h"
 
 extern HANDLE hOut;
-extern vector<int>commonBannedCommands;
 using CMD::CommandLists;
 extern Client client;
 extern Player player;
 extern unique_ptr<Map>mapNow;
-//extern vector<NPC>globalNPC;
+extern vector<NPC>globalNPC;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
-//extern vector<Monster>globalMonster;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
+extern vector<string>npcName;
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
@@ -54,8 +53,9 @@ void GameLoop::mapLoop() {
                 }
                 if (branch == 0){
                     string barrierType = "monster";
-                    mapNow->deleteBarrier(uPos, barrierType);
+//                    mapNow->deleteBarrier(uPos, barrierType);
                 }
+                mapNow->clean(uPos);
                 mapNow->print();
             }
             else{
@@ -81,6 +81,7 @@ void GameLoop::commandLoop() {
 // 初始化
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    NPC::readLastLine = 0; // 初始化
     mapNow = make_unique<Map>();
     mapNow->load(1);
     Skill skill1("A01");
@@ -94,7 +95,14 @@ void GameLoop::initGame() {
     player.maxMP = 100;
     player.maxHP = 150;
     player.addItem(201, 2);
+    for (unsigned int i = 0; i < npcName.size(); i++) {
+        NPC aNPC(npcName[i]);
+        globalNPC.push_back(aNPC);
+    }
+
 }
+
+
 
 void GameLoop::gameInterface(){
     string title = "暴咕攻城狮的异世界狂想曲";
@@ -153,6 +161,13 @@ void GameLoop::gameStart() {
 
 }
 
+void GameLoop::npcLoop(NPC &talkedNPC) {
+    system("cls");
+    Map::setCursorStatus(true);
+    talkedNPC.NPCMenu();
+    client.npcBase(talkedNPC);
+    system("cls");
+}
 /*
  * @brief 战斗循环直到一方死亡结束
  * 函数负责战斗的逻辑处理

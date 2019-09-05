@@ -15,10 +15,10 @@
 #include "Map.h"
 #include "global.h"
 
-
+static const string NPC_FILE_PATH = "../data/npcs.txt"; // 初始化npc的文件
+static const string SAVE_NPC_PATH = "../save/saveNPC.txt"; // npc动态读取的文件
 static const string SAVE_PLAYER_PATH = "../save/savePlayerAttribute.txt";
 static const string READ_MONSTER_PATH = "../data/monsters.txt";
-
 //
 //class Player;
 //class NPC;
@@ -76,9 +76,10 @@ public:
     void addBuff(Buff &buff);
     void deleteBuff(Buff &buff);
     bool addMission(Mission &mission);
+
     void showMissions();
-    void showMission(int missionId);
-    Mission* getMission(string assignerId); // 返回任务
+    void showMission();
+    Mission* getMission(string& assignerId); // 返回任务
     Mission* getMission(int missionId);
 
     void showStatus(); //显示人物属性和装备
@@ -125,32 +126,43 @@ public:
     vector<Item>fallingItem;
 };
 
+struct TalkContent{
+    string start;
+    string process;
+    string end;
+};
+
 
 class NPC : public Character{
 public:
+
+    map<int, TalkContent>talkContent; //不同任务的不同对话
+    bool missionStatus;
+    static int readLastLine;
+
     explicit NPC(string id); // 根据id读取文件构造
-    NPC(NPC& npc) = default;
+    friend istream& operator>>(istream &fpStream, NPC &npc);
     void NPCMenu();
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);
     void buy(int itemId, int number, Player& player);
     void sell(Item &item, int number, Player& player);
-//    void assignRest(Player& player);
     void setVisibility(bool isVisible);
     bool getVisibility();
     bool isDead() override ;
     void showDescription() override ;
-    map<int, string[3]>talkContent; //不同任务的不同对话
     bool forceBattleCheck(Player &player);
+    void save();
+    void load();
 private:
-    Shop store;
+    static Shop store;
     vector <Mission> questList;
     bool shopStatus;
     bool battleStatus;
-    bool missionStatus;
     bool bar;
     bool isVisible;
+    bool needSave;
     //方法
 };
 

@@ -197,3 +197,11 @@ description 你菌鸽鸽什么时候骗过你了？？？
 boughtPrice 10
 canDrop true
 canSell true
+
+id 307
+nameCN 白眼狼皮
+nameEN white-eyed-wolf-skin
+description 这块神秘的狼皮，散发着诡异的光芒
+boughtPrice 10
+canDrop true
+canSell true

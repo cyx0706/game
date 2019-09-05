@@ -46,7 +46,6 @@ NY-02 精灵王后（elf-queen）
 
 NY-03 狼人（werewolf）
 
-
 NY-04 巨龙（法夫纳<Fafnir>）
 
 

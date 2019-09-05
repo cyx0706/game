@@ -8,7 +8,6 @@
 #include "global.h"
 #include "templateHeader.h"
 extern Player player;
-#define SHOP_FILE_PATH "../data/map.txt"
 
 /*
  * @brief 读取文件初始化商店

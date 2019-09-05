@@ -20,33 +20,36 @@ namespace CMD {
      * @brief 所有的命令 并 对应一个数字
      */
     enum CommandLists {
+        // 战斗命令
         attack = 1,
-        skill,
-        flee,
-        use,
+        skill = 2,
+        flee = 3,
+        use = 4,
 
-        purchase,
-        sell,
+        // npc互动命令
+        purchase = 5,
+        sell = 6,
+        talk = 14,
+        accept_mission = 19,
+        finish_mission = 20,
 
-        status,
-        equipment,
-        package,
-        item,
-        equip,
-        takeoff,
-        discard,
-        talk,
+        // 普通命令
+        status = 7,
+        skills = 21,
+        equipment = 8,
+        package = 9,
+        item = 10,
+        equip = 11,
+        takeoff = 12,
+        discard = 13,
+        maps = 15,
+        mission = 17,
 
-        maps,
+        // 帮助命令
+        help = 16,
 
-        help,
-        mission,
-
-        save,
-        accept_mission,
-        finish_mission,
-
-        skills,
+        // 保存命令
+        save = 18,
         };
 }
 
@@ -58,20 +61,7 @@ using namespace CMD;
  * @note 用法
  * @code
  * auto client = new Client();
- *
- * string str;
- * getline(cin, str);
- *
- * vector<string> bannedCommands;
- * // 添加 禁止命令到 bannedCommands 中，若没有为空
- *
- * while(true) {
- *     client->base(str, bannedCommands);
- *
- *     getline(cin, str);
- *
- *     // 添加 循环结束条件
- * }
+ * client->base();
  * @endcode
  */
 class Client {
@@ -84,7 +74,7 @@ public:
 
     bool executeCommand(vector<string> commands);
     bool battleExecuteCommand(vector<string> commands, Character& target);
-    bool shopExecuteCommand(vector<string> commands, NPC& npc);
+    bool npcExecuteCommand(vector<string> commands, NPC& npc);
 
     bool analyse(vector<string> commands, vector<int>& bannedCommands);
 

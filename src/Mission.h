@@ -20,6 +20,7 @@ class Mission {
 public:
     explicit Mission(int id);
 
+    void showDescription();
     void checkFinished();
 
     void loadMission(ifstream& f,string owner, string path);
@@ -30,6 +31,7 @@ public:
     int id;
     string nameEN;
     string nameCN;
+    string description;
     bool isAccepted;
     bool isFinished;
     bool isProcess;

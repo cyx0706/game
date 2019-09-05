@@ -8,12 +8,11 @@
 #include "Item.h"
 #include "global.h"
 #include "templateHeader.h"
+static const string SHOP_FILE_PATH = "../save/shop.txt";
 
 class Shop{
 public:
     Shop();
-    Shop(Shop &shop)= default;
-
     bool buy(int itemId, int number, int &money);
     bool sell(Item &item, int number, int &money);
     void shopMenu();
