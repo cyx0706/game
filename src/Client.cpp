@@ -226,7 +226,21 @@ bool Client::executeCommand(vector<string> commands) {
             return false;
         }
 
-        player.showStatus();
+        auto armor = player.getArmor();
+        auto weapon = player.getWeapon();
+
+        if (weapon->id != 0) {
+            weapon->showDescription();
+        }else {
+            cout << "无武器" << endl;
+        }
+
+        if (armor->id != 0) {
+            armor->showDescription();
+        }else{
+            cout << "无防具" << endl;
+        }
+
         return false;
     }
 
@@ -307,9 +321,9 @@ bool Client::executeCommand(vector<string> commands) {
         }
 
         if (fromString<int>(data[commands[1]]) < 100) {
-            player.equipWeapon((string &) "None");
+            player.takeOffWeapon(commands[1]);
         } else {
-            player.equipArmor((string &) "None");
+            player.takeOffArmor(commands[1]);
         }
 
         return false;
@@ -687,6 +701,8 @@ void Client::base() {
     vector<string> commands;
 
     while (true) {
+        cin.clear();
+        cin.ignore();
         // 获得命令行输入
         getline(cin, str);
 
@@ -734,6 +750,8 @@ void Client::base(Character& target) {
     vector<string> commands;
 
     while (true) {
+        cin.clear();
+        cin.ignore();
         // 获得命令行输入
         getline(cin, str);
 
@@ -777,6 +795,8 @@ void Client::npcBase(NPC &npc) {
     vector<string> commands;
 
     while (true) {
+        cin.clear();
+        cin.ignore();
         // 获得命令行输入
         getline(cin, str);
 
