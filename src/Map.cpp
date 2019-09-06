@@ -214,6 +214,7 @@ bool Map::checkBottomMapTransition() {
                 char strPtr[50];
                 Tool::stringToChar(tips, strPtr);
                 MessageBox(nullptr, strPtr, "提示", MB_OK);
+                return false;
             }
             system("cls");
             cout << "Waiting......";
@@ -247,9 +248,8 @@ bool Map::checkTopMapTransition() {
             system("cls");
             // 生成指针并读取数据
             int t = mapNow->roadTo[uPos];
-            if (t == 0){
-                cout << "Wrong !" << endl;
-                cout << uPos.X << " " << uPos.Y;
+            if (!Map::canEnter(t)){
+                return false;
             }
             mapNow->nextMap(t);
             // 绘制地图
@@ -649,6 +649,15 @@ void Map::checkSpecialScene() {
  * @return true:可以进入
  */
 bool Map::canEnter(int mapId) {
+    //
+    if (mapId == 4){
+        if (player.getItem(301)){
+            return true;
+        }
+        if (!player.getMission(2)){
+            return false;
+        }
+    }
     if (mapId == 6){
         // 判断任务8是否已经接受
         if (!player.getMission(8)){

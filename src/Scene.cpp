@@ -134,6 +134,7 @@ void dynamicScene2(){
     player.addItem(302);
     system("pause");
     system("cls");
+    globalNPC[1].setVisibility(true);
 }
 
 void dynamicScene3(){

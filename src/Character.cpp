@@ -12,6 +12,7 @@
 #include "GameLoop.h"
 extern vector<NPC>globalNPC;
 extern unique_ptr<Map>mapNow;
+extern SCOORD uPos;
 // ----------------------Character类----------------------
 /*
  * @brief 完整的构造函数
@@ -1188,10 +1189,13 @@ void NPC::NPCMenu(Player &player) {
             mission->isFinished = true;
             player.addMoney(mission->bonusMoney);
             player.addExp(mission->bonusExperiencePoint);
+            system("pause");
             // 从地图上删除
             SCOORD npcPos = {short(globalNPC[16].mapLocation.x), short(globalNPC[16].mapLocation.y)};
             string type = "npc";
             mapNow->deleteBarrier(npcPos, type);
+            mapNow->initPos = uPos;
+            mapNow->initMap();
             return;
         }
     }
@@ -1393,6 +1397,7 @@ void NPC::talk(Player &player) {
         if (player.getItem(302) != 0){
             cout << "王国的走狗, 我和你没什么好说的" << endl;
         }
+        return;
     }
     if (missionStatus){
         Mission *mission = player.getMission(this->id);
@@ -1422,6 +1427,7 @@ bool NPC::forceBattleCheck(Player &player) {
         if (player.getItem(302) != 0){
             // TODO:加入一个场景
             cout << "没有什么好说的" << endl;
+            system("pause");
             return true;
         }
     }

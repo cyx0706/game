@@ -699,10 +699,8 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc) {
 void Client::base() {
     string str;
     vector<string> commands;
-
     while (true) {
-        cin.clear();
-        cin.ignore();
+
         // 获得命令行输入
         getline(cin, str);
 
@@ -748,10 +746,8 @@ void Client::base() {
 void Client::base(Character& target) {
     string str;
     vector<string> commands;
-
     while (true) {
-        cin.clear();
-        cin.ignore();
+
         // 获得命令行输入
         getline(cin, str);
 
@@ -793,10 +789,8 @@ void Client::base(Character& target) {
 void Client::npcBase(NPC &npc) {
     string str;
     vector<string> commands;
-
     while (true) {
-        cin.clear();
-        cin.ignore();
+
         // 获得命令行输入
         getline(cin, str);
 
