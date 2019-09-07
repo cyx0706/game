@@ -18,10 +18,7 @@ static const string NPC_FILE_PATH = "../data/npcs.txt"; // 初始化npc的文件
 static const string SAVE_NPC_PATH = "../save/saveNPC.txt"; // npc动态读取的文件
 static const string SAVE_PLAYER_PATH = "../save/savePlayerAttribute.txt";
 static const string READ_MONSTER_PATH = "../data/monsters.txt";
-//
-//class Player;
-//class NPC;
-//class Monster;
+class Mission;
 struct Location{
     int mapId;
     int x;

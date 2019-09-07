@@ -13,7 +13,6 @@
 #include <regex>
 #include <map>
 #include <iomanip>
-
 using std::cout;
 using std::cin;
 using std::vector;

@@ -208,7 +208,7 @@ void Mission::showDescription() {
     cout << this->description << endl;
 }
 
-void Mission::missinFinish(Player &player) {
+void Mission::missionFinish(Player &player) {
     this->isProcess = false;
     this->isFinished = true;
     cout << "任务完成" << endl;

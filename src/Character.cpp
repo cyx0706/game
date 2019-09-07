@@ -1212,6 +1212,7 @@ bool NPC::NPCMenu(Player &player) {
     // 商店有单独的商店界面
     return false;
 }
+
 /*
  * @brief 商店的主页面
  */
@@ -1379,8 +1380,14 @@ void NPC::finishQuest(Player &player) {
             // 任务结算
             // 任务6的场景
             if (acceptedMission->id == 6){
-                Scene s(5);
-                s.displayScene();
+                // 有日记
+                if (player.getItem(308)){
+                    Scene s(5);
+                    s.displayScene();
+                }
+                else{
+                    // 一个新的场景
+                }
             }
             cout << this->talkContent[acceptedMission->id].end << endl;
             acceptedMission->isFinished = true;
@@ -1453,7 +1460,7 @@ bool NPC::specialEvent(Player &player) {
             // 有通行证直接开打
             GameLoop::battleLoop(globalNPC[16]);
             mission = player.getMission(2);
-            mission->missinFinish(player);
+            mission->missionFinish(player);
             system("pause");
             system("cls");
             // 从地图上删除
@@ -1466,7 +1473,7 @@ bool NPC::specialEvent(Player &player) {
             mission = player.getMission(7);
             if (mission!= nullptr && !mission->isFinished){
                 cout << this->talkContent[7].end << endl;
-                mission->missinFinish(player);
+                mission->missionFinish(player);
                 cout << "有新的任务可接" << endl;
                 system("pause");
                 system("cls");
@@ -1481,7 +1488,7 @@ bool NPC::specialEvent(Player &player) {
         Monster m("MY-05");
         GameLoop::battleLoop(m);
         cout << this->talkContent[9].end << endl;
-        mission->missinFinish(player);
+        mission->missionFinish(player);
         cout << "有新的任务可接" << endl;
         system("pause");
         system("cls");
@@ -1489,7 +1496,7 @@ bool NPC::specialEvent(Player &player) {
     }
     mission = player.getMission(5);
     if (this->id == "NN-03" && !mission->isFinished){
-        mission->missinFinish(player);
+        mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
         cout << "有新的任务可接" << endl;
         system("pause");
@@ -1498,7 +1505,7 @@ bool NPC::specialEvent(Player &player) {
     }
     mission = player.getMission(10);
     if (this->id == "NN-13" && !mission->isFinished){
-        mission->missinFinish(player);
+        mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
         cout << "有新的任务可接" << endl;
         system("pause");

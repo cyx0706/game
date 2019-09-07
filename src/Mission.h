@@ -10,10 +10,9 @@
 #include "Item.h"
 #include "Character.h"
 #include "global.h"
-
 static const string MISSION_TXT_PATH = "../data/mission.txt"; // NOLINT
 static const string SAVE_MISSION_PATH = "../save/saveMission.txt";
-
+class Player;
 /*
  * @brief »ŒŒÒ¿‡
  */
@@ -23,7 +22,7 @@ public:
 
     void showDescription();
     bool checkFinished();
-    void missinFinish(Player &player);
+    void missionFinish(Player &player);
     void loadMission(ifstream& f,string owner, string path);
 
     void saveMission(string owner, string path);
