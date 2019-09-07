@@ -753,9 +753,15 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
             int itemId = fromString<int>(data[commands[1]]);
 
             if (commands.size() == 2){
-                npc.buy(itemId, 1, player);
+                if (npc.buy(itemId, 1, player)){
+                    system("cls");
+                    npc.shopMenu(player);
+                }
             } else{
-                npc.buy(itemId, fromString<int>(commands[3]), player);
+                if (npc.buy(itemId, fromString<int>(commands[3]), player)){
+                    system("cls");
+                    npc.shopMenu(player);
+                }
             }
             return false;
         }
