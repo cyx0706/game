@@ -340,6 +340,8 @@ void GameLoop::battleLoop(Character &character) {
                     if (monster->id == "NY-04"){
                         system("cls");
                         Scene scene(6);
+                        scene.displayScene();
+                        returnToMain = true;
                         system("pause");
                         break;
                     }
@@ -363,7 +365,7 @@ void GameLoop::battleLoop(Character &character) {
             int fluctuation = getRandom(90, 110); // ÉËº¦µÄ²¨¶¯
             damage = int(character.status.ATK * fluctuation / 100);
             // ±©»÷
-            if (possible >= character.status.Critical){
+            if (possible <= character.status.Critical){
                 damage = int(damage * 1.5);
             }
             damage -= player.status.DEF;

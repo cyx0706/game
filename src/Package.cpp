@@ -45,6 +45,7 @@ bool Shop::buy(int itemId, int number, int &money) {
                 price = (*iter).boughtPrice * number;
                 if (money >= price){
                     if (weaponPackage.deleteItem(itemId, number)){
+                        money -= price;
                         return true;
                     }
                     else{

@@ -432,7 +432,7 @@ void Map::load(int mapId) {
             for (auto j = npcs.begin(); j != npcs.end(); j++) {
                 // 确保有这个npc
                 // 确认无误后可以删除
-                if (j->first == npcPos && j->second == iter->nameEN){
+                if (j->first == npcPos && j->second == iter->id){
                     npcs.erase(npcPos);
                     flag = false;
                     break;
@@ -666,8 +666,7 @@ bool Map::canEnter(int mapId) {
     }
     if (mapId == 7){
         // 判断任务2是否完成
-        Mission* missionPtr = player.getMission(7);
-        if (missionPtr == nullptr || !(missionPtr->isFinished)){
+        if (!player.getMission(3)){
             return false;
         }
     }

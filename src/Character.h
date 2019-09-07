@@ -143,17 +143,20 @@ public:
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);
-    void buy(int itemId, int number, Player& player);
-    void sell(Item &item, int number, Player& player);
+    bool buy(int itemId, int number, Player& player);
+    bool sell(Item &item, int number, Player& player);
     void setVisibility(bool isVisible);
     bool getVisibility();
     bool isDead() override ;
     void showDescription() override ;
-    bool forceBattleCheck(Player &player);
+
+    static void storeSave();
     void save();
     void load();
 private:
     static Shop store;
+    bool specialEvent(Player &player);
+
     vector <Mission> questList;
     bool shopStatus;
     bool battleStatus;

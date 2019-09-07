@@ -155,16 +155,16 @@ nameCN 冒险者纹章
 nameEN pass-of-adventurous-guild
 description 把纹章扣到书上大喊：英雄连接！好像可以变身？
 boughtPrice 10
-canDrop true
-canSell true
+canDrop false
+canSell false
 
 id 302
 nameCN 皇城通行证
 nameEN pass-of-imperial-city
 description 没有他门卫不会让你进入内城的
 boughtPrice 10
-canDrop true
-canSell true
+canDrop false
+canSell false
 
 id 303
 nameCN 月光草
@@ -205,3 +205,11 @@ description 这块神秘的狼皮，散发着诡异的光芒
 boughtPrice 10
 canDrop true
 canSell true
+
+id 308
+nameCN 日记
+nameEN diary
+description 这本日记被魔法封印着
+boughtPrice 10
+canDrop false
+canSell false
