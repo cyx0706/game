@@ -23,6 +23,7 @@ extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
 extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern vector<string>npcName;
+extern bool returnToMain;
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
@@ -35,6 +36,9 @@ void GameLoop::mapLoop() {
     mapNow->print();
     char input;
     while(true){
+        if (returnToMain){
+            break;
+        }
         if(kbhit()){
             mapNow->clean(uPos);//清除原有输出
             input = getch();
@@ -159,11 +163,13 @@ void GameLoop::gameStart() {
 
 }
 
+
 void GameLoop::npcLoop(NPC &talkedNPC) {
     system("cls");
     Map::setCursorStatus(true);
-    talkedNPC.NPCMenu(player);
-    client.npcBase(talkedNPC);
+    if (!talkedNPC.NPCMenu(player)){
+        client.npcBase(talkedNPC);
+    }
     system("cls");
 }
 /*
@@ -330,7 +336,16 @@ void GameLoop::battleLoop(Character &character) {
                 auto *monster = dynamic_cast<Monster*>(&character);
                 // 转换失败时为空指针
                 if(monster){
-                   for(auto iter = monster->fallingItem.begin(); iter!=monster->fallingItem.end(); iter++){
+                    // 击败了巨龙
+                    if (monster->id == "NY-04"){
+                        system("cls");
+                        Scene scene(6);
+                        scene.displayScene();
+                        returnToMain = true;
+                        system("pause");
+                        break;
+                    }
+                    for(auto iter = monster->fallingItem.begin(); iter!=monster->fallingItem.end(); iter++){
                        cout << "怪物掉落了" << (*iter).nameCN << endl;
                        player.addItem((*iter).id, (*iter).num);
                    }
@@ -350,7 +365,7 @@ void GameLoop::battleLoop(Character &character) {
             int fluctuation = getRandom(90, 110); // 伤害的波动
             damage = int(character.status.ATK * fluctuation / 100);
             // 暴击
-            if (possible >= character.status.Critical){
+            if (possible <= character.status.Critical){
                 damage = int(damage * 1.5);
             }
             damage -= player.status.DEF;

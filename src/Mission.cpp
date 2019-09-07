@@ -171,6 +171,7 @@ void Mission::loadMission(ifstream& f,string owner, string path) {
     this->id = id;
     this->nameCN = data["nameCN"];
     this->nameEN = data["nameEN"];
+    this->description = data["description"];
     this->isProcess = Tool::boolFromString(data["isProcess"]);
     this->isFinished = Tool::boolFromString(data["isFinished"]);
     this->isAccepted = Tool::boolFromString(data["isAccepted"]);
@@ -205,4 +206,12 @@ void Mission::loadMission(ifstream& f,string owner, string path) {
 
 void Mission::showDescription() {
     cout << this->description << endl;
+}
+
+void Mission::missinFinish(Player &player) {
+    this->isProcess = false;
+    this->isFinished = true;
+    cout << "任务完成" << endl;
+    player.addMoney(this->bonusMoney);
+    player.addExp(this->bonusExperiencePoint);
 }

@@ -93,7 +93,7 @@
 [doorPosTop] 4:5:{6,18}
 [doorPosBottom] 10:9:{10,1}
 [barrier] {7,7}
-[monster] MY-03:{7,7}
+[monster] MY-04:{7,7}
 [npc] None
 [item] None
 ---

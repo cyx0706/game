@@ -7,6 +7,7 @@
 #include "Status.h"
 #include "Item.h"
 #include "Tool.h"
+#include "Scene.h"
 #include "templateHeader.h"
 #include "global.h"
 #include "GameLoop.h"
@@ -1048,6 +1049,14 @@ void NPC::load() {
 }
 
 /*
+ * @brief 保存一下商店
+ * 静态方法
+ */
+void NPC::storeSave() {
+    NPC::store.save();
+}
+
+/*
  * @brief 重载流来读取npc的静态信息
  * 关于文件内的key需要注意:
  * -必须严格按照现在的格式,无法自由修改key
@@ -1178,26 +1187,13 @@ NPC::NPC(string id):Character() {
 
 /*
  * @brief 用户菜单
+ *
+ * @return 返回布尔表示是否跳过命名行的输入
  */
-void NPC::NPCMenu(Player &player) {
-    // 只有精灵王后才有的一个特殊战斗
-    if (this->id == "NY-02"){
-        if(forceBattleCheck(player)){
-            GameLoop::battleLoop(globalNPC[16]);
-            Mission* mission = player.getMission(2);
-            mission->isProcess = false;
-            mission->isFinished = true;
-            player.addMoney(mission->bonusMoney);
-            player.addExp(mission->bonusExperiencePoint);
-            system("pause");
-            // 从地图上删除
-            SCOORD npcPos = {short(globalNPC[16].mapLocation.x), short(globalNPC[16].mapLocation.y)};
-            string type = "npc";
-            mapNow->deleteBarrier(npcPos, type);
-            mapNow->initPos = uPos;
-            mapNow->initMap();
-            return;
-        }
+bool NPC::NPCMenu(Player &player) {
+    // 特殊场景检查
+    if (this->specialEvent(player)){
+        return true;
     }
     // 接任务的面板
     if (this->missionStatus){
@@ -1205,22 +1201,23 @@ void NPC::NPCMenu(Player &player) {
         cout << this->description << endl;
         if (player.getMission(this->nameEN) != nullptr){
             cout << "当前任务进行中" << endl;
-            return;
+            return false;
         }
         else{
             cout << "有可以接受的任务:" << endl;
             cout << questList[0].nameCN << endl;
         }
-        return;
+        return false;
     }
 
     // 无商店的状态
     if (!this->shopStatus){
         cout << this->nameCN << endl;
         cout << this->description << endl;
-        return;
+        return false;
     }
     // 商店面板
+    // TODO:商店单独出来
     // 对话要简单
     SCOORD curPos = {40, 1};
     for (int i = 0; i < 90; i++) {
@@ -1257,6 +1254,7 @@ void NPC::NPCMenu(Player &player) {
 
     curPos = {0, 11};
     Map::gotoxy(curPos);
+    return false;
 }
 
 /*
@@ -1264,16 +1262,19 @@ void NPC::NPCMenu(Player &player) {
  *
  * @param itemId:物品id number:购买个数 Player:玩家的引用
  */
-void NPC::buy(int itemId, int number, Player &player) {
+bool NPC::buy(int itemId, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
+        return false;
     }
     if (store.buy(itemId, number, player.money)){
         cout << "买入成功" << endl;
         player.addItem(itemId, number);
+        return true;
     }
     else{
         cout << "买入失败" << endl;
+        return false;
     }
 }
 
@@ -1282,11 +1283,13 @@ void NPC::buy(int itemId, int number, Player &player) {
  *
  * @param itemId:物品id number:购买个数 Player:玩家的引用
  */
-void NPC::sell(Item &item, int number, Player &player) {
+bool NPC::sell(Item &item, int number, Player &player) {
     if (!this->shopStatus){
         cout << "无法交易" << endl;
+        return false;
     }
     store.sell(item, number, player.money);
+    return true;
 }
 
 /*
@@ -1324,7 +1327,12 @@ void NPC::assignQuest(Player &player) {
             return;
         }
         else {
-            // 任务已经接受并且进行中
+            // 插入一个场景
+            if (questList[0].id == 6){
+                Scene s(4);
+                s.displayScene();
+            }
+            // 正常任务
             questList[0].isAccepted = true;
             questList[0].isProcess = true;
             // 接任务时的对话
@@ -1356,15 +1364,29 @@ void NPC::finishQuest(Player &player) {
     }
     else{
         // 检查是否可以提交
+        // 特殊提交不能在当前npc处提交
+        int t = acceptedMission->id;
+        if (t == 2|| t == 4 || t == 5 || t == 7 || t == 10 || t == 11){
+            cout << "没有任务可以提交" << endl;
+            return;
+        }
+
         // 若可以则要修改任务属性为完成
         if (acceptedMission->checkFinished()){
+            cout << acceptedMission->id << "完成" << endl;
             // 任务结算
+            // 任务6的场景
+            if (acceptedMission->id == 6){
+                Scene s(5);
+                s.displayScene();
+            }
             cout << this->talkContent[acceptedMission->id].end << endl;
             acceptedMission->isFinished = true;
             acceptedMission->isProcess = false;
             // 玩家 增加金钱 和 经验
             player.addMoney(acceptedMission->bonusMoney);
             player.addExp(acceptedMission->bonusExperiencePoint);
+            cout << "有新的任务可接" << endl;
         }
     }
 }
@@ -1399,8 +1421,9 @@ void NPC::talk(Player &player) {
         }
         return;
     }
+
     if (missionStatus){
-        Mission *mission = player.getMission(this->id);
+        Mission *mission = player.getMission(this->nameEN);
         if (mission != nullptr){
             int id = mission->id;
             if(mission->isProcess){
@@ -1415,21 +1438,70 @@ void NPC::talk(Player &player) {
 }
 
 /*
- * @brief 用于检查是否无法对话直接进入战斗
- *
+ * @brief 用于特殊检查
+ * 设计的遗留问题在这里完全崭新
  * @param player:玩家的引用
- * @return 是否会发生战斗
+ * @return 是否跳过界面的对话
  */
-bool NPC::forceBattleCheck(Player &player) {
-    // 拥有皇城通行证
-    if (this->battleStatus){
-        // 检查npc战斗状态
-        if (player.getItem(302) != 0){
-            // TODO:加入一个场景
-            cout << "没有什么好说的" << endl;
+bool NPC::specialEvent(Player &player) {
+    Mission *mission;
+    // 接了第二个任务
+    if (this->id == "NY-02"){
+        if (player.getItem(302)){
+            // 有通行证直接开打
+            GameLoop::battleLoop(globalNPC[16]);
+            mission = player.getMission(2);
+            mission->missinFinish(player);
             system("pause");
+            system("cls");
+            // 从地图上删除
+            SCOORD npcPos = {short(globalNPC[16].mapLocation.x), short(globalNPC[16].mapLocation.y)};
+            string type = "npc";
+            mapNow->deleteBarrier(npcPos, type);
             return true;
         }
+        else{
+            mission = player.getMission(7);
+            if (mission!= nullptr && !mission->isFinished){
+                cout << this->talkContent[7].end << endl;
+                mission->missinFinish(player);
+                cout << "有新的任务可接" << endl;
+                system("pause");
+                system("cls");
+                return true;
+            }
+        }
+    }
+
+    mission = player.getMission(9);
+    if (mission != nullptr && !mission->isFinished){
+        // 和芙芙的强制战斗
+        Monster m("MY-05");
+        GameLoop::battleLoop(m);
+        cout << this->talkContent[9].end << endl;
+        mission->missinFinish(player);
+        cout << "有新的任务可接" << endl;
+        system("pause");
+        system("cls");
+        return true;
+    }
+    mission = player.getMission(5);
+    if (this->id == "NN-03" && !mission->isFinished){
+        mission->missinFinish(player);
+        cout << this->talkContent[5].end << endl;
+        cout << "有新的任务可接" << endl;
+        system("pause");
+        system("cls");
+        return true;
+    }
+    mission = player.getMission(10);
+    if (this->id == "NN-13" && !mission->isFinished){
+        mission->missinFinish(player);
+        cout << this->talkContent[5].end << endl;
+        cout << "有新的任务可接" << endl;
+        system("pause");
+        system("cls");
+        return true;
     }
     return false;
 }

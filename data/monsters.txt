@@ -34,6 +34,13 @@ fallingMoney 200
 displayChar M
 fallingItem 304
 
+id MY-05
+nameEN fufu
+nameCN ø≠‹Á≈¡¬≥∏Ò
+description fufufu~~
+displayChar M
+fallingItem None
+
 id NY-03
 nameEN werewolf
 nameCN ¿«»À

@@ -8,6 +8,7 @@
 #include <string>
 
 #include "Item.h"
+#include "Character.h"
 #include "global.h"
 
 static const string MISSION_TXT_PATH = "../data/mission.txt"; // NOLINT
@@ -22,7 +23,7 @@ public:
 
     void showDescription();
     bool checkFinished();
-
+    void missinFinish(Player &player);
     void loadMission(ifstream& f,string owner, string path);
 
     void saveMission(string owner, string path);
