@@ -221,16 +221,16 @@ bool Player::takeOffArmor(string &name) {
             cout << "未装备指定的防具" << endl;
             return false;
         }
-        if(armorBag.addItem(this->armor.id, 1)){
+        if(!armorBag.addItem(this->armor.id, 1)){
             cout << "背包满了" << endl;
             return false;
         }
         else{
             cout << "成功脱下装备" << this->armor.nameCN << endl;
-            this->armor = Armor();
             this->status.ATK -= armor.ATK;
             this->status.DEF -= armor.DEF;
             this->status.Speed -= armor.Speed;
+            this->armor = Armor();
             return true;
         }
     }
@@ -246,17 +246,17 @@ bool Player::takeOffWeapon(string &name) {
             cout << "未装备指定的防具" << endl;
             return false;
         }
-        if(weaponBag.addItem(this->weapon.id, 1)){
+        if(!weaponBag.addItem(this->weapon.id, 1)){
             cout << "背包满了" << endl;
             return false;
         }
         else{
             cout << "成功脱下装备" << this->weapon.nameCN << endl;
             // 空装备
-            this->weapon = Weapon();
             this->status.ATK -= weapon.ATK;
             this->status.DEF -= weapon.DEF;
             this->status.Speed -= weapon.Speed;
+            this->weapon = Weapon();
             return true;
         }
     }
@@ -280,6 +280,7 @@ bool Player::equipArmor(string &name) {
             // 当前有装备
             if (oldArmor.id != 0){
                 cout << "卸下了" << oldArmor.nameCN << endl;
+                armorBag.addItem(oldArmor.id, 1);
             }
             cout << "防具" << (*iter).nameCN << "装备成功" << endl;
             return true;
@@ -305,6 +306,7 @@ bool Player::equipWeapon(string& name) {
             this->status.Speed += ((*iter).Speed - oldWeapon.Speed);
             if (oldWeapon.id != 0){
                 cout << "卸下了" << oldWeapon.nameCN << endl;
+                weaponBag.addItem(oldWeapon.id, 1);
             }
             cout << "武器" << (*iter).nameCN << "装备成功" << endl;
             return true;
@@ -619,9 +621,15 @@ bool Player::isDead() {
         cin >> input;
         if (input == "y"){
             this->status.HP += 100;
+            // 清除缓存区
+            cin.clear();
+            cin.ignore();
             return false;
         }
         else{
+            // 清除缓存区
+            cin.clear();
+            cin.ignore();
             return true;
         }
     }
@@ -1107,9 +1115,8 @@ istream& operator>>(istream &fpStream, NPC &npc) {
             if(t[1] == "end"){
                 talkContent.end = t[2];
             }
-            // TODO:增加任务进行中的对话
             if (t[1] == "process"){
-                talkContent.process = "快去";
+                talkContent.process = t[2];
             }
         }
         else{
@@ -1195,6 +1202,7 @@ bool NPC::NPCMenu(Player &player) {
     if (this->specialEvent(player)){
         return true;
     }
+    this->showDescription();
     // 接任务的面板
     if (this->missionStatus){
         cout << this->nameCN << endl;
@@ -1311,7 +1319,8 @@ bool NPC::isDead() {
  * @brief 多态的展示描述
  */
 void NPC::showDescription() {
-    cout << "NPC:" << this->nameCN << "(" << this->nameEN << ")";
+    cout << "NPC:" << this->nameCN << "(" << this->nameEN << ")" << endl;
+    cout << "简介:" << this->description << endl;
 }
 
 /*
@@ -1454,6 +1463,14 @@ void NPC::talk(Player &player) {
  */
 bool NPC::specialEvent(Player &player) {
     Mission *mission;
+
+    if (this->id == "NN-04" && !player.getMission(1) && player.getItem(302)){
+        // 第二条主线的开启
+        // 开启条件是没有接受任务1
+        Scene scene(3);
+        scene.displayScene();
+        return true;
+    }
     // 接了第二个任务
     if (this->id == "NY-02"){
         if (player.getItem(302)){
@@ -1494,17 +1511,20 @@ bool NPC::specialEvent(Player &player) {
         system("cls");
         return true;
     }
+    // 和神秘人对话
     mission = player.getMission(5);
-    if (this->id == "NN-03" && !mission->isFinished){
+    if (this->id == "NN-03" && mission != nullptr &&!mission->isFinished){
         mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
+        // 神秘人可以接任务了
+        this->missionStatus = true;
         cout << "有新的任务可接" << endl;
         system("pause");
         system("cls");
         return true;
     }
     mission = player.getMission(10);
-    if (this->id == "NN-13" && !mission->isFinished){
+    if (this->id == "NN-13" && mission != nullptr && !mission->isFinished){
         mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
         cout << "有新的任务可接" << endl;

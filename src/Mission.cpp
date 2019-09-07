@@ -62,6 +62,7 @@ Mission::Mission(int id) {
     this->id = id;
     this->nameCN = data["nameCN"];
     this->nameEN = data["nameEN"];
+    this->description = data["description"];
     this->bonusMoney = fromString<int>(data["bonusMoney"]);
     this->bonusExperiencePoint = fromString<int>(data["bonusExperiencePoint"]);
     this->assigner = data["assigner"];
@@ -120,6 +121,7 @@ void Mission::saveMission(string owner, string path) {
     m_map["id"] = toString<int>(id);
     m_map["nameEN"] = nameEN;
     m_map["nameCN"] = nameCN;
+    m_map["description"] = description;
     m_map["isAccepted"] = toString<bool>(isAccepted);
     m_map["isFinished"] = toString<bool>(isFinished);
     m_map["isProcess"] = toString<bool>(isProcess);
@@ -205,7 +207,9 @@ void Mission::loadMission(ifstream& f,string owner, string path) {
 }
 
 void Mission::showDescription() {
-    cout << this->description << endl;
+    cout << "任务id:" << this->id;
+    cout << " 委托人" << this->assigner << endl;
+    cout << "任务描述:" << this->description << endl;
 }
 
 void Mission::missionFinish(Player &player) {

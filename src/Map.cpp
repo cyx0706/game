@@ -12,6 +12,7 @@
 #include "templateHeader.h"
 #include "Character.h"
 #include "global.h"
+#include "Scene.h"
 extern unique_ptr<Map>mapNow;
 extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
@@ -19,6 +20,7 @@ extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern Player player;
 extern vector<NPC>globalNPC;
+extern bool returnToMain;
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
@@ -429,21 +431,6 @@ void Map::load(int mapId) {
         if (iter->mapLocation.mapId == this->id && !(iter->getVisibility())){
             // 删除这个npc
             SCOORD npcPos = {short(iter->mapLocation.x), short(iter->mapLocation.y)};
-            for (auto j = npcs.begin(); j != npcs.end(); j++) {
-                // 确保有这个npc
-                // 确认无误后可以删除
-                if (j->first == npcPos && j->second == iter->id){
-                    npcs.erase(npcPos);
-                    flag = false;
-                    break;
-                }
-            }
-            if(flag){
-                cout << "坐标位置不对应" << endl;
-                cout << iter->nameEN;
-                system("pause");
-                exit(0);
-            }
             for (auto i = barrier.begin(); i != barrier.end(); i++) {
                 if (*i == npcPos){
                     // 一次删一个
@@ -642,9 +629,25 @@ void Map::showDescription() {
  * @brief 检查特殊事件,用于剧情设定
  *
  */
-// TODO:检查玩家的任务进度来确定特殊事件
+
 void Map::checkSpecialScene() {
     int mapId = this->id;
+    if (mapId != 1 && mapId != 2){
+        return;
+    }
+    // 公主的委托
+    // 和大祭司对战
+    if(player.getMission(11)){
+        if (mapId == 1){
+            GameLoop::battleLoop(globalNPC[15]);
+            return;
+
+        }
+        if (mapId == 2){
+            cout << "要赶快去阻止大祭司" << endl;
+            return;
+        }
+    }
 }
 
 /*

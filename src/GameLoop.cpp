@@ -105,6 +105,7 @@ void GameLoop::initGame() {
         NPC aNPC(npcName[i]);
         globalNPC.push_back(aNPC);
     }
+    returnToMain = false;
 
 }
 
@@ -338,17 +339,32 @@ void GameLoop::battleLoop(Character &character) {
                 if(monster){
                     // »÷°ÜÁË¾ÞÁú
                     if (monster->id == "NY-04"){
+                        system("pause");
                         system("cls");
                         Scene scene(6);
                         scene.displayScene();
                         returnToMain = true;
                         system("pause");
+                        system("cls");
                         break;
                     }
                     for(auto iter = monster->fallingItem.begin(); iter!=monster->fallingItem.end(); iter++){
                        cout << "¹ÖÎïµôÂäÁË" << (*iter).nameCN << endl;
                        player.addItem((*iter).id, (*iter).num);
                    }
+                }
+                // »÷°Ü´ó¼ÀË¾
+                else{
+                    if (character.id == "NY-01"){
+                        system("pause");
+                        system("cls");
+                        Scene s(7);
+                        s.displayScene();
+                        returnToMain = true;
+                        system("pause");
+                        system("cls");
+                        break;
+                    }
                 }
                 system("pause");
                 system("cls");

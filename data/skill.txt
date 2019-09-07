@@ -115,7 +115,7 @@ nameEN poison-talk
 nameCN ∂æƒÃ
 description ºı…ŸHP5µ„
 duration 0
-HP -5
+HP -100
 MP 0
 Phy 0
 ATK 0

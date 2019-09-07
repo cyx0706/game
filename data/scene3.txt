@@ -2,10 +2,11 @@
 [content] 你来到了冒险者协会
 [content] 在吵吵嚷嚷的公会中有各种各样的人，也有各种各样的种族，你直接找到前台的精灵小姐姐。
 [content] 前台：您好，有什么事吗：
-[content] 我：
-[content] 1小姐请问芳名
-[content] 2我想注册成为冒险者
-[content] 3没什么
-[content] 4有什么委托吗
+[template] 我：我叫<name>
+[content] 你想说什么却被打断了......
+[content] 前台：我叫埃伊娜，有什么可以帮助你的吗。
+[content] 我：该怎么办呢
+[content] 1我想注册成为冒险者
+[content] 2没什么
 [branch]
 [end]
