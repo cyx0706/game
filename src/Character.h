@@ -139,7 +139,7 @@ public:
 
     explicit NPC(string id); // 根据id读取文件构造
     friend istream& operator>>(istream &fpStream, NPC &npc);
-    void NPCMenu(Player &player);
+    bool NPCMenu(Player &player);
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);

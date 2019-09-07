@@ -19,6 +19,8 @@ SCOORD uPos = {1, 1};
 Shop NPC::store = Shop();
 int NPC::readLastLine = 0; // 优化读取
 ifstream sceneFp; // 全局场景文件指针
+bool returnToMain = false;
+bool canSave = true;
 // NN-05被吃了......
 vector<string>npcName = {"NN-01", "NN-02", "NN-03", "NN-04", "NN-06", "NN-07", "NN-08",
                          "NN-09", "NN-10", "NN-11", "NN-12", "NN-13", "NN-14", "NN-15", "NN-16",
@@ -28,8 +30,8 @@ int main() {
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));
     GameLoop::initGame();
-    Scene scene1(1);
-    scene1.displayScene();
+//    Scene scene1(1);
+//    scene1.displayScene();
     Scene scene2(2);
     scene2.displayScene();
     dynamicScene2();

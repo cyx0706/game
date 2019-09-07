@@ -31,7 +31,7 @@ void Status::saveStatus(string owner) {
     of.open(SAVE_STATUS_PATH);
     map<string,string> m_map;
     //保存player的单项属性
-    m_map["owner"] = owner;
+    of << "owner player" << endl;
     m_map["HP"] = toString<int>(HP);
     m_map["MP"] = toString<int>(MP);
     m_map["Phy"] = toString<int>(Phy);

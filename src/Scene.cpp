@@ -12,6 +12,7 @@
 extern vector<NPC>globalNPC;
 extern Player player;
 extern ifstream sceneFp;
+extern bool canSave;
 /*
  * @brief 构造函数,初始化地图的id用于branch的判断
  */
@@ -112,6 +113,8 @@ void dynamicScene1(){
 void dynamicScene2(){
     player.addItem(5);
     player.addItem(101);
+    // 禁掉保存方法,场景中无法保存
+    canSave = false;
     while (true){
         // 判断是否装备上了
         GameLoop::commandLoop();
@@ -123,7 +126,8 @@ void dynamicScene2(){
             system("pause");
         }
     }
-
+    // 恢复保存
+    canSave = true;
     GameLoop::battleLoop(globalNPC[1]); //和战士长打
     string t = "你合格了,我有一些任务要交给你办";
     Scene::show(t);

@@ -1178,8 +1178,10 @@ NPC::NPC(string id):Character() {
 
 /*
  * @brief 用户菜单
+ *
+ * @return 返回布尔表示是否跳过命名行的输入
  */
-void NPC::NPCMenu(Player &player) {
+bool NPC::NPCMenu(Player &player) {
     // 只有精灵王后才有的一个特殊战斗
     if (this->id == "NY-02"){
         if(forceBattleCheck(player)){
@@ -1190,13 +1192,12 @@ void NPC::NPCMenu(Player &player) {
             player.addMoney(mission->bonusMoney);
             player.addExp(mission->bonusExperiencePoint);
             system("pause");
+            system("cls");
             // 从地图上删除
             SCOORD npcPos = {short(globalNPC[16].mapLocation.x), short(globalNPC[16].mapLocation.y)};
             string type = "npc";
             mapNow->deleteBarrier(npcPos, type);
-            mapNow->initPos = uPos;
-            mapNow->initMap();
-            return;
+            return true;
         }
     }
     // 接任务的面板
@@ -1205,20 +1206,20 @@ void NPC::NPCMenu(Player &player) {
         cout << this->description << endl;
         if (player.getMission(this->nameEN) != nullptr){
             cout << "当前任务进行中" << endl;
-            return;
+            return false;
         }
         else{
             cout << "有可以接受的任务:" << endl;
             cout << questList[0].nameCN << endl;
         }
-        return;
+        return false;
     }
 
     // 无商店的状态
     if (!this->shopStatus){
         cout << this->nameCN << endl;
         cout << this->description << endl;
-        return;
+        return false;
     }
     // 商店面板
     // 对话要简单
