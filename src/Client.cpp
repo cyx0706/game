@@ -13,10 +13,12 @@
 #include "Tool.h"
 #include "Map.h"
 #include "templateHeader.h"
+#include "Character.h"
 #include "global.h"
 
 extern Player player;
 extern unique_ptr<Map> mapNow;
+extern vector<NPC> globalNPC;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found
@@ -122,6 +124,27 @@ void Client::commandHelp(string& command) {
 }
 
 /*
+ * @brief 判断命令是否使用错误
+ *
+ * @param commands 命令行获取的命令
+ * @param requiredParamNum 要求的参数个数
+ * @return true 则 命令使用错误 false 则 命令使用正确
+ */
+bool commandWrongUsage(vector<string>& commands, int requiredParamNum)
+{
+    if (commands.size() != requiredParamNum){
+        cout << "wrong usage:" << commands[0] << " needs " << requiredParamNum << " but you have " << commands.size() << endl;
+
+        // 调用帮助命令，显示正确的用法
+        Client::commandHelp(commands[0]);
+
+        return true;
+    }else{
+        return false;
+    }
+}
+
+/*
  * @brief 检查命令是否被禁止
  *
  * @param command 命令行输入的命令(表示数值)
@@ -200,8 +223,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // status 命令
     if (command == status) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
             return false;
         }
 
@@ -211,8 +233,8 @@ bool Client::executeCommand(vector<string> commands) {
 
     // skills 命令
     if (command == skills) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
+            return false;
         }
 
         player.showSkills();
@@ -221,8 +243,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // equipment 命令
     if (command == equipment) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
             return false;
         }
 
@@ -237,7 +258,7 @@ bool Client::executeCommand(vector<string> commands) {
 
         if (armor->id != 0) {
             armor->showDescription();
-        }else{
+        }else {
             cout << "无防具" << endl;
         }
 
@@ -246,10 +267,11 @@ bool Client::executeCommand(vector<string> commands) {
 
     // package 命令
     if (command == package) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
+            return false;
         }
 
+        //
         player.showWeapons();
         player.showArmors();
         player.showDrugs();
@@ -259,8 +281,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // item 命令
     if (command == item) {
-        if (commands.size() != 2) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 2)){
             return false;
         }
 
@@ -281,8 +302,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // equip 命令
     if (command == equip) {
-        if (commands.size() != 2) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 2)){
             return false;
         }
 
@@ -306,8 +326,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // takeoff 命令
     if (command == takeoff) {
-        if (commands.size() != 2) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 2)){
             return false;
         }
 
@@ -331,8 +350,7 @@ bool Client::executeCommand(vector<string> commands) {
 
     // discard 命令
     if (command == discard) {
-        if (commands.size() != 3) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 3)){
             return false;
         }
 
@@ -362,12 +380,20 @@ bool Client::executeCommand(vector<string> commands) {
 
     // maps 命令
     if (command == maps) {
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         mapNow->showDescription();
         return false;
     }
 
     // mission 命令
     if (command == mission) {
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         player.showMission();
 
         return false;
@@ -375,8 +401,8 @@ bool Client::executeCommand(vector<string> commands) {
 
     // help 命令
     if (command == help) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
+            return false;
         }
 
         for (const auto& one: this->commandsMap) {
@@ -391,7 +417,19 @@ bool Client::executeCommand(vector<string> commands) {
 
     // save 命令
     if (command == save) {
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         player.save();
+
+        // 商店 信息的保存
+        NPC::storeSave();
+        // NPC 状态的保存
+        for (auto& one: globalNPC){
+            one.save();
+        }
+
         return false;
     }
 
@@ -416,8 +454,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
     if (command == attack) {
         // attack 命令只含 1 个参数
         // 若有多个参数 即为 错误的用法
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
             return false;
         }
 
@@ -434,7 +471,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
         if (getRandom(1, 100) <= player.status.Critical) {
             damage = int(player.status.ATK * 1.5) - target.status.DEF;
         } else {
-            damage= player.status.ATK - target.status.DEF;
+            damage = player.status.ATK - target.status.DEF;
         }
 
         // 伤害低于零值 则伤害为 1
@@ -450,8 +487,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
     // skill 命令
     if (command == skill) {
-        if (commands.size() != 2) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 2)){
             return false;
         }
 
@@ -515,8 +551,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
     // flee 命令
     if (command == flee) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
             return false;
         }
 
@@ -526,8 +561,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
     // use 命令
     if (command == use) {
-        if (commands.size() != 2) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 2)){
             return false;
         }
 
@@ -540,8 +574,8 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target) {
 
     // help 命令
     if (command == help) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
+            return false;
         }
 
         for (const auto& one: this->commandsMap) {
@@ -617,8 +651,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc) {
     }
 
     if (command == sell) {
-        if (commands.size() != 3) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 3)){
             return false;
         }
 
@@ -676,8 +709,131 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc) {
 
     // help 命令
     if (command == help) {
-        if (commands.size() != 1) {
-            cout << "wrong usage" << endl;
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
+        for (const auto& one: this->commandsMap) {
+            cout << one.first << endl;
+        }
+
+        cout << "you can use" << endl;
+        cout <<"'command' + -h or 'command' + --help" << endl;
+        cout << "look for specific help" << endl;
+        return false;
+    }
+
+    return false;
+}
+
+/*
+ * @brief 商店交互状态的执行方法
+ * 接受命令 purchase sell talk
+ *         help
+ *
+ * @param commands 命令行获取的命令(已切片成 vector 类型)
+ * @param 商店 互动的 npc 对象
+ * @return true 则命令执行完成 false 则命令未执行，重新输入
+ */
+bool Client::shopExecuteCommand(vector<string> commands, NPC &npc) {
+    // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
+    // 表示数值转换为 int 类型
+    auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
+    if (command == purchase) {
+        if (commands.size() == 2) {
+            ifstream f(NAMEID_TXT_PATH);
+            map<string, string>data = Tool::dataMap(f);
+
+            auto iter = data.find(commands[1]);
+            if (iter == data.end()) {
+                cout << "no such item" << endl;
+                return false;
+            }
+
+            int itemId = fromString<int>(data[commands[1]]);
+
+            if (commands.size() == 2){
+                npc.buy(itemId, 1, player);
+            } else{
+                npc.buy(itemId, fromString<int>(commands[3]), player);
+            }
+            return false;
+        }
+
+        if (commands.size() == 4 && commands[2] == "-number")
+        {
+            ifstream f(NAMEID_TXT_PATH);
+            map<string, string>data = Tool::dataMap(f);
+
+            auto iter = data.find(commands[1]);
+            if (iter == data.end()) {
+                cout << "no such item" << endl;
+                return false;
+            }
+
+            int itemId = fromString<int>(data[commands[1]]);
+
+            if (commands.size() == 2){
+                npc.buy(itemId, 1, player);
+            } else{
+                npc.buy(itemId, fromString<int>(commands[3]), player);
+            }
+            return false;
+        }
+
+        cout << "wrong usage" << endl;
+        return false;
+    }
+
+    if (command == sell) {
+        if (commandWrongUsage(commands, 3)){
+            return false;
+        }
+
+        ifstream f(NAMEID_TXT_PATH);
+        map<string, string>data = Tool::dataMap(f);
+
+        auto iter = data.find(commands[1]);
+        if (iter == data.end()) {
+            cout << "no such item" << endl;
+            return false;
+        }
+
+        int itemId = fromString<int>(data[commands[1]]);
+
+        if (itemId < 100) {
+            Weapon one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        }
+
+        if (itemId < 200) {
+            Armor one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        }
+
+        if (itemId < 300) {
+            Drug one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        } else{
+            Item one(itemId);
+            npc.sell(one, fromString<int>(commands[2]), player);
+            return false;
+        }
+    }
+
+    if (command == talk) {
+        npc.talk(player);
+
+        return false;
+    }
+
+    // help 命令
+    if (command == help) {
+        if (commandWrongUsage(commands, 1)){
+            return false;
         }
 
         for (const auto& one: this->commandsMap) {
@@ -830,5 +986,56 @@ void Client::npcBase(NPC &npc) {
         }
     }
 }
+
+/*
+ * @brief 与商店互动的命令行
+ */
+void Client::shopBase(NPC& npc) {
+    string str;
+    vector<string> commands;
+    while (true) {
+
+        // 获得命令行输入
+        getline(cin, str);
+
+        // 与商店互动状态可以随时退出命令行
+        // 退出命令为 esc quit exit 任一
+        if (str == "esc" || str == "quit" || str == "exit") {
+            return;
+        }
+
+        // 将命令行获取的命令进行规整
+        str = Tool::clean(str);
+
+        // 判断命令规整后是否为空
+        if (!str.empty()) {
+            commands = Tool::split(str, ' ');
+
+            // 与商店交互状态禁止  普通命令 、战斗命令 和 保存命令
+            vector<int> bannedCommands = {status, skills, equipment, package, item, equip, takeoff, discard, maps, mission,
+                                          attack, skill, flee, use,
+                                          accept_mission, finish_mission,
+                                          save};
+
+            // 分析命令 判断: 1. 是否是被禁止的命令 2. 是否是帮助命令 3. 是否是错误命令
+            // 禁止的命令 or 帮助命令 or 错误的命令 则要求重新输入
+            if (!analyse(commands, bannedCommands)) {
+                continue;
+            }
+        } else {
+            cout << "empty command" << endl;
+            continue;
+        }
+
+        // 到此 命令行获取的命令基本可执行
+        // 调用 与NPC互动的执行方法
+        // 执行成功则结束命令行
+        if (shopExecuteCommand(commands, npc)) {
+            return;
+        }
+    }
+}
+
+
 
 

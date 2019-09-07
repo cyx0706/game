@@ -71,10 +71,12 @@ public:
     void base();
     void base(Character& target);
     void npcBase(NPC& npc);
+    void shopBase(NPC& npc);
 
     bool executeCommand(vector<string> commands);
     bool battleExecuteCommand(vector<string> commands, Character& target);
     bool npcExecuteCommand(vector<string> commands, NPC& npc);
+    bool shopExecuteCommand(vector<string> commands, NPC& npc);
 
     bool analyse(vector<string> commands, vector<int>& bannedCommands);
 
