@@ -1209,15 +1209,13 @@ bool NPC::NPCMenu(Player &player) {
         }
         return false;
     }
-
-    // 无商店的状态
-    if (!this->shopStatus){
-        cout << this->nameCN << endl;
-        cout << this->description << endl;
-        return false;
-    }
-    // 商店面板
-    // TODO:商店单独出来
+    // 商店有单独的商店界面
+    return false;
+}
+/*
+ * @brief 商店的主页面
+ */
+void NPC::shopMenu(Player &player) {
     // 对话要简单
     SCOORD curPos = {40, 1};
     for (int i = 0; i < 90; i++) {
@@ -1254,8 +1252,12 @@ bool NPC::NPCMenu(Player &player) {
 
     curPos = {0, 11};
     Map::gotoxy(curPos);
-    return false;
 }
+
+bool NPC::getShopStatus() {
+    return this->shopStatus;
+}
+
 
 /*
  * @brief 和npc交易的函数,需要提前检查是否可以交易

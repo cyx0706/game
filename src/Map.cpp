@@ -592,7 +592,12 @@ int Map::checkEvent() {
                             char t[50];
                             Tool::stringToChar(tips, t);
                             MessageBox(nullptr, t, "提示", MB_OK);
-                            GameLoop::npcLoop(*iter);
+                            if (iter->getShopStatus()){
+                                GameLoop::shopLoop(*iter);
+                            }
+                            else{
+                                GameLoop::npcLoop(*iter);
+                            }
                             // 恢复地图并修正偏差
                             mapNow->initMap();
                             mapNow->clean(mapNow->initPos);

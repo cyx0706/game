@@ -390,5 +390,16 @@ void GameLoop::battleLoop(Character &character) {
 }
 
 
+/*
+ * @brief 商店循环, 处理玩家购买物品的商店页面
+ */
+void GameLoop::shopLoop(NPC &npc) {
+    Map::setCursorStatus(false);
+    system("cls");
+    Map::setCursorStatus(true);
+    npc.shopMenu(player);
+    client.shopBase(npc);
+    system("cls");
+}
 
 

@@ -21,6 +21,7 @@ public:
     static void commandLoop();
     static void gameInterface();
     static void battleLoop(Character &character);
+    static void shopLoop(NPC &npc);
 };
 
 #endif //GAME_GAMELOOP_H

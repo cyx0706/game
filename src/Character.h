@@ -136,17 +136,19 @@ public:
     map<int, TalkContent>talkContent; //不同任务的不同对话
     bool missionStatus;
     static int readLastLine;
-
     explicit NPC(string id); // 根据id读取文件构造
     friend istream& operator>>(istream &fpStream, NPC &npc);
     bool NPCMenu(Player &player);
+    void shopMenu(Player &player);
     void assignQuest(Player& player);
     void finishQuest(Player& player);
     void talk(Player &player);
     bool buy(int itemId, int number, Player& player);
     bool sell(Item &item, int number, Player& player);
+
     void setVisibility(bool isVisible);
     bool getVisibility();
+    bool getShopStatus();
     bool isDead() override ;
     void showDescription() override ;
 
