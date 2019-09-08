@@ -8,10 +8,12 @@
 #include <algorithm>
 #include <iomanip>
 #include <fstream>
+#include <commctrl.h>
 #include "Status.h"
 #include "Character.h"
 #include "global.h"
 #include "Client.h"
+#include "UI.h"
 
 extern HANDLE hOut;
 using CMD::CommandLists;
@@ -112,15 +114,81 @@ void GameLoop::initGame() {
 
 
 void GameLoop::gameInterface(){
-    string title = "暴咕攻城狮的异世界狂想曲";
-    auto x = short(screenInfo.dwSize.X - title.length() / 2);
-    COORD pos = {x, 5};
-    SetConsoleCursorPosition(hOut, pos);
-    cout << "+----------------------------+"
-         << "|  暴咕 攻城狮 的异世界狂想曲  |"
-         << "+----------------------------+"
-         << endl;
-    cout << "NewGame      Load      Exit   " << endl;
+    HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
+    system("mode con cols=100 lines=100");//初始化缓冲区大小
+    UI::printTitle();
+    UI::cyan_choose();
+    UI::pos(47,25);
+    cout<<"    Out    ";
+    UI::pos(47,20);
+    cout<<" Continue  ";
+    UI::on_Select();
+    UI::pos(47,15);
+    cout<<"  NewGame  ";
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO CursorInfo;
+    GetConsoleCursorInfo(handle, &CursorInfo);//获取控制台光标信息
+    CursorInfo.bVisible = false; //隐藏控制台光标
+    SetConsoleCursorInfo(handle, &CursorInfo);//设置控制台光标状态
+    int x=47,y=15;
+
+    int ch1=0;
+    int ch2=0;
+    if (ch1=getch())
+    {
+        ch2=getch();//第一次调用getch()，返回值224
+        while(ch2 != 13)
+        {
+            UI::star();
+            switch (ch2)//第二次调用getch()
+            {
+                case 72: y = y - 5;break;
+                case 80: y = y + 5;break;
+//            case 75: printf("The key you Pressed is : ← \n");break;
+//            case 77: printf("The key you Pressed is : → \n");break;
+//            default: printf("No direction keys detected \n");break;
+//                break;
+
+                default:break;
+            }
+            if(x>=47)
+            {
+                x=47;
+            }
+            if(y>=30)
+            {
+                y=15;
+            }
+            if(x<=47)
+            {
+                x=47;
+            }
+            if(y<=10)
+            {
+                y=25;
+            }
+            UI::pos(x,y);
+            UI::onChoose(x,y);
+            ch2=getch();
+        }
+    }
+    system("cls");
+    //cls();
+    UI::pos(0,0);
+    UI::white_back();//还原默认字体
+    if(x==47&&y==15)
+    {
+        cout<<"你选择了NewGame";
+    }
+    else if(x==47&&y==25)
+    {
+        cout<<"你选择了Out";
+    }
+    else if(x==47&&y==20)
+    {
+        cout<<"你选择了Continue";
+    }
+    CloseHandle(hOut);//关闭标准输出句柄
 }
 
 void GameLoop::gameStart() {
