@@ -18,6 +18,7 @@ static const string NPC_FILE_PATH = "../data/npcs.txt"; // 初始化npc的文件
 static const string SAVE_NPC_PATH = "../save/saveNPC.txt"; // npc动态读取的文件
 static const string SAVE_PLAYER_PATH = "../save/savePlayerAttribute.txt";
 static const string READ_MONSTER_PATH = "../data/monsters.txt";
+static const string INIT_NPC_PATH = "../data/initNPC.txt"; // 新游戏的npc的读取
 class Mission;
 struct Location{
     int mapId;
@@ -133,7 +134,7 @@ public:
     map<int, TalkContent>talkContent; //不同任务的不同对话
     bool missionStatus;
     static int readLastLine;
-    explicit NPC(string id); // 根据id读取文件构造
+    explicit NPC(string id, string path = SAVE_NPC_PATH); // 根据id读取文件构造
     friend istream& operator>>(istream &fpStream, NPC &npc);
     bool NPCMenu(Player &player);
     void shopMenu(Player &player);
@@ -151,7 +152,7 @@ public:
 
     static void storeSave();
     void save();
-    void load();
+    void load(string path);
 private:
     static Shop store;
     bool specialEvent(Player &player);

@@ -37,6 +37,7 @@ void GameLoop::mapLoop() {
     char input;
     while(true){
         if (returnToMain){
+            mapNow->clean(uPos);
             break;
         }
         if(kbhit()){
@@ -54,10 +55,11 @@ void GameLoop::mapLoop() {
                 if (branch == 2){
                     string barrierType = "item";
                     mapNow->deleteBarrier(uPos, barrierType);
+                    mapNow->print();
+                    continue;
                 }
                 if (branch == 0){
                     string barrierType = "monster";
-//                    mapNow->deleteBarrier(uPos, barrierType);
                 }
                 mapNow->clean(uPos);
                 mapNow->print();
@@ -85,6 +87,7 @@ void GameLoop::commandLoop() {
 // 初始化
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    system("mode con cols=100 lines=40");
     NPC::readLastLine = 0; // 初始化
     player = Player();
     player.nameCN = "cyx";
@@ -102,7 +105,7 @@ void GameLoop::initGame() {
     player.maxHP = 150;
     player.addItem(201, 2);
     for (unsigned int i = 0; i < npcName.size(); i++) {
-        NPC aNPC(npcName[i]);
+        NPC aNPC(npcName[i], INIT_NPC_PATH);
         globalNPC.push_back(aNPC);
     }
     returnToMain = false;
@@ -274,10 +277,10 @@ void GameLoop::battleLoop(Character &character) {
             }
             iter++;
         }
-        cout << "-> HP:" << player.status.HP;
+        cout << "-> HP:" << player.status.HP << "/" << player.maxHP;
         curPos.Y++;
         Map::gotoxy(curPos);
-        cout << "-> MP:" << player.status.MP;
+        cout << "-> MP:" << player.status.MP << "/" << player.maxMP;
         curPos.Y++;
         Map::gotoxy(curPos);
         cout << "-> ATK:" << player.status.ATK;

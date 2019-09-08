@@ -1024,10 +1024,10 @@ void NPC::save() {
  * <!重要>只有需要读取的时候再调用
  * 商店由于静态单独加载
  */
-void NPC::load() {
+void NPC::load(string path) {
     // 需要读取
     ifstream fp;
-    fp.open(SAVE_NPC_PATH);
+    fp.open(path);
     string str;
     while (getline(fp, str)) {
         if (!str.empty()) {
@@ -1137,7 +1137,7 @@ istream& operator>>(istream &fpStream, NPC &npc) {
 }
 
 
-NPC::NPC(string id):Character() {
+NPC::NPC(string id, string path):Character() {
     this->id = id;
     this->needSave = false;
     ifstream fp;
@@ -1159,12 +1159,16 @@ NPC::NPC(string id):Character() {
                 fp >> *this;
                 fp.close();
                 if (this->needSave){
-                    this->load();
+                    this->load(path);
                 }
                 else{
                     // 商店npc
                     if (id == "NN-07"){
                         this->shopStatus = true;
+                    }
+                    // 设计爆炸, 打个垃圾补丁
+                    if (id == "NY-01"){
+                        this->status.loadStatus(this->id, READ_MONSTER_STATUS_PATH);
                     }
                     else{
                         this->shopStatus = false;
@@ -1205,15 +1209,15 @@ bool NPC::NPCMenu(Player &player) {
     this->showDescription();
     // 接任务的面板
     if (this->missionStatus){
-        cout << this->nameCN << endl;
-        cout << this->description << endl;
         if (player.getMission(this->nameEN) != nullptr){
             cout << "当前任务进行中" << endl;
             return false;
         }
         else{
-            cout << "有可以接受的任务:" << endl;
-            cout << questList[0].nameCN << endl;
+            if(!questList.empty()){
+                cout << "有可以接受的任务:" << endl;
+                cout << questList[0].nameCN << endl;
+            }
         }
         return false;
     }
@@ -1330,7 +1334,7 @@ void NPC::showDescription() {
  */
 void NPC::assignQuest(Player &player) {
     if (!missionStatus){
-        cout << "无任务" << endl;
+        cout << "无法接受任务" << endl;
         return;
     }
     if(!questList.empty()){
@@ -1378,14 +1382,14 @@ void NPC::finishQuest(Player &player) {
         // 检查是否可以提交
         // 特殊提交不能在当前npc处提交
         int t = acceptedMission->id;
-        if (t == 2|| t == 4 || t == 5 || t == 7 || t == 10 || t == 11){
+        if (t == 2|| t == 4 || t == 5 || t == 7 || t == 8 || t == 10 || t == 11){
             cout << "没有任务可以提交" << endl;
             return;
         }
 
         // 若可以则要修改任务属性为完成
         if (acceptedMission->checkFinished()){
-            cout << acceptedMission->id << "完成" << endl;
+            cout << "任务" << acceptedMission->nameCN << "完成" << endl;
             // 任务结算
             // 任务6的场景
             if (acceptedMission->id == 6){
@@ -1395,7 +1399,8 @@ void NPC::finishQuest(Player &player) {
                     s.displayScene();
                 }
                 else{
-                    // 一个新的场景
+                    Scene s(8);
+                    s.displayScene();
                 }
             }
             cout << this->talkContent[acceptedMission->id].end << endl;
@@ -1404,7 +1409,9 @@ void NPC::finishQuest(Player &player) {
             // 玩家 增加金钱 和 经验
             player.addMoney(acceptedMission->bonusMoney);
             player.addExp(acceptedMission->bonusExperiencePoint);
-            cout << "有新的任务可接" << endl;
+            if (!questList.empty()){
+                cout << "有新的任务可接" << endl;
+            }
         }
     }
 }
@@ -1431,15 +1438,6 @@ bool NPC::getVisibility() {
  */
 void NPC::talk(Player &player) {
     // 可以发任务的才有不同的对话
-
-    // 精灵的对话的特殊检查
-    if (this->id == "NN-10"){
-        if (player.getItem(302) != 0){
-            cout << "王国的走狗, 我和你没什么好说的" << endl;
-        }
-        return;
-    }
-
     if (missionStatus){
         Mission *mission = player.getMission(this->nameEN);
         if (mission != nullptr){
@@ -1463,6 +1461,15 @@ void NPC::talk(Player &player) {
  */
 bool NPC::specialEvent(Player &player) {
     Mission *mission;
+    if (this->id == "NN-10"){
+        if (player.getItem(302)){
+            cout << "王国的走狗, 我和你没什么好说的" << endl;
+            system("pause");
+            system("cls");
+            return true;
+        }
+        return false;
+    }
 
     if (this->id == "NN-04" && !player.getMission(1) && player.getItem(302)){
         // 第二条主线的开启
@@ -1491,31 +1498,46 @@ bool NPC::specialEvent(Player &player) {
             if (mission!= nullptr && !mission->isFinished){
                 cout << this->talkContent[7].end << endl;
                 mission->missionFinish(player);
-                cout << "有新的任务可接" << endl;
+                if (!this->questList.empty()){
+                    cout << "有新的任务可接" << endl;
+                }
                 system("pause");
                 system("cls");
                 return true;
             }
         }
     }
-
-    mission = player.getMission(9);
-    if (mission != nullptr && !mission->isFinished){
-        // 和芙芙的强制战斗
-        Monster m("MY-05");
-        GameLoop::battleLoop(m);
-        cout << this->talkContent[9].end << endl;
-        mission->missionFinish(player);
-        cout << "有新的任务可接" << endl;
-        system("pause");
-        system("cls");
-        return true;
+    // 和梅林对话
+    if (this->id == "NN-08"){
+        mission = player.getMission(9);
+        if (mission != nullptr && !mission->isFinished){
+            // 和芙芙的强制战斗
+            Monster m("MY-05");
+            GameLoop::battleLoop(m);
+            cout << this->talkContent[9].end << endl;
+            mission->missionFinish(player);
+            cout << "有新的任务可接" << endl;
+            system("pause");
+            system("cls");
+            return true;
+        }
+        mission = player.getMission(8);
+        if(mission!= nullptr && !mission->isFinished){
+            cout << "插入一个场景" << endl;
+            mission->missionFinish(player);
+            cout << "有新的任务可接" << endl;
+            system("pause");
+            system("cls");
+            return true;
+        }
     }
+
+
     // 和神秘人对话
     mission = player.getMission(5);
     if (this->id == "NN-03" && mission != nullptr &&!mission->isFinished){
-        mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
+        mission->missionFinish(player);
         // 神秘人可以接任务了
         this->missionStatus = true;
         cout << "有新的任务可接" << endl;
@@ -1523,14 +1545,36 @@ bool NPC::specialEvent(Player &player) {
         system("cls");
         return true;
     }
+    // 蜥蜴人对话
     mission = player.getMission(10);
     if (this->id == "NN-13" && mission != nullptr && !mission->isFinished){
         mission->missionFinish(player);
         cout << this->talkContent[5].end << endl;
-        cout << "有新的任务可接" << endl;
+        string t ="你：我想要回到原来的世界，怎么办\n蜥蜴人祭司：我这里有6个神珠，据说集齐7个就可以实现你的愿望了，但最后一个我们丢失了它。\n你：足够了，我会寻找这最后一个的";
+        Scene::show(t);
+        t = "从下面前往魔王城吧, 巨龙应该还在沉睡";
+        Scene::show(t);
         system("pause");
         system("cls");
         return true;
+    }
+    // 公主的委托
+    if (this->id == "NN-15"){
+        Mission *mission1 = player.getMission(7);
+        if (mission1 != nullptr && mission1->isFinished){
+            mission1 = player.getMission(10);
+            if (mission1 != nullptr && mission1->isFinished){
+                // 公主可接任务
+                globalNPC[13].missionStatus = true;
+                return false;
+            }
+            else{
+                cout << "你需要去了解真相" << endl;
+            }
+        }
+        else{
+            cout << "你快离开吧, 这里很危险" << endl;
+        }
     }
     return false;
 }

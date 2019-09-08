@@ -1,10 +1,10 @@
 owner NY-01
 MP 10
-HP 100
+HP 150
 Phy 10
-ATK 25
-Speed 0
-Critical 0
+ATK 90
+Speed 70
+Critical 50
 DEF 0
 
 owner NY-02
@@ -38,7 +38,7 @@ owner MY-01
 MP 10
 HP 100
 Phy 10
-ATK 45
+ATK 50
 Speed 0
 Critical 0
 DEF 2

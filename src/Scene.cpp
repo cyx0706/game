@@ -39,13 +39,15 @@ void Scene::show(string& sentence) {
  */
 istream& operator>>(istream &fpStream, Scene &scene) {
     string temp;
+    // 读标签
     fpStream >> temp;
     if ( temp != "[end]"){
-        fpStream >> scene.content;
         if (temp == "[branch]"){
             scene.branch();
             return fpStream;
         }
+        // 读入内容
+        fpStream >> scene.content;
 
         if (temp == "[template]"){
             int start = scene.content.find_first_of('<');
@@ -109,7 +111,7 @@ void dynamicScene1(){
     }
     // 清除缓存区
     cin.clear();
-    cin.ignore();
+    cin.sync();
 }
 
 void dynamicScene2(){
@@ -164,7 +166,9 @@ void dynamicScene3(){
                     "2我现在把这个和身上的装备卖掉";
             cin >> choose;
             if(choose == 1){
-                break;
+                cout << "你默默的离开了" << endl;
+                system("pause");
+                return;
             }
             else if(choose == 2) {
                 t =  "埃伊娜的表情有些惊讶";
@@ -179,11 +183,26 @@ void dynamicScene3(){
                 Scene::show(t);
                 player.addMoney(100);
                 player.addItem(301);
+                // 防具去掉
+                string armorName = "best-armor";
+                if(player.takeOffArmor(armorName)){
+                    player.eraseItem(101);
+                }
+                else{
+                    player.eraseItem(101);
+                }
+                string weaponName = "best-sword";
+                if (player.takeOffWeapon(weaponName)){
+                    player.eraseItem(5);
+                }
+                else{
+                    player.eraseItem(5);
+                }
+
                 player.deleteItem(302);
                 // 工会小姐姐可接任务
                 globalNPC[3].missionStatus = true;
-                // 公主可接任务
-                globalNPC[13].missionStatus = true;
+                system("pause");
                 break;
             }
             else{
@@ -191,14 +210,19 @@ void dynamicScene3(){
                 break;
             }
         }
+        else if (choose == 2){
+            return;
+        }
         else{
             cout << "我不能这么做" << endl;
+            cin.clear();
+            cin.sync();
             continue;
         }
     }
     // 清除缓存区
     cin.clear();
-    cin.ignore();
+    cin.sync();
 }
 
 

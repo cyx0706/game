@@ -38,6 +38,8 @@ id MY-05
 nameEN fufu
 nameCN ø≠‹Á≈¡¬≥∏Ò
 description fufufu~~
+fallingExp 0
+fallingMoney 0
 displayChar M
 fallingItem None
 

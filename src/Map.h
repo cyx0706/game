@@ -42,8 +42,8 @@ public:
     void nextMap(int mapId);
     void showDescription();
     static void setCursorStatus(bool visiable);
-    static bool canEnter(int mapId);
-    void checkSpecialScene();
+    static bool canEnter(int mapId, int fromMapId);
+    bool checkSpecialScene(int toMapId);
 private:
     vector<short>edgeLeft;  // 不能在类里声明大小,除非声明为静态
     vector<short>edgeRight;  // 左右边界
