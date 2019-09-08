@@ -209,7 +209,3 @@ void Mission::missionFinish(Player &player) {
     player.addMoney(this->bonusMoney);
     player.addExp(this->bonusExperiencePoint);
 }
-
-Mission::Mission() {
-
-}

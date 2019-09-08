@@ -950,24 +950,23 @@ void Player::load() {
 
     int i = 0;
     while (!ifstream1.eof()){
-
-    // 找到对应 owner 处
-    while (getline(ifstream1, str)) {
-        if (!str.empty()) {
-            vector<string> idLine = Tool::split(str);
-            if (idLine[0] == "owner" && idLine[1] == "player") {
-                break;
+        // 找到对应 owner 处
+        while (getline(ifstream1, str)) {
+            if (!str.empty()) {
+                vector<string> idLine = Tool::split(str);
+                if (idLine[0] == "owner" && idLine[1] == "player") {
+                    break;
+                }
             }
         }
-    }
-    data = Tool::dataMap(ifstream1);
+        data = Tool::dataMap(ifstream1);
 
-    Mission mission(fromString<int>(data["id"]));
-    mission.isAccepted = fromString<bool>(data["isAccepted"]);
-    mission.isFinished = fromString<bool>(data["isFinished"]);
-    mission.isProcess = fromString<bool>(data["isProcess"]);
-    quests[i] = mission;
-    i += 1;
+        //Mission mission(fromString<int>(data["id"]));
+        quests.push_back(Mission(fromString<int>(data["id"])));
+        quests[i].isAccepted = fromString<bool>(data["isAccepted"]);
+        quests[i].isFinished = fromString<bool>(data["isFinished"]);
+        quests[i].isProcess = fromString<bool>(data["isProcess"]);
+        i += 1;
     }
     ifstream1.close();
 }
