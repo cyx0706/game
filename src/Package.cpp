@@ -67,6 +67,7 @@ bool Shop::buy(int itemId, int number, int &money) {
                 price = (*iter).boughtPrice * number;
                 if (money >= price){
                     if (armorPackage.deleteItem(itemId, number)){
+                        money -= price;
                         return true;
                     }
                     else{
@@ -88,6 +89,7 @@ bool Shop::buy(int itemId, int number, int &money) {
                 price = (*iter).boughtPrice * number;
                 if (money >= price){
                     if (drugPackage.deleteItem(itemId, number)){
+                        money -= price;
                         return true;
                     }
                     else{
