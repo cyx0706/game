@@ -646,7 +646,8 @@ void Player::save() {
     map<string,string> m_map;
 
     //保存player的单项属性
-    m_map["type"] = "attribute";
+    //m_map["type"] = "attribute";
+    of << "type attribute" << endl;
     m_map["id"] = id;
     m_map["nameCN"] = nameCN;
     m_map["nameEN"] = nameEN;
@@ -670,7 +671,8 @@ void Player::save() {
     of << endl;
 
     //保存player的location
-    m_map["type"] = "location";
+    //m_map["type"] = "location";
+    of << "type location" << endl;
     m_map["mapId"] = toString<int>(mapLocation.mapId);
     m_map["x"] = toString<int>(mapLocation.x);
     m_map["y"] = toString<int>(mapLocation.y);
@@ -804,8 +806,7 @@ void Player::deadScene() {
 
 //player读档
 void Player::load() {
-    ifstream os;
-    os.open(SAVE_PLAYER_PATH);
+    ifstream os(SAVE_PLAYER_PATH);
 
     string str;
 
@@ -944,11 +945,29 @@ void Player::load() {
 
     status.loadStatus("player",SAVE_STATUS_PATH);
 
-    ifstream ifstream1(SAVE_MISSION_PATH);
+    ifstream ifstream1;
+    ifstream1.open(SAVE_MISSION_PATH);
+
     int i = 0;
     while (!ifstream1.eof()){
-        quests[i].loadMission(ifstream1,"player",SAVE_MISSION_PATH);
-        i += 1;
+
+    // 找到对应 owner 处
+    while (getline(ifstream1, str)) {
+        if (!str.empty()) {
+            vector<string> idLine = Tool::split(str);
+            if (idLine[0] == "owner" && idLine[1] == "player") {
+                break;
+            }
+        }
+    }
+    data = Tool::dataMap(ifstream1);
+
+    Mission mission(fromString<int>(data["id"]));
+    mission.isAccepted = fromString<bool>(data["isAccepted"]);
+    mission.isFinished = fromString<bool>(data["isFinished"]);
+    mission.isProcess = fromString<bool>(data["isProcess"]);
+    quests[i] = mission;
+    i += 1;
     }
     ifstream1.close();
 }

@@ -117,26 +117,16 @@ void Mission::saveMission(string owner, string path) {
     of.open(path);
     map<string,string> m_map;
     //保存player的单项属性
-    m_map["owner"] = owner;
+    //m_map["owner"] = owner;
+    of << "owner player" << endl;
     m_map["id"] = toString<int>(id);
-    m_map["nameEN"] = nameEN;
-    m_map["nameCN"] = nameCN;
-    m_map["description"] = description;
     m_map["isAccepted"] = toString<bool>(isAccepted);
     m_map["isFinished"] = toString<bool>(isFinished);
     m_map["isProcess"] = toString<bool>(isProcess);
-    m_map["bonusMoney"] = toString<int>(bonusMoney);
-    m_map["bonusExperiencePoint"] = toString<int>(bonusExperiencePoint);
-    m_map["assigner"] = assigner;
 
     auto iter = m_map.begin();
     for(; iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
-    }
-    of << "type requiredItem" << endl;
-    auto iterator = requiredItem.begin();
-    for(;iterator != requiredItem.end(); iterator ++){
-        of << iterator->first << " " << iterator->second << endl;
     }
     m_map.clear();
     of << endl;
@@ -218,4 +208,8 @@ void Mission::missionFinish(Player &player) {
     cout << "任务完成" << endl;
     player.addMoney(this->bonusMoney);
     player.addExp(this->bonusExperiencePoint);
+}
+
+Mission::Mission() {
+
 }

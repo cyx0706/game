@@ -1,0 +1,9 @@
+owner player
+ATK 45
+Critical 50
+DEF 32
+HP 165
+MP 115
+Phy 5
+Speed 8
+

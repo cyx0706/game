@@ -1,54 +1,7 @@
-id NN-02
-nameCN 战士长
-shopStatus 0
-battleStatus 0
-missionStatus 1
-bar 0
-isVisible 1
-quests 1,2,3,4
-
-id NN-04
-nameCN 埃伊娜
-shopStatus 0
-battleStatus 0
-missionStatus 0
-bar 1
-isVisible 1
-quests 5
-
-id NN-03
-nameCN 神秘人
-shopStatus 0
-battleStatus 0
-missionStatus 0
-bar 0
-isVisible 1
-quests 6,7
-
-
-id NN-08
-nameCN 梅林
-shopStatus 0
-battleStatus 0
-missionStatus 1
-bar 0
-isVisible 1
-quests 9,10
-
-id NN-15
-nameCN 公主
-shopStatus 0
-battleStatus 0
-missionStatus 0
-bar 0
-isVisible 1
-quests 11
-
 id NY-02
-nameCN 精灵皇后
+nameCN 精灵王后
 shopStatus 0
-battleStatus 1
 missionStatus 1
 bar 0
 isVisible 1
-quests 8
+quests8

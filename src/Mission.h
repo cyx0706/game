@@ -19,6 +19,7 @@ class Player;
 class Mission {
 public:
     explicit Mission(int id);
+    Mission();
 
     void showDescription();
     bool checkFinished();
