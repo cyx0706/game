@@ -41,6 +41,7 @@ using std::setw;
 using std::setiosflags;
 using std::ios_base;
 using std::ios;
+using std::find;
 /*
  * 全局变量存到这里
  */
