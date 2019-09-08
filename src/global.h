@@ -21,6 +21,7 @@ using std::map;
 using std::stoi;
 using std::string;
 using std::endl;
+using std::fstream;
 using std::ifstream;
 using std::ofstream;
 using std::pair;

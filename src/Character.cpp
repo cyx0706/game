@@ -1069,6 +1069,10 @@ void NPC::storeSave() {
     NPC::store.save();
 }
 
+void NPC::storeLoad(string path) {
+    NPC::store.load(path);
+}
+
 /*
  * @brief 重载流来读取npc的静态信息
  * 关于文件内的key需要注意:
@@ -1528,7 +1532,8 @@ bool NPC::specialEvent(Player &player) {
         }
         mission = player.getMission(8);
         if(mission!= nullptr && !mission->isFinished){
-            cout << "插入一个场景" << endl;
+            Scene s(9);
+            s.displayScene();
             mission->missionFinish(player);
             cout << "有新的任务可接" << endl;
             system("pause");
@@ -1583,3 +1588,4 @@ bool NPC::specialEvent(Player &player) {
     }
     return false;
 }
+

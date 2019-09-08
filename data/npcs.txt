@@ -41,7 +41,7 @@ end
 id NN-03
 nameCN 神秘人
 nameEN mystery-person
-description 无
+description 这个人把自己裹得十分的严实, 你无法看清他的样貌
 locationX 9
 locationY 17
 locationMap 2
@@ -74,7 +74,7 @@ end
 id NN-06
 nameCN 小哥
 nameEN Sieg
-description 无
+description Sieg,好熟悉的名字,总觉得要发生什么
 locationX 13
 locationY 16
 locationMap 2
@@ -102,7 +102,7 @@ end
 id NN-08
 nameCN 混血梦魔
 nameEN Merlin
-description 无
+description 全知全能的大魔导师,还是一个网络偶像？？？？
 locationX 10
 locationY 17
 locationMap 6
@@ -111,7 +111,7 @@ fallingExp 0
 fallingMoney 0
 needSave 1
 talk 0:common:魔法少女梅莉计划很成功啊
-talk 8:end:你好，我就是大魔导师梅林，你的愿望和情况我已经通过千里眼得知了
+talk 8:end:你的愿望和情况我已经通过千里眼得知了
 talk 9:start:想要回到原来的世界，你需要这把圣剑。我需要你完成这个试炼，来检查你是否有资格拿出这把圣剑，你先准备一下再来找我吧
 talk 9:process:沼泽的蜥蜴人们会给你更多的线索的
 talk 9:end:你合格了，少年，去救出公主吧！你现在应该就可以穿过沼泽去寻找古老的种族，他们说不定有回到过去的思路
@@ -120,7 +120,7 @@ end
 id NN-09
 nameCN 蓝色的史莱姆
 nameEN blue-slime
-description 无
+description 从某个游戏穿越过来的
 locationX 10
 locationY 5
 locationMap 5
@@ -134,7 +134,7 @@ end
 id NN-10
 nameCN 精灵族人
 nameEN elf
-description 无
+description 精灵族的大姐姐
 locationX 15
 locationY 7
 locationMap 4
@@ -148,7 +148,7 @@ end
 id NN-11
 nameCN 蓝眼的少年
 nameEN Sirius
-description 无
+description 少年的前发有一片白色
 locationX 8
 locationY 4
 locationMap 3
@@ -162,7 +162,7 @@ end
 id NN-12
 nameCN 蜥蜴人
 nameEN lizard
-description 无
+description 常年生活在沼泽的种族
 locationX 5
 locationY 3
 locationMap 8
@@ -176,7 +176,7 @@ end
 id NN-13
 nameCN 蜥蜴人祭司
 nameEN lizard-priest
-description 无
+description 看起来很年长的祭祀
 locationX 5
 locationY 4
 locationMap 8
@@ -191,7 +191,7 @@ end
 id NN-14
 nameCN 蜥蜴人战士
 nameEN lizard-soldier
-description 无
+description 强壮的战士
 locationX 5
 locationY 5
 locationMap 8
@@ -205,7 +205,7 @@ end
 id NN-15
 nameCN 公主
 nameEN princess
-description 无
+description 楚楚可怜的人,她似乎在这里很自由
 locationX 10
 locationY 5
 locationMap 9
@@ -214,13 +214,13 @@ fallingExp 0
 fallingMoney 0
 needSave 1
 talk 0:common:会有王子来救我吗？
-talk 11:start:勇者大人，我希望你可以消灭大祭司，他扰乱了整个王国\n你：我不是勇者，我只是一届冒险者。我可以帮助你
+talk 11:start:勇者大人，我希望你可以消灭大祭司，他扰乱了整个王国
 end
 ------
 id NN-16
 nameCN 魔王军干部
 nameEN Dullahan
-description 无
+description 某个逃难的无头骑士
 locationX 7
 locationY 7
 locationMap 9
@@ -248,7 +248,7 @@ end
 id NY-02
 nameCN 精灵王后
 nameEN elf-queen
-description 无
+description 精灵族的女王
 locationX 10
 locationY 5
 locationMap 4
@@ -257,6 +257,6 @@ fallingExp 0
 fallingMoney 0
 needSave 1
 talk 0:common:我也想要一份魔法少女梅莉的签名啊啊啊啊
-talk 7:end:我看看，我了解了
+talk 7:end:希望击败巨龙？，我知道了，我会帮你找到合适的人去做的
 talk 8:start:全知的梅林会帮助你的，[咒语]，你可以去了
 end

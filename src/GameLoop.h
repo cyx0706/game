@@ -22,6 +22,7 @@ public:
     static void gameInterface();
     static void battleLoop(Character &character);
     static void shopLoop(NPC &npc);
+    static bool canLoad();
 };
 
 #endif //GAME_GAMELOOP_H

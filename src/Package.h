@@ -10,6 +10,7 @@
 #include "global.h"
 #include "templateHeader.h"
 static const string SHOP_FILE_PATH = "../save/shop.txt";
+static const string INIT_SHOP_FILE = "../data/initShop.txt";
 
 class Shop{
 public:
@@ -18,6 +19,7 @@ public:
     bool sell(Item &item, int number, int &money);
     void shopMenu(SCOORD &pos);
     void save();
+    void load(string path = SHOP_FILE_PATH);
     Package<Weapon> weaponPackage;
     Package<Armor> armorPackage;
     Package<Drug> drugPackage;
