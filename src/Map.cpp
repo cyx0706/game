@@ -211,7 +211,7 @@ bool Map::checkBottomMapTransition() {
         if (uPos.X == doorPosBottom[i]){
             int t = mapNow->roadTo[uPos];
             // 不可进入
-            if(!canEnter(t)){
+            if(!canEnter(t, this->id)){
                 string tips = "现在还不能进入";
                 char strPtr[50];
                 Tool::stringToChar(tips, strPtr);
@@ -227,7 +227,6 @@ bool Map::checkBottomMapTransition() {
             mapNow->initMap();
             uPos.X = mapNow->initPos.X;
             uPos.Y = mapNow->initPos.Y;
-            mapNow->checkSpecialScene();
             return true;
         }
     }
@@ -250,7 +249,11 @@ bool Map::checkTopMapTransition() {
             system("cls");
             // 生成指针并读取数据
             int t = mapNow->roadTo[uPos];
-            if (!Map::canEnter(t)){
+            if (mapNow->checkSpecialScene(t)){
+                system("pause");
+                system("cls");
+            }
+            if (!Map::canEnter(t, this->id)){
                 return false;
             }
             mapNow->nextMap(t);
@@ -259,7 +262,6 @@ bool Map::checkTopMapTransition() {
             // 修改玩家位置
             uPos.X = mapNow->initPos.X;
             uPos.Y = mapNow->initPos.Y;
-            mapNow->checkSpecialScene();
             return true;
         }
     }
@@ -600,6 +602,15 @@ int Map::checkEvent() {
             }
             auto resultMonster = monsters.find(barrier[i]);
             if (resultMonster != monsters.end()){
+                if (monsters[barrier[i]] == "NY-04"){
+                    if (player.getItem(301)){
+                        char t[60];
+                        string tips = "巨龙正在沉睡, 还是不要打扰它了";
+                        Tool::stringToChar(tips, t);
+                        MessageBox(nullptr, t, "提示", MB_OK);
+                        return 0;
+                    }
+                }
                 Monster aMonster(monsters[barrier[i]]);
                 string tips = "和" + aMonster.nameCN + "对战";
                 char t[80];
@@ -630,24 +641,24 @@ void Map::showDescription() {
  *
  */
 
-void Map::checkSpecialScene() {
-    int mapId = this->id;
-    if (mapId != 1 && mapId != 2){
-        return;
+bool Map::checkSpecialScene(int toMapId) {
+    if (toMapId != 1 && toMapId != 2){
+        return false;
     }
     // 公主的委托
     // 和大祭司对战
     if(player.getMission(11)){
-        if (mapId == 1){
+        if (toMapId == 1){
             GameLoop::battleLoop(globalNPC[15]);
-            return;
+            return true;
 
         }
-        if (mapId == 2){
+        if (toMapId == 2){
             cout << "要赶快去阻止大祭司" << endl;
-            return;
+            return true;
         }
     }
+    return false;
 }
 
 /*
@@ -656,39 +667,51 @@ void Map::checkSpecialScene() {
  * @param mapId:地图的id
  * @return true:可以进入
  */
-bool Map::canEnter(int mapId) {
-    //
-    if (mapId == 4){
-        if (player.getItem(301)){
+bool Map::canEnter(int mapId, int fromMapId) {
+    // 主线2
+    if (player.getItem(301)){
+        if (mapId == 9 && fromMapId == 8){
             return true;
         }
-        if (!player.getMission(2)){
+        if (mapId == 7 && fromMapId == 9){
+            return false;
+        }
+        if (mapId == 1){
             return false;
         }
     }
-    if (mapId == 6){
-        // 判断任务8是否已经接受
-        if (!player.getMission(8)){
-            return false;
+    // 主线1
+    else{
+        if (mapId == 4){
+            if (!player.getMission(2)){
+                return false;
+            }
         }
-    }
-    if (mapId == 7){
-        // 判断任务2是否完成
-        if (!player.getMission(3)){
-            return false;
+        if (mapId == 6){
+            // 判断任务8是否已经接受
+            if (!player.getMission(8)){
+                return false;
+            }
         }
-    }
-    if (mapId == 8){
-        // 判断是否接受了任务10
-        if (!player.getMission(10)){
-            return false;
+        if (mapId == 7){
+            // 判断任务3是否接受
+            if (!player.getMission(3)){
+                return false;
+            }
+            // 第二条线默认开放
         }
-    }
-    if (mapId == 9){
-        // 判断任务3是否完成
-        Mission* missionPtr = player.getMission(3);
-        if (missionPtr == nullptr || !(missionPtr->isFinished)){
-            return false;
+        if (mapId == 8){
+            // 判断是否接受了任务10
+            if (!player.getMission(10)){
+                return false;
+            }
+        }
+        if (mapId == 9){
+            // 判断任务3是否完成
+            Mission* missionPtr = player.getMission(3);
+            if (missionPtr == nullptr || !(missionPtr->isFinished)){
+                return false;
+            }
         }
     }
     return true;

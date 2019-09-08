@@ -19,6 +19,7 @@
 extern Player player;
 extern unique_ptr<Map> mapNow;
 extern vector<NPC> globalNPC;
+extern bool canSave;
 
 /*
  * @brief 用于在找不到对应命令时，输出 command not found
@@ -418,6 +419,11 @@ bool Client::executeCommand(vector<string> commands) {
     // save 命令
     if (command == save) {
         if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
+        if (!canSave){
+            cout << "command is banned" << endl;
             return false;
         }
 

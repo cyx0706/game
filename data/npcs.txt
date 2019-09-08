@@ -109,11 +109,12 @@ locationMap 6
 display N
 fallingExp 0
 fallingMoney 0
-needSave 0
+needSave 1
 talk 0:common:魔法少女梅莉计划很成功啊
 talk 8:end:你好，我就是大魔导师梅林，你的愿望和情况我已经通过千里眼得知了
-talk 9:start:想要击败身为梦魔的大祭司，你需要这把圣剑。我需要你完成这个试炼，来检查你是否有资格拿出这把圣剑，你先准备一下再来找我吧
-talk 9:end:你合格了，少年，你可以拔出这把圣剑，它会引导你向胜利，去救出公主吧！祈愿吧，风之精灵与你同在\n你:这是什么？\n梅林：这是精灵的祝福，你现在应该就可以穿过沼泽去寻找古老的种族，他们说不定有回到过去的思路
+talk 9:start:想要回到原来的世界，你需要这把圣剑。我需要你完成这个试炼，来检查你是否有资格拿出这把圣剑，你先准备一下再来找我吧
+talk 9:process:沼泽的蜥蜴人们会给你更多的线索的
+talk 9:end:你合格了，少年，去救出公主吧！你现在应该就可以穿过沼泽去寻找古老的种族，他们说不定有回到过去的思路
 end
 ------
 id NN-09
@@ -134,7 +135,7 @@ id NN-10
 nameCN 精灵族人
 nameEN elf
 description 无
-locationX 7
+locationX 15
 locationY 7
 locationMap 4
 display N
@@ -184,7 +185,7 @@ fallingExp 0
 fallingMoney 0
 needSave 0
 talk 0:common:ziziziziizziz
-talk 10:end:冒险者哦，预言是真的，你受到了梅林大人的祝福，我们一定会全力帮助你的\n你：我想要回到原来的世界，怎么办蜥蜴人祭司：我这里有6个神珠，据说集齐7个就可以实现你的愿望了，但最后一个我们丢失了它。\n你：足够了，我会寻找这最后一个的
+talk 10:end:冒险者哦，预言是真的，你受到了梅林大人的祝福，我们一定会全力帮助你的。
 end
 ------
 id NN-14
@@ -256,6 +257,6 @@ fallingExp 0
 fallingMoney 0
 needSave 1
 talk 0:common:我也想要一份魔法少女梅莉的签名啊啊啊啊
-talk 7:end:我看看，我了解了，我虽然帮不了你，但我可以用咒语将你送去阿瓦隆，全知的梅林会帮助你的，稍等一下
-talk 8:start:[咒语]，你可以去了
+talk 7:end:我看看，我了解了
+talk 8:start:全知的梅林会帮助你的，[咒语]，你可以去了
 end
