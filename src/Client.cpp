@@ -877,9 +877,19 @@ void Client::base() {
         getline(cin, str);
 
         // 普通状态可以随时退出命令行
-        // 退出命令为 esc quit exit 任一
-        if (str == "esc" || str == "quit" || str == "exit") {
+        // 退出命令为 esc quit 任一
+        if (str == "esc" || str == "quit") {
             return;
+        }
+
+        // exit 退出状态
+        if (str == "exit") {
+            cout << "Do you want to quit the game? (y/n)";
+            string flag;
+            cin >> flag;
+            if (flag == "y") {
+                exit(0);
+            }
         }
 
         // 将命令行获取的命令进行规整
