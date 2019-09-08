@@ -16,7 +16,7 @@ class GameLoop{
 public:
     static void mapLoop();
     static void initGame();
-    static void gameStart();
+    static void newGame();
     static void npcLoop(NPC &talkedNPC);
     static void commandLoop();
     static void gameInterface();

@@ -1,14 +1,11 @@
 //
 // Created by lenovo on 2019/9/8.
 //
-#include <bits/stdc++.h>//C++万能头
 #include<windows.h>//控制台编程主要头文件
-#include<conio.h>//getch()函数
-#include<stdlib.h>//system()函数
 #include<wincon.h>
 #include "UI.h"
+#include "global.h"
 
-using namespace std;
 
 void UI::pos(int x, int y) {
     COORD posPoint = {static_cast<SHORT>(x),static_cast<SHORT>(y)}; //设置坐标

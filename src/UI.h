@@ -5,8 +5,7 @@
 #ifndef GAME_UI_H
 #define GAME_UI_H
 
-HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);//获取标准输出句柄
-
+extern HANDLE hOut;
 
 class UI {
 public:
@@ -17,11 +16,11 @@ public:
     static void on_Select();//被选中时的样式
     static void onChoose(int x, int y);//确定所选中的位置
     static void star();//初始化界面
-    void setYellow();
+    static void setYellow();
     void setPurple();
     void setBlue();
     void blackOnWhite();
-    void redOnWhite();
+    static void redOnWhite();
     void redOnGrey();
     static void printTitle();
 };

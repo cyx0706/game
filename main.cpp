@@ -30,11 +30,9 @@ int main() {
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));
     GameLoop::initGame();
-//    Scene scene1(1);
-//    scene1.displayScene();
-    Scene scene2(2);
-    scene2.displayScene();
-    dynamicScene2();
-    GameLoop::mapLoop();
+    while (true){
+        GameLoop::gameInterface();
+    }
+
     return 0;
 }

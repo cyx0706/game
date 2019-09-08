@@ -1166,12 +1166,12 @@ NPC::NPC(string id, string path):Character() {
                     if (id == "NN-07"){
                         this->shopStatus = true;
                     }
+                    else{
+                        this->shopStatus = false;
+                    }
                     // Éè¼Æ±¬Õ¨, ´ò¸öÀ¬»ø²¹¶¡
                     if (id == "NY-01"){
                         this->status.loadStatus(this->id, READ_MONSTER_STATUS_PATH);
-                    }
-                    else{
-                        this->shopStatus = false;
                     }
                     this->missionStatus = false;
                     this->battleStatus = false;

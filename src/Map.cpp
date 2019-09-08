@@ -220,7 +220,7 @@ bool Map::checkBottomMapTransition() {
             }
             system("cls");
             cout << "Waiting......";
-            Sleep(2000);
+            Sleep(500);
             system("cls");
             mapNow->nextMap(t);
             // 绘制地图
@@ -243,10 +243,6 @@ bool Map::checkBottomMapTransition() {
 bool Map::checkTopMapTransition() {
     for (int i = 0; i < doorPosTop.size(); i++) {
         if (uPos.X == doorPosTop[i]){
-            system("cls");
-            cout << "Waiting......";
-            Sleep(2000);
-            system("cls");
             // 生成指针并读取数据
             int t = mapNow->roadTo[uPos];
             if (mapNow->checkSpecialScene(t)){
@@ -254,8 +250,16 @@ bool Map::checkTopMapTransition() {
                 system("cls");
             }
             if (!Map::canEnter(t, this->id)){
+                string tips = "现在还不能进入";
+                char strPtr[50];
+                Tool::stringToChar(tips, strPtr);
+                MessageBox(nullptr, strPtr, "提示", MB_OK);
                 return false;
             }
+            system("cls");
+            cout << "Waiting......";
+            Sleep(500);
+            system("cls");
             mapNow->nextMap(t);
             // 绘制地图
             mapNow->initMap();
@@ -670,8 +674,18 @@ bool Map::checkSpecialScene(int toMapId) {
 bool Map::canEnter(int mapId, int fromMapId) {
     // 主线2
     if (player.getItem(301)){
-        if (mapId == 9 && fromMapId == 8){
-            return true;
+        if (mapId == 8){
+            if (!player.getMission(10)){
+                return false;
+            }
+        }
+        if (mapId == 6){
+            if (!player.getMission(8)){
+                return false;
+            }
+        }
+        if (mapId == 9 && fromMapId == 7){
+            return false;
         }
         if (mapId == 7 && fromMapId == 9){
             return false;
