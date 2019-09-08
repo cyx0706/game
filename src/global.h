@@ -40,6 +40,7 @@ using std::istream;
 using std::setw;
 using std::setiosflags;
 using std::ios_base;
+using std::ios;
 /*
  * 全局变量存到这里
  */

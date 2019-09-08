@@ -32,11 +32,11 @@ sell 6
 
 -角色指令
 status 7
-/ status <character_name>
+/ status
 // 展示指定角色的状态
 
 equipment 8
-/ equipment <character_name>
+/ equipment
 // 展示指定角色的装备
 
 package 9

@@ -274,9 +274,13 @@ bool Client::executeCommand(vector<string> commands) {
 
         //
         player.showWeapons();
+        cout << endl;
         player.showArmors();
+        cout << endl;
         player.showDrugs();
+        cout << endl;
         player.showItems();
+        cout << endl;
         return false;
     }
 
