@@ -480,13 +480,15 @@ Mission* Player::getMission(int missionId) {
  * @brief 展示玩家的信息
  */
 void Player::showStatus() {
-    cout << "玩家姓名:" << this->nameCN << endl;
-    cout << "等级:" << this->Lv << endl;
-    cout << "生命:\t" << this->status.HP << endl;
-    cout << "法力值:\t" << this->status.MP;
-    cout << "速度:\t" << this->status.Speed;
-    cout << "防御:\t" << this->status.DEF;
-    cout << "攻击:\t" << this->status.ATK << endl;
+    cout.setf(ios::left);
+    cout <<  setw(10) <<"玩家姓名:" << this->nameCN << endl;
+    cout <<  setw(7) << "等级:" << this->Lv << endl;
+    cout <<  setw(7) << "生命:" << this->status.HP << endl;
+    cout <<  setw(7) << "法力值:" << this->status.MP;
+    cout <<  setw(7) << "速度:" << this->status.Speed;
+    cout <<  setw(7) << "防御:" << this->status.DEF;
+    cout <<  setw(7) << "攻击:" << this->status.ATK << endl;
+    cout.unsetf(ios::left);
 }
 
 /*

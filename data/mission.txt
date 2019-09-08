@@ -1,7 +1,7 @@
 id 1
 nameCN 讨伐狼人
 nameEN attack-werewolf
-description 随着黑夜的降临，一声声响彻云空的狼啸颤动着人们脆弱的内心，王城陷入极度恐慌。冒险者是时候展示你的风采了，一战成名。\n要求: 白眼狼皮 x 1
+description 随着黑夜的降临，一声声响彻云空的狼啸颤动着人们脆弱的内心，王城陷入极度恐慌。冒险者是时候展示你的风采了，一战成名。要求:白眼狼皮x1
 bonusMoney 200
 bonusExperiencePoint 200
 assigner chief-soldier
@@ -18,7 +18,7 @@ assigner chief-soldier
 id 3
 nameCN 探索失落之地
 nameEN explore-lostArea
-description 那是一片寂静的土地，人类繁盛以来就再也没有人踏足，到处都充满了神秘诡异的气息，寒风刺骨，树叶四散，一副人家地狱的样子；但是相传这是超古代文明的墓地，埋葬着奇妙富有魔力的物品。冒险者去探索这一切吧。\n要求: 愚者之锁 x 2
+description 那是一片寂静的土地，人类繁盛以来就再也没有人踏足，到处都充满了神秘诡异的气息，寒风刺骨，树叶四散，一副人家地狱的样子；但是相传这是超古代文明的墓地，埋葬着奇妙富有魔力的物品。冒险者去探索这一切吧。要求:愚者之锁x2
 bonusMoney 200
 bonusExperiencePoint 200
 assigner chief-soldier
@@ -43,7 +43,7 @@ assigner mystery-person
 id 6
 nameCN 神秘人的委托
 nameEN commitment-of-mysterious-person
-description 神秘人好像需要一些物品，这是打听到世界真相的好机会。\n要求:月光草 x 2、兽皮 x 1、蘑菇 x  2
+description 神秘人好像需要一些物品，这是打听到世界真相的好机会。要求:月光草x2、兽皮x1、蘑菇x2
 bonusMoney 200
 bonusExperiencePoint 200
 assigner mystery-person
