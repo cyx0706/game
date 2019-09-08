@@ -49,8 +49,10 @@ void GameLoop::mapLoop() {
             if (input == ESC){
                 system("cls"); // 清空屏幕
                 commandLoop();
-                mapNow->initPos = uPos;
                 mapNow->initMap();
+                mapNow->clean(mapNow->initPos);
+                mapNow->gotoxy(uPos);
+                mapNow->print();
             }
             if(input == SPACE){
                 int branch = mapNow->checkEvent();
@@ -163,6 +165,7 @@ void GameLoop::gameInterface(){
             NPC aNPC(npcName[i], INIT_NPC_PATH);
             globalNPC.push_back(aNPC);
         }
+        NPC::storeLoad(INIT_SHOP_FILE); // 初始化商店
         newGame();
         GameLoop::mapLoop();
     }
@@ -172,6 +175,9 @@ void GameLoop::gameInterface(){
     }
     if(x==47&&y==20)
     {
+        if (!canLoad()){
+            return;
+        }
         player.load();
         for (unsigned int i = 0; i < npcName.size(); i++) {
             NPC aNPC(npcName[i], SAVE_NPC_PATH);
@@ -468,3 +474,17 @@ void GameLoop::shopLoop(NPC &npc) {
 }
 
 
+bool GameLoop::canLoad() {
+    fstream fp;
+    // 打开文件
+    fp.open(SAVE_PLAYER_PATH);
+    char ch;
+    ch = fp.get(); //试图去读一个字符
+    if(fp.eof()){
+        fp.close();
+        return false;
+    }
+    fp.close();
+    return true;
+
+}

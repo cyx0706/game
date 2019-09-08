@@ -10,24 +10,8 @@
 #include "templateHeader.h"
 extern Player player;
 
-/*
- * @brief 读取文件初始化商店
- * 物品比较少所以对单个文件读三次, 判断T类型来构造物品
- */
-Shop::Shop() {
-    ifstream fp;
-    fp.open(SHOP_FILE_PATH);
-    fp >> this->weaponPackage;
-    fp.close();
 
-    fp.open(SHOP_FILE_PATH);
-    fp >> this->armorPackage;
-    fp.close();
-
-    fp.open(SHOP_FILE_PATH);
-    fp >> this->drugPackage;
-    fp.close();
-}
+Shop::Shop() = default;
 
 /*
  * @brief 购买物品的接口
@@ -67,6 +51,7 @@ bool Shop::buy(int itemId, int number, int &money) {
                 price = (*iter).boughtPrice * number;
                 if (money >= price){
                     if (armorPackage.deleteItem(itemId, number)){
+                        money -= price;
                         return true;
                     }
                     else{
@@ -88,6 +73,7 @@ bool Shop::buy(int itemId, int number, int &money) {
                 price = (*iter).boughtPrice * number;
                 if (money >= price){
                     if (drugPackage.deleteItem(itemId, number)){
+                        money -= price;
                         return true;
                     }
                     else{
@@ -235,4 +221,21 @@ void Shop::save() {
     fp.close();
 }
 
+/*
+ * @brief 读取文件初始化商店
+ * 物品比较少所以对单个文件读三次, 判断T类型来构造物品
+ */
+void Shop::load(string path) {
+    ifstream fp;
+    fp.open(path);
+    fp >> this->weaponPackage;
+    fp.close();
 
+    fp.open(path);
+    fp >> this->armorPackage;
+    fp.close();
+
+    fp.open(path);
+    fp >> this->drugPackage;
+    fp.close();
+}

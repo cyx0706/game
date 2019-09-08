@@ -227,7 +227,6 @@ void dynamicScene3(){
 
 
 void dynamicScene4(){
-    // TODO:根据玩家的物品判断
 
 }
 void dynamicScene5(){

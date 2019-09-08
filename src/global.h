@@ -21,6 +21,7 @@ using std::map;
 using std::stoi;
 using std::string;
 using std::endl;
+using std::fstream;
 using std::ifstream;
 using std::ofstream;
 using std::pair;
@@ -41,6 +42,7 @@ using std::setw;
 using std::setiosflags;
 using std::ios_base;
 using std::ios;
+using std::find;
 /*
  * 全局变量存到这里
  */

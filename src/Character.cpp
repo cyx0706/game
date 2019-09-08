@@ -272,7 +272,6 @@ bool Player::equipArmor(string &name) {
     for (auto iter = armorBag.items.begin(); iter != armorBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->armor = *iter;
-            armorBag.deleteItem((*iter).id, 1);
             // 处理加成
             this->status.ATK += ((*iter).ATK - oldArmor.ATK);
             this->status.DEF += ((*iter).DEF - oldArmor.DEF);
@@ -283,6 +282,7 @@ bool Player::equipArmor(string &name) {
                 armorBag.addItem(oldArmor.id, 1);
             }
             cout << "防具" << (*iter).nameCN << "装备成功" << endl;
+            armorBag.deleteItem((*iter).id, 1);
             return true;
         }
     }
@@ -299,7 +299,6 @@ bool Player::equipWeapon(string& name) {
     for (auto iter = weaponBag.items.begin(); iter != weaponBag.items.end() ; iter++) {
         if ((*iter).nameEN == name){
             this->weapon = *iter;
-            weaponBag.deleteItem((*iter).id, 1);
             // 处理加成
             this->status.ATK += ((*iter).ATK - oldWeapon.ATK);
             this->status.DEF += ((*iter).DEF - oldWeapon.DEF);
@@ -309,6 +308,7 @@ bool Player::equipWeapon(string& name) {
                 weaponBag.addItem(oldWeapon.id, 1);
             }
             cout << "武器" << (*iter).nameCN << "装备成功" << endl;
+            weaponBag.deleteItem((*iter).id, 1);
             return true;
         }
     }
@@ -1015,26 +1015,29 @@ Weapon* Player::getWeapon() {
  * 商店由于静态单独保存
  */
 void NPC::save() {
-    if (this->needSave){
-        ofstream fp;
-        fp.open(SAVE_NPC_PATH);
-        fp << "id" << " " << this->id << endl;
-        fp << "nameCN" << " " << this->nameCN << endl;
-        fp << "shopStatus" << " " << this->shopStatus << endl;
-        fp << "missionStatus" << " " << this->missionStatus << endl;
-        fp << "bar" << " " << this->bar << endl;
-        fp << "isVisible" << " " << this->isVisible << endl;
-        fp << "quests";
-        for (unsigned int i = 0; i < questList.size(); i++) {
-            fp << questList[i].id;
-            if (i == questList.size()-1){
-                continue;
+    ofstream fp;
+    fp.open(SAVE_NPC_PATH);
+    for (auto j = globalNPC.begin(); j != globalNPC.end() ; j++) {
+        if (j->needSave){
+            fp << "id" << " " << j->id << endl;
+            fp << "nameCN" << " " << j->nameCN << endl;
+            fp << "shopStatus" << " " << j->shopStatus << endl;
+            fp << "missionStatus" << " " << j->missionStatus << endl;
+            fp << "bar" << " " << j->bar << endl;
+            fp << "isVisible" << " " << j->isVisible << endl;
+            fp << "quests" << " ";
+            for (unsigned int i = 0; i < (*j).questList.size(); i++) {
+                fp << (*j).questList[i].id;
+                if (i == (*j).questList.size()-1){
+                    continue;
+                }
+                fp << ",";
             }
-            cout << ",";
+            fp << endl;
+            fp << endl;
         }
-        cout << endl;
-        fp.close();
     }
+    fp.close();
 }
 
 /*
@@ -1083,6 +1086,10 @@ void NPC::load(string path) {
  */
 void NPC::storeSave() {
     NPC::store.save();
+}
+
+void NPC::storeLoad(string path) {
+    NPC::store.load(path);
 }
 
 /*
@@ -1544,7 +1551,8 @@ bool NPC::specialEvent(Player &player) {
         }
         mission = player.getMission(8);
         if(mission!= nullptr && !mission->isFinished){
-            cout << "插入一个场景" << endl;
+            Scene s(9);
+            s.displayScene();
             mission->missionFinish(player);
             cout << "有新的任务可接" << endl;
             system("pause");
@@ -1599,3 +1607,4 @@ bool NPC::specialEvent(Player &player) {
     }
     return false;
 }
+

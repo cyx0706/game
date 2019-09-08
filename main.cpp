@@ -16,6 +16,7 @@ CONSOLE_CURSOR_INFO cursorInfo;
 unique_ptr<Map>mapNow;
 vector<NPC>globalNPC;
 SCOORD uPos = {1, 1};
+// 存储和初始化分开
 Shop NPC::store = Shop();
 int NPC::readLastLine = 0; // 优化读取
 ifstream sceneFp; // 全局场景文件指针
@@ -32,6 +33,7 @@ int main() {
     GameLoop::initGame();
     while (true){
         GameLoop::gameInterface();
+        system("cls");
     }
 
     return 0;

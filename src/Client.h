@@ -73,10 +73,10 @@ public:
     void npcBase(NPC& npc);
     void shopBase(NPC& npc);
 
-    bool executeCommand(vector<string> commands);
-    bool battleExecuteCommand(vector<string> commands, Character& target);
-    bool npcExecuteCommand(vector<string> commands, NPC& npc);
-    bool shopExecuteCommand(vector<string> commands, NPC& npc);
+    bool executeCommand(vector<string> commands, vector<int>& bannedCommands);
+    bool battleExecuteCommand(vector<string> commands, Character& target, vector<int>& bannedCommands);
+    bool npcExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands);
+    bool shopExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands);
 
     bool analyse(vector<string> commands, vector<int>& bannedCommands);
 
