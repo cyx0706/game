@@ -161,9 +161,9 @@ void dynamicScene3(){
             Scene::show(t);
             t = "你注意到埃伊娜的表情不像之前那么的明朗";
             Scene::show(t);
-            cout << "该怎么办呢？";
+            cout << "该怎么办呢？" << endl;
             cout << "1(算了吧)\n"
-                    "2我现在把这个和身上的装备卖掉";
+                    "2我现在把这个和身上的装备卖掉\n";
             cin >> choose;
             if(choose == 1){
                 cout << "你默默的离开了" << endl;

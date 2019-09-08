@@ -92,32 +92,15 @@ void GameLoop::initGame() {
     system("mode con cols=100 lines=40");
     NPC::readLastLine = 0; // 初始化
     player = Player();
-    player.nameCN = "cyx";
     mapNow = make_unique<Map>();
     mapNow->load(1);
-    Skill skill1("A01");
-    player.skills.push_back(skill1);
-    Skill skill2("B01");
-    player.skills.push_back(skill2);
-    Skill skill3("H01");
-    player.skills.push_back(skill3);
-    Skill skill4("H02");
-    player.skills.push_back(skill4);
-    player.maxMP = 100;
-    player.maxHP = 150;
-    player.addItem(201, 2);
-    for (unsigned int i = 0; i < npcName.size(); i++) {
-        NPC aNPC(npcName[i], INIT_NPC_PATH);
-        globalNPC.push_back(aNPC);
-    }
     returnToMain = false;
 
 }
 
 
-
 void GameLoop::gameInterface(){
-    HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);
+    Map::setCursorStatus(false);
     system("mode con cols=100 lines=100");//初始化缓冲区大小
     UI::printTitle();
     UI::cyan_choose();
@@ -128,11 +111,6 @@ void GameLoop::gameInterface(){
     UI::on_Select();
     UI::pos(47,15);
     cout<<"  NewGame  ";
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO CursorInfo;
-    GetConsoleCursorInfo(handle, &CursorInfo);//获取控制台光标信息
-    CursorInfo.bVisible = false; //隐藏控制台光标
-    SetConsoleCursorInfo(handle, &CursorInfo);//设置控制台光标状态
     int x=47,y=15;
 
     int ch1=0;
@@ -147,11 +125,6 @@ void GameLoop::gameInterface(){
             {
                 case 72: y = y - 5;break;
                 case 80: y = y + 5;break;
-//            case 75: printf("The key you Pressed is : ← \n");break;
-//            case 77: printf("The key you Pressed is : → \n");break;
-//            default: printf("No direction keys detected \n");break;
-//                break;
-
                 default:break;
             }
             if(x>=47)
@@ -175,64 +148,62 @@ void GameLoop::gameInterface(){
             ch2=getch();
         }
     }
-    system("cls");
-    //cls();
     UI::pos(0,0);
     UI::white_back();//还原默认字体
     if(x==47&&y==15)
     {
-        cout<<"你选择了NewGame";
+        for (unsigned int i = 0; i < npcName.size(); i++) {
+            NPC aNPC(npcName[i], INIT_NPC_PATH);
+            globalNPC.push_back(aNPC);
+        }
+        newGame();
+        GameLoop::mapLoop();
     }
-    else if(x==47&&y==25)
+    if(x==47&&y==25)
     {
-        cout<<"你选择了Out";
+        exit(0);
     }
-    else if(x==47&&y==20)
+    if(x==47&&y==20)
     {
-        cout<<"你选择了Continue";
+        player.load();
+        for (unsigned int i = 0; i < npcName.size(); i++) {
+            NPC aNPC(npcName[i], SAVE_NPC_PATH);
+            globalNPC.push_back(aNPC);
+        }
+        returnToMain = false;
+        uPos.X = short(player.mapLocation.x);
+        uPos.Y = short(player.mapLocation.y);
+        mapNow->initPos = uPos;
+        mapNow->load(player.mapLocation.mapId);
+        mapNow->print();
+        GameLoop::mapLoop();
     }
-    CloseHandle(hOut);//关闭标准输出句柄
 }
 
-void GameLoop::gameStart() {
-    // 展示游戏的界面
-    gameInterface();
+void GameLoop::newGame() {
+    Map::setCursorStatus(true);
+    system("cls");
+    cout << "输入你的用户名" << endl;
     string input;
-    while (true){
-        getline(cin, input);
-        transform(input.begin(), input.end(), input.begin(), ::tolower); // 转成小写
-        // 删除首尾空格
-        if( !input.empty() ){
-            input.erase(0,input.find_first_not_of(' '));
-            input.erase(input.find_last_not_of(' ') + 1);
-        }
-
-        if (input == "newgame"){
-            // 提示输入用户的名字
-            cout << "请输入你的用户名:\b\b\b\b\b";
-            cin >> input;
-            player.nameCN = input;
-            player.nameEN = "None";
-
-            mapLoop();
-        }
-        else if (input == "load"){
-            // 调用读取
-            mapLoop();
-        }
-        else if (input == "exit"){
-            cout << "Bye!";
-            Sleep(1000); // 睡1s
-            exit(1);
-        }
-        else{
-            // 提示信息
-            cout << "newgame: 新的游戏" << endl;
-            cout << "load: 读取存档" << endl;
-            cout << "exit: 退出" << endl;
-        }
+    cin >> input;
+    transform(input.begin(), input.end(), input.begin(), ::tolower); // 转成小写
+    // 删除首尾空格
+    if( !input.empty() ){
+        input.erase(0,input.find_first_not_of(' '));
+        input.erase(input.find_last_not_of(' ') + 1);
     }
-
+    player.nameCN = input;
+    player.nameEN = "None";
+    player.maxHP = 150;
+    Skill skill1("H01");
+    player.skills.push_back(skill1);
+    Skill skill2("A01");
+    player.skills.push_back(skill2);
+    Scene scene1(1);
+    scene1.displayScene();
+    Scene scene2(2);
+    scene2.displayScene();
+    dynamicScene2();
 }
 
 

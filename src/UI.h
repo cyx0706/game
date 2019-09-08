@@ -5,8 +5,7 @@
 #ifndef GAME_UI_H
 #define GAME_UI_H
 
-HANDLE hOut=GetStdHandle(STD_OUTPUT_HANDLE);//获取标准输出句柄
-
+extern HANDLE hOut;
 
 class UI {
 public:
