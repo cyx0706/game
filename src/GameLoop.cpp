@@ -49,8 +49,10 @@ void GameLoop::mapLoop() {
             if (input == ESC){
                 system("cls"); // Çå¿ÕÆÁÄ»
                 commandLoop();
-                mapNow->initPos = uPos;
                 mapNow->initMap();
+                mapNow->clean(mapNow->initPos);
+                mapNow->gotoxy(uPos);
+                mapNow->print();
             }
             if(input == SPACE){
                 int branch = mapNow->checkEvent();
