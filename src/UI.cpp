@@ -6,9 +6,9 @@
 #include "UI.h"
 #include "global.h"
 
-
+//设置坐标
 void UI::pos(int x, int y) {
-    COORD posPoint = {static_cast<SHORT>(x),static_cast<SHORT>(y)}; //设置坐标
+    COORD posPoint = {static_cast<SHORT>(x),static_cast<SHORT>(y)};
     SetConsoleCursorPosition(hOut,posPoint);
 }
 
@@ -22,36 +22,68 @@ void UI::cyan_choose() {
                                                             FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 }
 
+//将按钮样式变为选中状态
 void UI::on_Select() {
-    redOnWhite();
+    //redOnWhite();
+    setRed();
 }
 
+//判断光标位置从而改变按钮样式
 void UI::onChoose(int x, int y) {
-    if(x==47&&y==15)
+    if(x==42&&y==15)
     {
         on_Select();
-        cout<<"  NewGame  ";
+        pos(42,15);
+        cout<<"┇    NewGame    ┇";
+        pos(43,14);
+        cout<<"━━━━━━━━━━━━━━━━";
+        pos(43,16);
+        cout<<"━━━━━━━━━━━━━━━━";
     }
-    else if(x==47&&y==25)
+    else if(x==42&&y==25)
     {
         on_Select();
-        cout<<"    Out    ";
+        pos(43,24);
+        cout<<"━━━━━━━━━━━━━━━━";
+        pos(43,26);
+        cout<<"━━━━━━━━━━━━━━━━";
+        pos(42,25);
+        cout<<"┇      Out      ┇";
     }
-    else if(x==47&&y==20)
+    else if(x==42&&y==20)
     {
         on_Select();
-        cout<<" Continue  ";
+        pos(43,19);
+        cout<<"━━━━━━━━━━━━━━━━";
+        pos(43,21);
+        cout<<"━━━━━━━━━━━━━━━━";
+        pos(42,20);
+        cout<<"┇    Continue   ┇";
     }
 }
 
+//输出初始按钮样式
 void UI::star() {
     cyan_choose();
-    pos(47,15);
-    cout<<"  NewGame  ";
-    pos(47,25);
-    cout<<"    Out    ";
-    pos(47,20);
-    cout<<" Continue  ";
+    pos(42,15);
+    cout<<"┇    NewGame    ┇";
+    pos(43,14);
+    cout<<"━━━━━━━━━━━━━━━━";
+    pos(43,16);
+    cout<<"━━━━━━━━━━━━━━━━";
+
+    pos(43,24);
+    cout<<"━━━━━━━━━━━━━━━━";
+    pos(43,26);
+    cout<<"━━━━━━━━━━━━━━━━";
+    pos(42,25);
+    cout<<"┇      Out      ┇";
+    pos(43,19);
+    cout<<"━━━━━━━━━━━━━━━━";
+    pos(43,21);
+    cout<<"━━━━━━━━━━━━━━━━";
+    pos(42,20);
+    cout<<"┇    Continue   ┇";
 }
 
 void UI::setYellow() {
@@ -81,26 +113,31 @@ void UI::redOnGrey() {
                                                             FOREGROUND_INTENSITY | FOREGROUND_RED);
 }
 
+//输出标题
 void UI::printTitle() {
-    setYellow();
-    pos(42,3);
-    cout<<"********************";
-    pos(47,5);
-    cout<<"摸鱼攻城狮"<<endl;
+    SetConsoleTextAttribute(hOut,14);
+    pos(22,3);
+    cout<<"************************************************************";
+    pos(45,5);
+    cout<<"摸 鱼 攻 城 狮"<<endl;
 
     pos(51,7);
     cout<<"の"<<endl;
 
-    pos(46,9);
-    cout<<"异世界狂想曲"<<endl;
-    pos(42,11);
-    cout<<"********************";
-    for(int x = 42, y = 4; y <= 10;y ++){
+    pos(44,9);
+    cout<<"异 世 界 狂 想 曲"<<endl;
+    pos(22,11);
+    cout<<"************************************************************";
+    for(int x = 22, y = 4; y <= 10;y ++){
         pos(x,y);
         cout<<"*";
     }
-    for(int x = 61, y = 4; y <= 10;y ++){
-        pos(x,y);
-        cout<<"*";
+    for(int x = 81, y = 4; y <= 10;y ++) {
+        pos(x, y);
+        cout << "*";
     }
+}
+
+void UI::setRed() {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),FOREGROUND_INTENSITY | FOREGROUND_RED);
 }

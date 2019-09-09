@@ -120,15 +120,31 @@ void GameLoop::gameInterface(){
     system("mode con cols=100 lines=200");//初始化缓冲区大小
     UI::printTitle();
     UI::cyan_choose();
-    UI::pos(47,25);
-    cout<<"    Out    ";
-    UI::pos(47,20);
-    cout<<" Continue  ";
+    UI::pos(43,24);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(43,26);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(42,25);
+    cout<<"┇      Out      ┇";
+    UI::pos(43,19);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(43,21);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(42,20);
+    cout<<"┇    Continue   ┇";
+    UI::pos(43,14);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(43,16);
+    cout<<"━━━━━━━━━━━━━━━━";
     UI::on_Select();
-    UI::pos(47,15);
-    cout<<"  NewGame  ";
+    UI::pos(42,15);
+    cout<<"┇    NewGame    ┇";
+    UI::pos(43,14);
+    cout<<"━━━━━━━━━━━━━━━━";
+    UI::pos(43,16);
+    cout<<"━━━━━━━━━━━━━━━━";
     Map::setCursorStatus(false);
-    int x=47,y=15;
+    int x=42,y=15;
 
     int ch1=0;
     int ch2=0;
@@ -144,17 +160,17 @@ void GameLoop::gameInterface(){
                 case 80: y = y + 5;break;
                 default:break;
             }
-            if(x>=47)
+            if(x>=42)
             {
-                x=47;
+                x=42;
             }
             if(y>=30)
             {
                 y=15;
             }
-            if(x<=47)
+            if(x<=42)
             {
-                x=47;
+                x=42;
             }
             if(y<=10)
             {
@@ -167,7 +183,7 @@ void GameLoop::gameInterface(){
     }
     UI::pos(0,0);
     UI::white_back();//还原默认字体
-    if(x==47&&y==15)
+    if(x==42&&y==15)
     {
         for (unsigned int i = 0; i < npcName.size(); i++) {
             NPC aNPC(npcName[i], INIT_NPC_PATH);
@@ -178,11 +194,11 @@ void GameLoop::gameInterface(){
         newGame();
         GameLoop::mapLoop();
     }
-    if(x==47&&y==25)
+    if(x==42&&y==25)
     {
         exit(0);
     }
-    if(x==47&&y==20)
+    if(x==42&&y==20)
     {
         if (!canLoad()){
             return;
