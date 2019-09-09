@@ -1,18 +1,20 @@
 //
 // Created by cyx on 2019/8/27.
 //
+#include "Map.h"
+
 #include <fstream>
 #include <regex>
 #include <memory>
 #include <algorithm>
 #include <istream>
+
 #include "GameLoop.h"
-#include "Map.h"
 #include "Tool.h"
 #include "templateHeader.h"
 #include "Character.h"
-#include "global.h"
 #include "Scene.h"
+#include "global.h"
 extern unique_ptr<Map>mapNow;
 extern HANDLE hOut;
 extern CONSOLE_SCREEN_BUFFER_INFO screenInfo;
@@ -21,6 +23,7 @@ extern SCOORD uPos;
 extern Player player;
 extern vector<NPC>globalNPC;
 extern bool returnToMain;
+
 #define MAP_TXT_PATH "../data/map.txt"
 
 bool SCOORD::operator<(const SCOORD &pos) {
@@ -643,8 +646,10 @@ void Map::showDescription() {
 /*
  * @brief 检查特殊事件,用于剧情设定
  *
+ * @return 返回是否跳过后续的交互进入界面
+ * true:跳过
+ *
  */
-
 bool Map::checkSpecialScene(int toMapId) {
     if (toMapId != 1 && toMapId != 2){
         return false;
@@ -763,6 +768,11 @@ void Map::deleteBarrier(SCOORD& pos, string &type) {
     }
 }
 
+/*
+ * @brief 设置光标的状态
+ *
+ * @param 是否显示光标 true:显示
+ */
 void Map::setCursorStatus(bool visible) {
     GetConsoleCursorInfo(hOut, &cursorInfo);
     cursorInfo.bVisible = visible;

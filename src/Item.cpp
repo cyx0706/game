@@ -160,11 +160,13 @@ Drug::Drug(int id, int number) : Item(id, number){
 
     f.close();
 }
-
+/*
+ * @brief 展示药品的信息
+ */
 void Drug::showDescription(){
     Item::showDescription();
     cout << "回复血量:\t" << this->HP << endl;
-    cout << "回复蓝亮:\t" << this->MP << endl;
+    cout << "回复蓝量:\t" << this->MP << endl;
     cout << "回复体力值:\t" <<  this->Phy << endl;
     if (this->playerTarget) {
         cout << "使用方式:\t" << "对己" << endl;
@@ -173,6 +175,10 @@ void Drug::showDescription(){
     }
 }
 
+/*
+ * @brief 武器的默认构造函数
+ * 构造一个空的武器,id为0
+ */
 Weapon::Weapon() : Item() {
     this->ATK = 0;
     this->DEF = 0;
@@ -219,6 +225,9 @@ Weapon::Weapon(int id, int number) : Item(id, number) {
     f.close();
 }
 
+/*
+ * @brief 展示武器的信息
+ */
 void Weapon::showDescription() {
     Item::showDescription();
     cout << "攻击:" << this->ATK << endl;
@@ -275,6 +284,9 @@ Armor::Armor(int id, int number) : Item(id, number) {
     f.close();
 }
 
+/*
+ * 展示防具的描述信息
+ */
 void Armor::showDescription() {
     Item::showDescription();
     cout << "攻击:" << this->ATK << endl;

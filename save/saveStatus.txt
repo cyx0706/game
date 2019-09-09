@@ -2,7 +2,7 @@ owner player
 ATK 40
 Critical 50
 DEF 27
-HP 142
+HP 124
 MP 70
 Phy 5
 Speed 7

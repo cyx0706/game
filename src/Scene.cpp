@@ -2,13 +2,15 @@
 // Created by cyx on 2019/8/27.
 //
 #include "Scene.h"
-#include "global.h"
-#include "Character.h"
-#include "Client.h"
-#include "GameLoop.h"
+
 #include <windows.h>
 #include <iostream>
 #include <fstream>
+
+#include "global.h"
+#include "Character.h"
+#include "GameLoop.h"
+
 extern vector<NPC>globalNPC;
 extern Player player;
 extern ifstream sceneFp;
@@ -21,6 +23,7 @@ Scene::Scene(int sceneId) {
     this->path = "../data/";
     this->path = path +"scene" + toString(sceneId) + ".txt";
 }
+
 /*
  * @brief 展示读入的剧情,延时50s打印
  *
@@ -32,6 +35,7 @@ void Scene::show(string& sentence) {
     }
     cout << endl;
 }
+
 /*
  * @brief 迭代文件实现每次读入一行的内容
  *
@@ -60,6 +64,11 @@ istream& operator>>(istream &fpStream, Scene &scene) {
     return fpStream;
 }
 
+/*
+ * @brief 展示场景
+ * 反复读文件,一次展示一句话
+ * 相当于一个迭代器
+ */
 void Scene::displayScene() {
     sceneFp.open(path);
     string t;

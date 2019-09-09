@@ -16,7 +16,6 @@
 #include "UI.h"
 
 extern HANDLE hOut;
-using CMD::CommandLists;
 extern Client client;
 extern Player player;
 extern unique_ptr<Map>mapNow;
@@ -26,6 +25,7 @@ extern CONSOLE_CURSOR_INFO cursorInfo;
 extern SCOORD uPos;
 extern vector<string>npcName;
 extern bool returnToMain;
+
 /*
  * @brief 游戏的地图循环
  * 需要初始化完成后才能调用
@@ -88,7 +88,13 @@ void GameLoop::commandLoop() {
     system("cls");
 }
 
-// 初始化
+/*
+ * @brief 初始化游戏
+ * 设置窗口句柄, 设置窗口的大小
+ * 初始化智能指针
+ * 初始化玩家
+ * 初始化一些默认值
+ */
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("mode con cols=100 lines=40");
@@ -96,12 +102,14 @@ void GameLoop::initGame() {
     player = Player();
     mapNow = make_unique<Map>();
     returnToMain = false;
-
 }
 
-
+/*
+ * @brief 游戏的主页面
+ * 进入游戏时调用
+ */
 void GameLoop::gameInterface(){
-    system("mode con cols=100 lines=100");//初始化缓冲区大小
+    system("mode con cols=100 lines=200");//初始化缓冲区大小
     UI::printTitle();
     UI::cyan_choose();
     UI::pos(47,25);
@@ -188,6 +196,10 @@ void GameLoop::gameInterface(){
     }
 }
 
+/*
+ * 新游戏的设置
+ * 要求用户输入用户名
+ */
 void GameLoop::newGame() {
     Map::setCursorStatus(true);
     system("cls");
@@ -214,7 +226,11 @@ void GameLoop::newGame() {
     dynamicScene2();
 }
 
-
+/*
+ * @brief 和NPC交互的循环
+ *
+ * @param 当前交谈的NPC
+ */
 void GameLoop::npcLoop(NPC &talkedNPC) {
     system("cls");
     Map::setCursorStatus(true);
@@ -223,6 +239,7 @@ void GameLoop::npcLoop(NPC &talkedNPC) {
     }
     system("cls");
 }
+
 /*
  * @brief 战斗循环直到一方死亡结束
  * 函数负责战斗的逻辑处理
@@ -458,6 +475,8 @@ void GameLoop::battleLoop(Character &character) {
 
 /*
  * @brief 商店循环, 处理玩家购买物品的商店页面
+ *
+ * @param 商店交互的循环
  */
 void GameLoop::shopLoop(NPC &npc) {
     Map::setCursorStatus(false);
@@ -468,18 +487,20 @@ void GameLoop::shopLoop(NPC &npc) {
     system("cls");
 }
 
-
+/*
+ * @brief 判断是否可以读取文件
+ */
 bool GameLoop::canLoad() {
     fstream fp;
     // 打开文件
     fp.open(SAVE_PLAYER_PATH);
     char ch;
-    ch = fp.get(); //试图去读一个字符
+    //试图去读一个字符
+    ch = fp.get();
     if(fp.eof()){
         fp.close();
         return false;
     }
     fp.close();
     return true;
-
 }

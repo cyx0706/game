@@ -1,16 +1,19 @@
 //
 // Created by cyx on 2019/8/30.
 //
+#include "Character.h"
+
 #include <utility>
 #include <fstream>
-#include "Character.h"
+
 #include "Status.h"
 #include "Item.h"
 #include "Tool.h"
 #include "Scene.h"
 #include "templateHeader.h"
-#include "global.h"
 #include "GameLoop.h"
+#include "global.h"
+
 extern vector<NPC>globalNPC;
 extern unique_ptr<Map>mapNow;
 extern SCOORD uPos;
@@ -452,6 +455,7 @@ void Player::showMission() {
  * @brief 获取任务
  * 获取的是委托人的第一个未完成的任务
  * @param assigner: 委托人的名字的英文
+ * @return 任务的指针, 找不到就返回空指针
  */
 Mission* Player::getMission(string &assignerName) {
     if (quests.empty()){
@@ -464,7 +468,12 @@ Mission* Player::getMission(string &assignerName) {
     }
     return nullptr;
 }
-
+/*
+ * @brief 获取任务对于传参的重载
+ *
+ * @param 任务的id
+ * @return 返回指定任务的指针,不存在返回空指针
+ */
 Mission* Player::getMission(int missionId) {
     if (quests.empty()){
         return nullptr;
@@ -476,6 +485,7 @@ Mission* Player::getMission(int missionId) {
     }
     return nullptr;
 }
+
 /*
  * @brief 展示玩家的信息
  */
@@ -494,10 +504,9 @@ void Player::showStatus() {
 /*
  * @brief 个人信息面板
  */
-//TODO:优化UI
 void Player::playerMenu() {
     cout << "玩家菜单" << endl;
-    cout << "你可以使用下面的命令查看个人的信息" << endl;
+    cout << "你可以使用help命令查看可使用命令" << endl;
 }
 
 /*
@@ -523,6 +532,7 @@ void Player::addItem(int itemId, int number) {
         cout << "错误的id" << endl;
     }
 }
+
 /*
  * @brief 根据id分类删除
  *
@@ -546,6 +556,7 @@ void Player::deleteItem(int itemId, int number) {
         cout << "错误的id" << endl;
     }
 }
+
 /*
  * @brief 完全删除某个物品
  * 用于命令行的丢弃命令
@@ -569,6 +580,7 @@ void Player::eraseItem(int itemId) {
         cout << "错误的id" << endl;
     }
 }
+
 /*
  * @brief 用于获取指定id物品的个数
  *
@@ -610,6 +622,7 @@ int Player::getItem(int itemId) {
     }
     return 0;
 }
+
 /*
  * @brief 判断是否死亡
  * 可以考虑扩展一些东西
@@ -637,6 +650,7 @@ bool Player::isDead() {
     }
     return false;
 }
+
 /*
  * @brief 玩家的存档函数
  */
@@ -663,8 +677,7 @@ void Player::save() {
     m_map["maxMP"] = toString<int>(maxMP);
     m_map["weapon"] = toString<int>(weapon.id);
     m_map["armor"] = toString<int>(armor.id);
-    auto iter = m_map.begin();
-    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
+    for(auto iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -676,7 +689,7 @@ void Player::save() {
     m_map["mapId"] = toString<int>(mapLocation.mapId);
     m_map["x"] = toString<int>(mapLocation.x);
     m_map["y"] = toString<int>(mapLocation.y);
-    for(iter = m_map.begin(); iter != m_map.end(); iter ++){
+    for(auto iter = m_map.begin(); iter != m_map.end(); iter ++){
         of << iter->first << " " << iter->second << endl;
     }
     m_map.clear();
@@ -726,6 +739,7 @@ void Player::save() {
         quest.saveMission("player",SAVE_MISSION_PATH);
     }
 }
+
 /*
  * @brief buff值累计入玩家的属性
  *
@@ -796,6 +810,7 @@ bool Player::useDrug(string& name, Character &character) {
     }
     return false;
 }
+
 /*
  * @brief 玩家死亡的场景
  */
@@ -804,7 +819,9 @@ void Player::deadScene() {
     cout << "菜" << endl;
 }
 
-//player读档
+/*
+ * @brief 玩家的载入函数
+ */
 void Player::load() {
     ifstream os(SAVE_PLAYER_PATH);
 
@@ -989,6 +1006,7 @@ void Player::battleBagShow(SCOORD& pos) {
     }
 
 }
+
 /*
  * @brief 展示玩家的技能的信息
  */
@@ -997,11 +1015,21 @@ void Player::showSkills() {
         cout << iter->nameCN << "(" << iter->nameEN << ")" << iter->description << endl;
     }
 }
-
+/*
+ * @brief 获取玩家的防具
+ *
+ * @return 返回玩家的防具的指针
+ * 无防具的时候返回的armor的id为0, 表示空的防具
+ */
 Armor* Player::getArmor() {
     return &(this->armor);
 }
 
+/*
+ * @brief 获取玩家的武器
+ *
+ * @return 武器的指针,当武器的id为0时表示为空武器
+ */
 Weapon* Player::getWeapon() {
     return &(this->weapon);
 }
@@ -1087,6 +1115,10 @@ void NPC::storeSave() {
     NPC::store.save();
 }
 
+/*
+ * @brief 读取商店
+ * @param 指定的文件路径,用于区分新游戏和读取游戏
+ */
 void NPC::storeLoad(string path) {
     NPC::store.load(path);
 }
@@ -1162,7 +1194,11 @@ istream& operator>>(istream &fpStream, NPC &npc) {
     return fpStream;
 }
 
-
+/*
+ * @brief NPC的构造函数
+ * 初始化一个空的Character类,后续值由NPC构造函数填充
+ * @param id:NPC的id, path:读取文件的路径,用于区分新游戏还是读取NPC
+ */
 NPC::NPC(string id, string path):Character() {
     this->id = id;
     this->needSave = false;
@@ -1233,6 +1269,8 @@ bool NPC::NPCMenu(Player &player) {
         return true;
     }
     this->showDescription();
+    // 提示用户
+    cout << "你可以使用help命令查看当前可交互指令" << endl;
     // 接任务的面板
     if (this->missionStatus){
         if (player.getMission(this->nameEN) != nullptr){
@@ -1293,10 +1331,15 @@ void NPC::shopMenu(Player &player) {
     Map::gotoxy(curPos);
 }
 
+/*
+ * @brief 获取NPC的商店状态
+ *
+ * @return 返回NPC是否可以开出商店
+ * true表示可以进行交易
+ */
 bool NPC::getShopStatus() {
     return this->shopStatus;
 }
-
 
 /*
  * @brief 和npc交易的函数,需要提前检查是否可以交易

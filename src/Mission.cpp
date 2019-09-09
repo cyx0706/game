@@ -6,6 +6,7 @@
 
 #include <fstream>
 #include <map>
+
 #include "Tool.h"
 #include "Character.h"
 #include "global.h"

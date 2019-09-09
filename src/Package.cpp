@@ -1,16 +1,21 @@
 //
 // Created by cyx on 2019/8/30.
 //
+#include "Package.h"
+
 #include <fstream>
 #include <iomanip>
-#include "Package.h"
+
 #include "Item.h"
 #include "Character.h"
-#include "global.h"
 #include "templateHeader.h"
+#include "global.h"
+
 extern Player player;
 
-
+/*
+ * @brief 默认构造函数
+ */
 Shop::Shop() = default;
 
 /*

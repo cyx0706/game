@@ -45,3 +45,4 @@ missionStatus 1
 bar 0
 isVisible 1
 quests 8
+

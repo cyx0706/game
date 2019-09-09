@@ -1,6 +1,6 @@
 owner player
-id 2
-isAccepted 1
-isFinished 0
-isProcess 1
+id 14022588
+isAccepted 0
+isFinished 111
+isProcess 0
 
