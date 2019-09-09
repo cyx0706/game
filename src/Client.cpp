@@ -282,11 +282,6 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
-        if (commands[1] != "-w" || commands[1] != "-a" || commands[1] != "-d" || commands[1] != "-i"){
-            cout << "wrong usage" << endl;
-            return false;
-        }
-
         if (commands[1] == "-w") {
             player.showWeapons();
         }
