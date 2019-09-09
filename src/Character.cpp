@@ -1576,7 +1576,7 @@ bool NPC::specialEvent(Player &player) {
     mission = player.getMission(10);
     if (this->id == "NN-13" && mission != nullptr && !mission->isFinished){
         mission->missionFinish(player);
-        cout << this->talkContent[5].end << endl;
+        cout << this->talkContent[10].end << endl;
         string t ="你：我想要回到原来的世界，怎么办\n蜥蜴人祭司：我这里有6个神珠，据说集齐7个就可以实现你的愿望了，但最后一个我们丢失了它。\n你：足够了，我会寻找这最后一个的";
         Scene::show(t);
         t = "从下面前往魔王城吧, 巨龙应该还在沉睡";
