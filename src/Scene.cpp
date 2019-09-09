@@ -61,6 +61,9 @@ istream& operator>>(istream &fpStream, Scene &scene) {
         }
         Scene::show(scene.content);
     }
+    else{
+        fpStream.seekg(0,ios::end);
+    }
     return fpStream;
 }
 
@@ -186,7 +189,7 @@ void dynamicScene3(){
                 Scene::show(t);
                 t = "【系统提示】：失去王国通行证，获得冒险者纹章";
                 Scene::show(t);
-                t = "【系统提示】：无法再回到王国内城，但冒险者协会可以提供休息";
+                t = "【系统提示】：无法再回到王国内城";
                 Scene::show(t);
                 t = "【系统提示】：获得100g";
                 Scene::show(t);

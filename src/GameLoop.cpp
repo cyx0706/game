@@ -31,10 +31,10 @@ extern bool returnToMain;
  * 需要初始化完成后才能调用
  */
 void GameLoop::mapLoop() {
-    GetConsoleCursorInfo(hOut, &cursorInfo); //获取控制台光标信息
-    cursorInfo.bVisible = false;             //隐藏控制台光标
-    SetConsoleCursorInfo(hOut, &cursorInfo); //设置控制台光标状态
+    // 隐藏光标
+    Map::setCursorStatus(false);
     mapNow->initMap();
+    mapNow->clean(mapNow->initPos);
     mapNow->print();
     char input;
     while(true){
@@ -98,7 +98,15 @@ void GameLoop::commandLoop() {
 void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("mode con cols=100 lines=40");
+    // 设置初始位置
+    uPos.X = 0;
+    uPos.Y = 0;
+
     NPC::readLastLine = 0; // 初始化
+    // 清空商店
+    NPC::storeClear();
+    // 清空NPC
+    globalNPC.clear();
     player = Player();
     mapNow = make_unique<Map>();
     returnToMain = false;
@@ -186,12 +194,10 @@ void GameLoop::gameInterface(){
         }
         NPC::storeLoad();
         returnToMain = false;
+        system("cls");
         uPos.X = short(player.mapLocation.x);
         uPos.Y = short(player.mapLocation.y);
-        system("cls");
-        mapNow->initPos = uPos;
         mapNow->load(player.mapLocation.mapId);
-        mapNow->print();
         GameLoop::mapLoop();
     }
 }

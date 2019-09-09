@@ -30,8 +30,8 @@ int main() {
     // 做一些检查工作
     // 随机数种子
     srand(static_cast<unsigned int>(time(nullptr)));
-    GameLoop::initGame();
     while (true){
+        GameLoop::initGame();
         GameLoop::gameInterface();
         system("cls");
     }

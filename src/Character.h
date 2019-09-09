@@ -151,6 +151,7 @@ public:
     void showDescription() override ;
 
     static void storeSave();
+    static void storeClear();
     static void storeLoad(string path = SHOP_FILE_PATH);
     static void save();
     void load(string path);

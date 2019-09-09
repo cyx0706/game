@@ -139,8 +139,8 @@ id NN-10
 nameCN 精灵族人
 nameEN elf
 description 精灵族的大姐姐
-locationX 15
-locationY 7
+locationX 13
+locationY 11
 locationMap 4
 display N
 fallingExp 0

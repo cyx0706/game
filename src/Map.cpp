@@ -152,14 +152,9 @@ void Map::initBarrier() {
     short xRight = 0;
     short y = 0;
     // 画NPC和Monster
-    CHAR_INFO chFill;   //定义剪切区域填充字符
     for (auto iter= this->barrier.begin();  iter!=this->barrier.end() ; iter++) {
-        auto m = npcs.find(*iter);
-        if (m!=npcs.end()){
-            // 画npc
-            chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
-        }
-        m = monsters.find(*iter);
+        CHAR_INFO chFill;   //定义剪切区域填充字符
+        auto m = monsters.find(*iter);
         if(m!=monsters.end()){
             // 画Monster
             chFill = {'M',  screenInfo.wAttributes};
@@ -168,6 +163,11 @@ void Map::initBarrier() {
         if (itemFinder != items.end()){
             // 画Item
             chFill = {'I', screenInfo.wAttributes};
+        }
+        auto npcFinder = npcs.find(*iter);
+        if (npcFinder != end(npcs)){
+            // 画npc
+            chFill = {'N',  screenInfo.wAttributes}; //定义剪切区域填充字符
         }
         xLeft = short((*iter).X - 1);
         xRight = short((*iter).X);
@@ -249,8 +249,7 @@ bool Map::checkTopMapTransition() {
             // 生成指针并读取数据
             int t = mapNow->roadTo[uPos];
             if (mapNow->checkSpecialScene(t)){
-                system("pause");
-                system("cls");
+                return true;
             }
             if (!Map::canEnter(t, this->id)){
                 string tips = "现在还不能进入";
@@ -435,7 +434,6 @@ void Map::load(int mapId) {
     fp.close();
     // 剔除不显示的npc
     // 要确保npc位置和地图中保存的一致
-    bool flag = true; //标志位
     for (auto iter = globalNPC.begin(); iter != globalNPC.end(); iter++) {
         if (iter->mapLocation.mapId == this->id && !(iter->getVisibility())){
             // 删除这个npc
@@ -538,6 +536,7 @@ void Map::move(int key) {
                     mapNow->deleteBarrier(barrier[i], type);
                     mapNow->initPos = uPos;
                     mapNow->initMap();
+                    return;
                 }
             }
             return;
@@ -688,8 +687,9 @@ bool Map::checkSpecialScene(int toMapId) {
 
         }
         if (toMapId == 2){
+            system("cls");
             cout << "要赶快去阻止大祭司" << endl;
-            return true;
+            return false;
         }
     }
     return false;

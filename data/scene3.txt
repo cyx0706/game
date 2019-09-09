@@ -9,4 +9,5 @@
 [content] 1我想注册成为冒险者
 [content] 2没什么
 [branch]
+[content] 你离开了冒险者工会
 [end]

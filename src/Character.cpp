@@ -1130,6 +1130,16 @@ void NPC::load(string path) {
 void NPC::storeSave() {
     NPC::store.save();
 }
+/*
+ * @brief 初始化商店
+ * 静态方法
+ */
+void NPC::storeClear() {
+    // 清空背包
+    NPC::store.drugPackage.items.clear();
+    NPC::store.armorPackage.items.clear();
+    NPC::store.weaponPackage.items.clear();
+}
 
 /*
  * @brief 读取商店
@@ -1655,11 +1665,13 @@ bool NPC::specialEvent(Player &player) {
                 return false;
             }
             else{
-                cout << "你需要去了解真相" << endl;
+                string t = "你需要去了解真相";
+                Scene::show(t);
             }
         }
         else{
-            cout << "你快离开吧, 这里很危险" << endl;
+            string t = "你快离开吧, 这里很危险";
+            Scene::show(t);
         }
     }
     return false;
