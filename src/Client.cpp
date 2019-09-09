@@ -460,6 +460,9 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
         // NPC ×´Ì¬µÄ±£´æ
         NPC::save();
 
+        cout << "game saved" << endl;
+        cout << "you can use 'exit' to quit the game" << endl;
+
         return false;
     }
 
