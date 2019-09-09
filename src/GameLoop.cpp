@@ -219,6 +219,8 @@ void GameLoop::newGame() {
     player.skills.push_back(skill1);
     Skill skill2("A01");
     player.skills.push_back(skill2);
+    Skill skill3("H02");
+    player.skills.push_back(skill3);
     Scene scene1(1);
     scene1.displayScene();
     Scene scene2(2);

@@ -515,6 +515,31 @@ void Map::move(int key) {
         //存在x上的1距离的偏差
         if (barrier[i].X - 1 == uPos.X && barrier[i].Y == uPos.Y){
             uPos = resetPos;
+            for (auto iter = monsters.begin(); iter != monsters.end(); iter++) {
+                // 走到了怪物身上,直接战斗
+                if (iter->first == barrier[i]){
+                    if (monsters[barrier[i]] == "NY-04"){
+                        if (player.getItem(301)){
+                            char t[60];
+                            string tips = "巨龙正在沉睡, 还是不要打扰它了";
+                            Tool::stringToChar(tips, t);
+                            MessageBox(nullptr, t, "提示", MB_OK);
+                            return;
+                        }
+                    }
+                    Monster aMonster(monsters[barrier[i]]);
+                    string tips = "和" + aMonster.nameCN + "对战";
+                    char t[80];
+                    Tool::stringToChar(tips, t);
+                    MessageBox(nullptr, t, "提示", MB_OK);
+                    GameLoop::battleLoop(aMonster);
+                    string type = "monster";
+                    // 删除怪物
+                    mapNow->deleteBarrier(barrier[i], type);
+                    mapNow->initPos = uPos;
+                    mapNow->initMap();
+                }
+            }
             return;
         }
     }
