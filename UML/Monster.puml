@@ -1,0 +1,12 @@
+@startuml
+
+
+class Monster{
++Monster(string id);
++vector<Item>fallingItem;
+}
+
+
+Character <|-- Monster
+
+@enduml

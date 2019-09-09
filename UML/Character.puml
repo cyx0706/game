@@ -1,0 +1,59 @@
+@startuml
+note as N1
+  Location为结构体
+  int mapId
+  int x
+  int y
+end note
+
+
+class Status{
++Status(int HP, int MP, int ATK = 15, int PHY = 4,
+                int DEF = 2, int CRITICAL = 10, int SPEED = 5)
++Status()
++int HP
++int MP
++int Phy
++int ATK
++int Speed
++int Critical
++int DEF
++void saveStatus(string owner);
++void loadStatus(string owner, string path);
+}
+
+class Buff{
+Buff();
++Buff(string name, string description, int duration)
++string name
++string description
++int duration
++void showDescription()
+}
+
+
+class Character{
++Character(Status status, string id, string nameCN,
+          string nameEN, string description,
+          Location location, char display,
+          int fallingExp = 100, int fallingMoney = 50)
++Character()
++Status status
++string id
++string nameEN
++string nameCN
++string description
++int fallingExp
++int fallingMoney
++vector<Buff> buffs
++Location mapLocation
++char displayChar
++vector <Skill> skills
++{abstract}bool isDead()
++{abstract}void showDescription()
+
+}
+
+Status *-- Character
+
+@enduml

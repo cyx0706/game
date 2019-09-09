@@ -1,0 +1,15 @@
+@startuml
+
+
+
+class Player{
+
+}
+
+class Skill{
+
+}
+
+Character <|-- Player
+
+@enduml

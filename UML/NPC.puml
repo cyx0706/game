@@ -1,0 +1,17 @@
+@startuml
+
+note as N1
+  TalkContent为结构体,成员为
+  <b>string start</b>
+  <b>string process</b>
+  <b>string end</b>
+end note
+
+class NPC{
+
+}
+
+
+Character <|-- NPC
+
+@enduml

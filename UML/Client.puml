@@ -1,0 +1,23 @@
+@startuml
+
+note as N1
+  命令行类
+end note
+
+class Client{
++Client()
++void base()
++void base(Character& target)
++void npcBase(NPC& npc)
++void shopBase(NPC& npc)
++bool executeCommand(vector<string> commands, vector<int>& bannedCommands)
++bool battleExecuteCommand(vector<string> commands, Character& target, vector<int>& bannedCommands)
++bool npcExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands)
++bool shopExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands)
++bool analyse(vector<string> commands, vector<int>& bannedCommands)
++static bool isBanned(CommandLists command, vector<int>& bannedCommands)
++static void commandHelp(string& command);
+-map<string, string> commandsMap;
+}
+
+@enduml

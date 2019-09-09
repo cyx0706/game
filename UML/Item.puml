@@ -1,0 +1,52 @@
+@startuml
+
+class Item{
++Item()
++Item(int id, int number = 1)
++{abstract}void showDescription()
++int id
++string nameCN
++string nameEN
++string description
++int num
++int boughtPrice
++bool canDrop
++bool canSell
+}
+
+class Drug{
++Drug()
++explicit Drug(int id, int number = 1)
++int HP
++int MP
++int Phy
++bool playerTarget
++{abstract}void showDescription()
+}
+
+
+class Weapon{
+
++Weapon()
++explicit Weapon(int id, int number = 1)
++int ATK
++int DEF
++int Speed
++{abstract}void showDescription()
+}
+
+
+class Armor{
++Armor()
++explicit Armor(int id, int number = 1)
++int ATK = 0
++int DEF = 0
++int Speed = 0
++{abstract}void showDescription()
+}
+
+Item <|-- Weapon
+Item <|-- Armor
+Item <|-- Drug
+
+@enduml

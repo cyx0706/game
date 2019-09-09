@@ -8,4 +8,8 @@ These source codes are edited in IDE CLion.
 
 This repository was created in 2019.
 
+###### Required Setting To Run The Game
+MinGW (best using 32-bit version)
+CMake (minimum required version 3.14)
+
 
