@@ -764,6 +764,7 @@ void Map::deleteBarrier(SCOORD& pos, string &type) {
 }
 
 void Map::setCursorStatus(bool visible) {
+    GetConsoleCursorInfo(hOut, &cursorInfo);
     cursorInfo.bVisible = visible;
     SetConsoleCursorInfo(hOut, &cursorInfo);
 }

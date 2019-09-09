@@ -95,14 +95,12 @@ void GameLoop::initGame() {
     NPC::readLastLine = 0; // 初始化
     player = Player();
     mapNow = make_unique<Map>();
-    mapNow->load(1);
     returnToMain = false;
 
 }
 
 
 void GameLoop::gameInterface(){
-    //Map::setCursorStatus(false);
     system("mode con cols=100 lines=100");//初始化缓冲区大小
     UI::printTitle();
     UI::cyan_choose();
@@ -113,13 +111,7 @@ void GameLoop::gameInterface(){
     UI::on_Select();
     UI::pos(47,15);
     cout<<"  NewGame  ";
-
-    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO CursorInfo;
-    GetConsoleCursorInfo(handle, &CursorInfo);//获取控制台光标信息
-    CursorInfo.bVisible = false; //隐藏控制台光标
-    SetConsoleCursorInfo(handle, &CursorInfo);//设置控制台光标状态
-
+    Map::setCursorStatus(false);
     int x=47,y=15;
 
     int ch1=0;
@@ -166,6 +158,7 @@ void GameLoop::gameInterface(){
             globalNPC.push_back(aNPC);
         }
         NPC::storeLoad(INIT_SHOP_FILE); // 初始化商店
+        mapNow->load(1);
         newGame();
         GameLoop::mapLoop();
     }
@@ -186,6 +179,7 @@ void GameLoop::gameInterface(){
         returnToMain = false;
         uPos.X = short(player.mapLocation.x);
         uPos.Y = short(player.mapLocation.y);
+        system("cls");
         mapNow->initPos = uPos;
         mapNow->load(player.mapLocation.mapId);
         mapNow->print();
