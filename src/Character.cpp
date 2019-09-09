@@ -59,8 +59,8 @@ Character::Character():mapLocation({1,1,1}) {
     this->nameEN = "";
     this->fallingMoney = 0;
     this->fallingExp = 0;
-    this->description = "";
-    this->displayChar = '\0';
+    this->description = "нч";
+    this->displayChar = 'a';
 }
 
 /*
