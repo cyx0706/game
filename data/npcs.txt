@@ -41,7 +41,7 @@ end
 id NN-03
 nameCN 神秘人
 nameEN mystery-person
-description 这个人把自己裹得十分的严实, 你无法看清他的样貌
+description 这个人把自己裹得十分的严实,你无法看清他的样貌
 locationX 9
 locationY 17
 locationMap 2

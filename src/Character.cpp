@@ -1126,7 +1126,6 @@ istream& operator>>(istream &fpStream, NPC &npc) {
         // 读入信息说明读完了这一行
         NPC::readLastLine++;
         t = Tool::split(line, ':');
-
         missionId = fromString<int>(t[0]);
         // 读取的id不同, 说明可以存一波了
         if (lastId != missionId){

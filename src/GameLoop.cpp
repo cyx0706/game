@@ -180,7 +180,7 @@ void GameLoop::gameInterface(){
         }
         player.load();
         for (unsigned int i = 0; i < npcName.size(); i++) {
-            NPC aNPC(npcName[i], SAVE_NPC_PATH);
+            NPC aNPC(npcName[i]);
             globalNPC.push_back(aNPC);
         }
         returnToMain = false;

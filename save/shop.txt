@@ -5,13 +5,12 @@ Weapon 4 1
 Weapon 6 1
 Weapon 7 1
 Weapon 8 1
-Armor 103 1
+Armor 102 1
+Armor 103 2
 Armor 104 5
-Drug 201 999
+Drug 201 1000
 Drug 202 1000
 Drug 203 1000
 Drug 204 1000
 Drug 205 1000
-Drug 206 1000
-Drug 206 1000
 Drug 206 1000

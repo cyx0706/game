@@ -1,9 +1,9 @@
 owner player
-ATK 45
+ATK 40
 Critical 50
-DEF 32
-HP 165
-MP 115
+DEF 27
+HP 142
+MP 70
 Phy 5
-Speed 8
+Speed 7
 
