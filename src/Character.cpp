@@ -14,6 +14,7 @@
 extern vector<NPC>globalNPC;
 extern unique_ptr<Map>mapNow;
 extern SCOORD uPos;
+extern unique_ptr<Map>mapNow;
 // ----------------------Character类----------------------
 /*
  * @brief 完整的构造函数
@@ -672,6 +673,9 @@ void Player::save() {
 
     //保存player的location
     //m_map["type"] = "location";
+    mapLocation.mapId = mapNow->id;
+    mapLocation.x = uPos.X;
+    mapLocation.y = uPos.Y;
     of << "type location" << endl;
     m_map["mapId"] = toString<int>(mapLocation.mapId);
     m_map["x"] = toString<int>(mapLocation.x);
@@ -722,9 +726,16 @@ void Player::save() {
 
     of.close();
 
-    for (auto & quest : quests) {
-        quest.saveMission("player",SAVE_MISSION_PATH);
+    if(!quests.empty()){
+        for (auto & quest : quests) {
+            quest.saveMission("player",SAVE_MISSION_PATH);
+        }
+    } else{
+        ofstream of;
+        of.open(SAVE_MISSION_PATH);
+        of.close();
     }
+
 }
 /*
  * @brief buff值累计入玩家的属性
@@ -949,24 +960,29 @@ void Player::load() {
     ifstream1.open(SAVE_MISSION_PATH);
 
     int i = 0;
+    int flag = 0;
     while (!ifstream1.eof()){
         // 找到对应 owner 处
         while (getline(ifstream1, str)) {
             if (!str.empty()) {
                 vector<string> idLine = Tool::split(str);
                 if (idLine[0] == "owner" && idLine[1] == "player") {
+                    flag = 1;
                     break;
                 }
             }
         }
-        data = Tool::dataMap(ifstream1);
+        if (flag == 1){
+            data = Tool::dataMap(ifstream1);
 
-        //Mission mission(fromString<int>(data["id"]));
-        quests.push_back(Mission(fromString<int>(data["id"])));
-        quests[i].isAccepted = fromString<bool>(data["isAccepted"]);
-        quests[i].isFinished = fromString<bool>(data["isFinished"]);
-        quests[i].isProcess = fromString<bool>(data["isProcess"]);
-        i += 1;
+            //Mission mission(fromString<int>(data["id"]));
+            quests.push_back(Mission(fromString<int>(data["id"])));
+            quests[i].isAccepted = fromString<bool>(data["isAccepted"]);
+            quests[i].isFinished = fromString<bool>(data["isFinished"]);
+            quests[i].isProcess = fromString<bool>(data["isProcess"]);
+            i += 1;
+        }
+        else break;
     }
     ifstream1.close();
 }
