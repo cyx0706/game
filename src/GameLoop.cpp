@@ -176,6 +176,7 @@ void GameLoop::gameInterface(){
             NPC aNPC(npcName[i]);
             globalNPC.push_back(aNPC);
         }
+        NPC::storeLoad();
         returnToMain = false;
         uPos.X = short(player.mapLocation.x);
         uPos.Y = short(player.mapLocation.y);
