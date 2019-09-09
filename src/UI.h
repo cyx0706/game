@@ -16,13 +16,14 @@ public:
     static void on_Select();//被选中时的样式
     static void onChoose(int x, int y);//确定所选中的位置
     static void star();//初始化界面
-    static void setYellow();
+    static void setYellow();//黄色字体
     void setPurple();
     void setBlue();
     void blackOnWhite();
-    static void redOnWhite();
+    static void redOnWhite();//白底红字
     void redOnGrey();
-    static void printTitle();
+    static void printTitle();//输出游戏标题
+    static void setRed();
 };
 
 #endif //GAME_UI_H
