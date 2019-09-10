@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "templateHeader.h"
 #include "Character.h"
+
 #include "global.h"
 
 extern Player player;
@@ -126,6 +127,7 @@ void Client::commandHelp(string& command) {
 
 /*
  * @brief 判断命令是否使用错误
+ * 如果错误显示正确的使用方式
  *
  * @param commands 命令行获取的命令
  * @param requiredParamNum 要求的参数个数
@@ -134,13 +136,14 @@ void Client::commandHelp(string& command) {
 bool commandWrongUsage(vector<string>& commands, int requiredParamNum)
 {
     if (commands.size() != requiredParamNum){
+        // 提示正确的参数个数
         cout << "wrong usage:" << commands[0] << " needs " << requiredParamNum << " but you have " << commands.size() << endl;
 
         // 调用帮助命令，显示正确的用法
         Client::commandHelp(commands[0]);
 
         return true;
-    }else{
+    } else {
         return false;
     }
 }
@@ -153,6 +156,7 @@ bool commandWrongUsage(vector<string>& commands, int requiredParamNum)
  * @return 未被禁止则返回false 被禁止则返回true
  */
 bool Client::isBanned(CommandLists command, vector<int> &bannedCommands) {
+    // 遍历所有的禁止命令(表示数值) 与 命令行输入的命令 进行判断
     for (int one: bannedCommands) {
         if ((CommandLists)one == command) {
             return true;
@@ -215,7 +219,7 @@ bool Client::analyse(vector<string> commands, vector<int>& bannedCommands){
  *         help save
  *
  * @param commands 命令行获取的命令(已切片成 vector 类型)
- * @return true 则命令执行完成 false 则命令未执行，重新输入
+ * @return false 普通状态命令行可重用
  */
 bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands) {
     // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
@@ -224,6 +228,7 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // status 命令
     if (command == status) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
@@ -234,6 +239,7 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // skills 命令
     if (command == skills) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
@@ -244,19 +250,23 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // equipment 命令
     if (command == equipment) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
-        auto armor = player.getArmor();
+        // 获取玩家的装备 武器和防具
         auto weapon = player.getWeapon();
+        auto armor = player.getArmor();
 
+        // 检查不为空装备
         if (weapon->id != 0) {
             weapon->showDescription();
         }else {
             cout << "无武器" << endl;
         }
 
+        // 检查不为空装备
         if (armor->id != 0) {
             armor->showDescription();
         }else {
@@ -268,6 +278,7 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // package 命令
     if (command == package) {
+        // 四种背包 的输出命令
         if (commands.size() == 1){
             cout << "use package -w to show your weapons" << endl;
             cout << "use package -a to show your armors" << endl;
@@ -277,7 +288,7 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
-
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
@@ -300,10 +311,13 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // item 命令
     if (command == item) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
 
+        // 用物品名查找物品的 id
+        // 判断是否存在此物品
         ifstream f(NAMEID_TXT_PATH);
         map<string, string>data = Tool::dataMap(f);
 
@@ -321,10 +335,13 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // equip 命令
     if (command == equip) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
 
+        // 用物品名查找物品的 id
+        // 判断是否存在此物品
         ifstream f(NAMEID_TXT_PATH);
         map<string, string>data = Tool::dataMap(f);
 
@@ -334,6 +351,9 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
+        // 使用 id 判断物品的类型
+        // id 001 - 100 为 weapon
+        // id 101 - 200 为 armor
         if (fromString<int>(data[commands[1]]) < 100) {
             player.equipWeapon(commands[1]);
         } else {
@@ -345,10 +365,13 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // takeoff 命令
     if (command == takeoff) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
 
+        // 用物品名查找物品的 id
+        // 判断是否存在此物品
         ifstream f(NAMEID_TXT_PATH);
         map<string, string>data = Tool::dataMap(f);
 
@@ -358,6 +381,9 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
+        // 使用 id 判断物品的类型
+        // id 001 - 100 为 weapon
+        // id 101 - 200 为 armor
         if (fromString<int>(data[commands[1]]) < 100) {
             player.takeOffWeapon(commands[1]);
         } else {
@@ -369,14 +395,18 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // discard 命令
     if (command == discard) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 3)){
             return false;
         }
 
+        // 指定 discard 个数为 0 为无用指令
         if (commands[2] == "0") {
             return false;
         }
 
+        // 用物品名查找物品的 id
+        // 判断是否存在此物品
         ifstream f(NAMEID_TXT_PATH);
         map<string, string>data = Tool::dataMap(f);
 
@@ -386,11 +416,13 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
+        // 先获取物品，判断是否有指定个数个物品
         if (player.getItem(fromString<int>(data[commands[1]])) < fromString<int>(commands[2])) {
             cout << "you do not have " << fromString<int>(commands[2]) << " but " << fromString<int>(data[commands[1]]) << endl;
             return false;
         }
 
+        // 丢弃指定个数的物品
         player.deleteItem(fromString<int>(data[commands[1]]), fromString<int>(commands[2]));
         cout << "你丢弃了 " << fromString<int>(commands[2]) << "数量的" << commands[1] << endl;
 
@@ -399,20 +431,24 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // maps 命令
     if (command == maps) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        //  显示当前地图的信息
         mapNow->showDescription();
         return false;
     }
 
     // mission 命令
     if (command == mission) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 显示玩家的任务
         player.showMission();
 
         return false;
@@ -420,10 +456,12 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
 
     // help 命令
     if (command == help) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 显示当前可用命令
         cout << "these commands are available" << endl;
         for (const auto& one: this->commandsMap) {
             if (find(bannedCommands.begin(), bannedCommands.end(), fromString<int>(one.second)) == bannedCommands.end()){
@@ -431,9 +469,11 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             }
         }
 
+        // 帮助信息
         cout << "you can use" << endl;
         cout <<"'command' + -h or 'command' + --help" << endl;
         cout << "look for specific help" << endl;
+
         return false;
     }
 
@@ -443,18 +483,21 @@ bool Client::executeCommand(vector<string> commands, vector<int>& bannedCommands
             return false;
         }
 
+        // 游戏某些时间是不允许保存
+        // 使用全局 canSave 参数
         if (!canSave){
             cout << "command is banned" << endl;
             return false;
         }
 
+        // 玩家信息保存
         player.save();
-
         // 商店 信息的保存
         NPC::storeSave();
         // NPC 状态的保存
         NPC::save();
 
+        // 提示可以退出游戏
         cout << "game saved" << endl;
         cout << "you can use 'exit' to quit the game" << endl;
 
@@ -480,8 +523,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
 
     // attack 命令
     if (command == attack) {
-        // attack 命令只含 1 个参数
-        // 若有多个参数 即为 错误的用法
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
@@ -507,6 +549,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
             damage = 1;
         }
 
+        // 显示伤害情况
         cout << player.nameCN << "对" << target.nameCN << "造成了" << damage << "点伤害" << endl;
         target.status.HP -= damage;
 
@@ -515,6 +558,7 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
 
     // skill 命令
     if (command == skill) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
@@ -533,16 +577,19 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
                 // 攻击的技能
                 if (one.id[0] == 'A') {
                     int damage;
+                    // 暴击判断
                     if (getRandom(1, 100) <= player.status.Critical) {
                         damage = int((player.status.ATK + one.ATK )* 1.5) - target.status.DEF;
                     } else {
                         damage= player.status.ATK + one.ATK - target.status.DEF;
                     }
 
+                    // 伤害低于零值 则伤害为 1
                     if (damage <= 0) {
                         damage = 1;
                     }
 
+                    // 显示伤害情况
                     cout << player.nameCN << "使用" << one.nameCN << "对" << target.nameCN << "造成了" << damage << "点伤害" << endl;
                     target.status.HP -= damage;
 
@@ -573,26 +620,31 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
                 return false;
             }
         }
+        // 无此技能
         cout << "you do not have the skill " << commands[1] << endl;
         return false;
     }
 
     // flee 命令
     if (command == flee) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 不可逃跑
         cout << "HaHaHa you can not flee" << endl;
         return false;
     }
 
     // use 命令
     if (command == use) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 2)){
             return false;
         }
 
+        // 判断使用 drug 是都成功
         if (!player.useDrug(commands[1], target)){
             return false;
         }
@@ -602,10 +654,12 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
 
     // help 命令
     if (command == help) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 显示当前可用命令
         cout << "these commands are available" << endl;
         for (const auto& one: this->commandsMap) {
             if (find(bannedCommands.begin(), bannedCommands.end(), fromString<int>(one.second)) == bannedCommands.end()){
@@ -613,9 +667,11 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
             }
         }
 
+        // 帮助信息
         cout << "you can use" << endl;
         cout <<"'command' + -h or 'command' + --help" << endl;
         cout << "look for specific help" << endl;
+
         return false;
     }
 
@@ -624,12 +680,12 @@ bool Client::battleExecuteCommand(vector<string> commands, Character &target, ve
 
 /*
  * @brief npc交互状态的执行方法
- * 接受命令 purchase sell talk accept_mission finish_mission
+ * 接受命令 talk accept_mission finish_mission
  *         help
  *
  * @param commands 命令行获取的命令(已切片成 vector 类型)
  * @param npc 互动的 npc 对象
- * @return true 则命令执行完成 false 则命令未执行，重新输入
+ * @return false npc互动命令行可重用
  */
 bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& bannedCommands) {
     // commandMap 为 map<string, string> 类型，对应 命令 和 表示数值
@@ -637,6 +693,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
     auto command = (CommandLists)fromString<int>(commandsMap[commands[0]]);
     if (command == purchase) {
         if (commands.size() == 2) {
+            // 用物品名查找物品的 id
             ifstream f(NAMEID_TXT_PATH);
             map<string, string>data = Tool::dataMap(f);
 
@@ -648,6 +705,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
 
             int itemId = fromString<int>(data[commands[1]]);
 
+            // 指定物品个数 和 不指定个数(默认为 1)
             if (commands.size() == 2){
                 npc.buy(itemId, 1, player);
             } else{
@@ -658,6 +716,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
 
         if (commands.size() == 4 && commands[2] == "-number")
         {
+            // 用物品名查找物品的 id
             ifstream f(NAMEID_TXT_PATH);
             map<string, string>data = Tool::dataMap(f);
 
@@ -669,6 +728,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
 
             int itemId = fromString<int>(data[commands[1]]);
 
+            // 指定物品个数 和 不指定个数(默认为 1)
             if (commands.size() == 2){
                 npc.buy(itemId, 1, player);
             } else{
@@ -682,10 +742,12 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
     }
 
     if (command == sell) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 3)){
             return false;
         }
 
+        // 用物品名查找物品的 id
         ifstream f(NAMEID_TXT_PATH);
         map<string, string>data = Tool::dataMap(f);
 
@@ -697,6 +759,7 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
 
         int itemId = fromString<int>(data[commands[1]]);
 
+        // 使用 id 判断物品类型
         if (itemId < 100) {
             Weapon one(itemId);
             npc.sell(one, fromString<int>(commands[2]), player);
@@ -721,18 +784,33 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
     }
 
     if (command == talk) {
+        // 判断参数数目是否正确
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         npc.talk(player);
 
         return false;
     }
 
     if (command == accept_mission) {
+        // 判断参数数目是否正确
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         npc.assignQuest(player);
 
         return false;
     }
 
     if (command == finish_mission) {
+        // 判断参数数目是否正确
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         npc.finishQuest(player);
 
         return false;
@@ -740,10 +818,12 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
 
     // help 命令
     if (command == help) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 显示当前可用命令
         cout << "these commands are available" << endl;
         for (const auto& one: this->commandsMap) {
             if (find(bannedCommands.begin(), bannedCommands.end(), fromString<int>(one.second)) == bannedCommands.end()){
@@ -751,9 +831,11 @@ bool Client::npcExecuteCommand(vector<string> commands, NPC &npc, vector<int>& b
             }
         }
 
+        // 帮助信息
         cout << "you can use" << endl;
         cout <<"'command' + -h or 'command' + --help" << endl;
         cout << "look for specific help" << endl;
+
         return false;
     }
 
@@ -865,6 +947,11 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc, vector<int>& 
     }
 
     if (command == talk) {
+        // 判断参数数目是否正确
+        if (commandWrongUsage(commands, 1)){
+            return false;
+        }
+
         npc.talk(player);
 
         return false;
@@ -872,10 +959,12 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc, vector<int>& 
 
     // help 命令
     if (command == help) {
+        // 判断参数数目是否正确
         if (commandWrongUsage(commands, 1)){
             return false;
         }
 
+        // 显示当前可用命令
         cout << "these commands are available" << endl;
         for (const auto& one: this->commandsMap) {
             if (find(bannedCommands.begin(), bannedCommands.end(), fromString<int>(one.second)) == bannedCommands.end()){
@@ -883,9 +972,11 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc, vector<int>& 
             }
         }
 
+        // 帮助信息
         cout << "you can use" << endl;
         cout <<"'command' + -h or 'command' + --help" << endl;
         cout << "look for specific help" << endl;
+
         return false;
     }
 
@@ -1017,6 +1108,7 @@ void Client::npcBase(NPC &npc) {
         // 与npc交互状态禁止  普通命令 、战斗命令 和 保存命令
         vector<int> bannedCommands = {status, skills, equipment, package, item, equip, takeoff, discard, maps, mission,
                                       attack, skill, flee, use,
+                                      purchase, sell,
                                       save};
 
         // 判断命令规整后是否为空
@@ -1090,7 +1182,3 @@ void Client::shopBase(NPC& npc) {
         }
     }
 }
-
-
-
-
