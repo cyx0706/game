@@ -814,9 +814,17 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc, vector<int>& 
             int itemId = fromString<int>(data[commands[1]]);
 
             if (commands.size() == 2){
-                npc.buy(itemId, 1, player);
+                if(npc.buy(itemId, 1, player)){
+                    system("cls");
+                    npc.shopMenu(player);
+                }
+
             } else{
-                npc.buy(itemId, fromString<int>(commands[3]), player);
+                if(npc.buy(itemId, fromString<int>(commands[3]), player)){
+                    system("cls");
+                    npc.shopMenu(player);
+                }
+
             }
             return false;
         }
@@ -843,23 +851,37 @@ bool Client::shopExecuteCommand(vector<string> commands, NPC &npc, vector<int>& 
 
         if (itemId < 100) {
             Weapon one(itemId);
-            npc.sell(one, fromString<int>(commands[2]), player);
+            if(npc.sell(one, fromString<int>(commands[2]), player)){
+                system("cls");
+                npc.shopMenu(player);
+            }
+
             return false;
         }
 
         if (itemId < 200) {
             Armor one(itemId);
-            npc.sell(one, fromString<int>(commands[2]), player);
+            if(npc.sell(one, fromString<int>(commands[2]), player)){
+                system("cls");
+                npc.shopMenu(player);
+            }
+
             return false;
         }
 
         if (itemId < 300) {
             Drug one(itemId);
-            npc.sell(one, fromString<int>(commands[2]), player);
+            if(npc.sell(one, fromString<int>(commands[2]), player)){
+                system("cls");
+                npc.shopMenu(player);
+            }
             return false;
         } else{
             Item one(itemId);
-            npc.sell(one, fromString<int>(commands[2]), player);
+            if(npc.sell(one, fromString<int>(commands[2]), player)){
+                system("cls");
+                npc.shopMenu(player);
+            }
             return false;
         }
     }

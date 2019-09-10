@@ -23,3 +23,5 @@ moonlight-grass 303
 chain-of-fool 304
 fur 305
 mushroom 306
+white-eyed-wolf-skin 307
+diary 308

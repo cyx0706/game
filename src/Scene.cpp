@@ -111,6 +111,7 @@ void dynamicScene1(){
         string t =  "你在角落里发现了一本古怪封装的书。你尝试打开，但书纹丝不动。";
         Scene::show(t);
         cout << "【系统提示】:获得神秘的日记" << endl;
+        player.addItem(308, 1); // 获得日记
         do{
             cout << "那么，怎么办呢: 1搜查这个屋子, 2前往楼下" << endl;
             cin >> choose;
@@ -151,6 +152,7 @@ void dynamicScene2(){
     Scene::show(t);
     t = "【系统提示】:你获得了皇城的通行证";
     Scene::show(t);
+    t = "【系统提示】:你可以使用空格和十字格内的人物或物品交互";
     player.addItem(302);
     system("pause");
     system("cls");

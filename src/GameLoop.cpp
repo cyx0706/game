@@ -99,8 +99,8 @@ void GameLoop::initGame() {
     hOut = GetStdHandle(STD_OUTPUT_HANDLE);
     system("mode con cols=100 lines=40");
     // 设置初始位置
-    uPos.X = 0;
-    uPos.Y = 0;
+    uPos.X = 1;
+    uPos.Y = 1;
 
     NPC::readLastLine = 0; // 初始化
     // 清空商店
