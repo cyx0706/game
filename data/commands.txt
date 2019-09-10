@@ -40,7 +40,7 @@ equipment 8
 // 展示指定角色的装备
 
 package 9
-/ package
+/ package <-w/-a/-d/-i>
 // 展示玩家的背包
 
 item 10

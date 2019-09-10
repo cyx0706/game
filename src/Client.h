@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Character.h"
+
 #include "global.h"
 
 static const string COMMANDS_TXT_PATH = "../data/commands.txt"; // NOLINT
