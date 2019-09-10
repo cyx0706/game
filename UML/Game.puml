@@ -1,0 +1,418 @@
+@startuml
+note top of Character
+  Location为结构体
+  int mapId
+  int x
+  int y
+end note
+
+class Status{
++Status(int HP, int MP, int ATK = 15, int PHY = 4,
+++int DEF = 2, int CRITICAL = 10, int SPEED = 5)
++Status()
++int HP
++int MP
++int Phy
++int ATK
++int Speed
++int Critical
++int DEF
++void saveStatus(string owner);
++void loadStatus(string owner, string path);
+}
+
+class Buff{
++Buff()
++Buff(string name, string description, int duration)
++string name
++string description
++int duration
++void showDescription()
+}
+
+
+class Character{
++Character()
++Status status
++string id
++string nameEN
++string nameCN
++string description
++int fallingExp
++int fallingMoney
++vector<Buff> buffs
++Location mapLocation
++char displayChar
++vector <Skill> skills
++{abstract}bool isDead()
++{abstract}void showDescription()
+
+}
+
+
+class Client{
++Client()
++void base()
++void base(Character& target)
++void npcBase(NPC& npc)
++void shopBase(NPC& npc)
++bool executeCommand(vector<string> commands, vector<int>& bannedCommands)
++bool battleExecuteCommand(vector<string> commands, Character& target, vector<int>& bannedCommands)
++bool npcExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands)
++bool shopExecuteCommand(vector<string> commands, NPC& npc, vector<int>& bannedCommands)
++bool analyse(vector<string> commands, vector<int>& bannedCommands)
++{static} bool isBanned(CommandLists command, vector<int>& bannedCommands)
++{static} void commandHelp(string& command);
+-map<string, string> commandsMap;
+}
+
+class GameLoop{
++{static}void mapLoop();
++{static} void initGame();
++{static} void newGame();
++{static} void npcLoop(NPC &talkedNPC);
++{static} void commandLoop();
++{static} void gameInterface();
++{static} void battleLoop(Character &character);
++{static} void shopLoop(NPC &npc);
++{static} bool canLoad();
+}
+
+
+class Item{
++Item()
++Item(int id, int number = 1)
++{abstract}void showDescription()
++int id
++string nameCN
++string nameEN
++string description
++int num
++int boughtPrice
++bool canDrop
++bool canSell
+}
+
+class Drug{
++Drug()
++explicit Drug(int id, int number = 1)
++int HP
++int MP
++int Phy
++bool playerTarget
++{abstract}void showDescription()
+}
+
+
+class Weapon{
+
++Weapon()
++explicit Weapon(int id, int number = 1)
++int ATK
++int DEF
++int Speed
++{abstract}void showDescription()
+}
+
+
+class Armor{
++Armor()
++explicit Armor(int id, int number = 1)
++int ATK = 0
++int DEF = 0
++int Speed = 0
++{abstract}void showDescription()
+}
+
+note as MapNote
+SCOORD 继承内置的结构体 COORD并重载了运算符
+
+bool operator<(const SCOORD &pos)
+bool operator>(const SCOORD &pos)
+bool operator==(const SCOORD &pos)
+
+bool operator<(const SCOORD &pos) const
+bool operator>(const SCOORD &pos) const
+bool operator==(const SCOORD &pos) const
+end note
+
+class Map{
+friend class GameLoop
++int id;  //根据这个在文件里查找
++char edgeSign
++SCOORD initPos // 记录用户的初始化位置
++void deleteBarrier(SCOORD& pos, string& type)
++void initMap()
++void move(int key) // 用户移动来调用这个
++{static} void gotoxy(SCOORD pos)
++void print(char playerChar = 'P')  // 显示用户
++void clean(SCOORD clPos) // 清除
++int checkEvent()// 检查事件
++void load(int mapId) // 载入地图
++void nextMap(int mapId)
++void showDescription()
++{static} void setCursorStatus(bool visiable)
++{static} bool canEnter(int mapId, int fromMapId)
++{static} bool checkSpecialScene(int toMapId)
+-vector<short>edgeLeft  // 不能在类里声明大小,除非声明为静态
+-vector<short>edgeRight // 左右边界
+-vector<short>doorPosTop  // 上下侧的门
+-vector<short>doorPosBottom;
+-vector<SCOORD>barrier
+-map<SCOORD, int>items  //映射对应物品id
+-map<SCOORD, string>npcs// 映射对应的NPC
+-map<SCOORD, string>monsters// 映射对应的怪
+-string nameCN
+-string nameEN
+-map<SCOORD, int>roadTo  //地图联通
+-map<SCOORD, SCOORD>road   //道路联通
+-bool checkBottomMapTransition()
+-bool checkTopMapTransition()
+-void initChar(char playerChar = 'P')
+-void initBarrier()
+}
+
+MapNote .. Map
+
+
+class Mission{
++Mission(int id)
++void showDescription()
++bool checkFinished()
++void missionFinish(Player &player)
++void loadMission(ifstream& f,string owner, string path)
++void saveMission(string owner, string path)
++int id
++string nameEN;
++string nameCN;
++string description;
++bool isAccepted;
++bool isFinished;
++bool isProcess;
++int bonusMoney;
++int bonusExperiencePoint;
++string assigner;
++map<int, int> requiredItem;
+}
+
+
+note as NPCNote
+  TalkContent为结构体,成员为
+  <b>string start</b>
+  <b>string process</b>
+  <b>string end</b>
+end note
+
+class NPC{
++map<int, TalkContent>talkContent //不同任务的不同对话
++bool missionStatus
++{static} int readLastLine //优化文件读写用
++NPC(string id, string path = SAVE_NPC_PATH) // 根据id读取文件构造
++friend istream& operator>>(istream &fpStream, NPC &npc)
++bool NPCMenu(Player &player)
++void shopMenu(Player &player)
++void assignQuest(Player& player)
++void finishQuest(Player& player)
++void talk(Player &player)
++bool buy(int itemId, int number, Player& player)
++bool sell(Item &item, int number, Player& player)
++void setVisibility(bool isVisible)
++bool getVisibility()
++bool getShopStatus()
++{abstract}bool isDead()
++{abstract}void showDescription()
++{static} void storeSave()
++{static} void storeClear()
++{static} void storeLoad(string path = SHOP_FILE_PATH)
++{static} void save()
++void load(string path)
+-{static} Shop store
+-bool specialEvent(Player &player)
+-vector <Mission> questList
+-bool shopStatus
+-bool battleStatus
+-bool bar
+-bool isVisible
+-bool needSave
+}
+NPCNote .. NPC
+
+class Monster{
++Monster(string id);
++vector<Item>fallingItem;
+}
+
+
+class Shop{
++Shop()
++bool buy(int itemId, int number, int &money)
++bool sell(Item &item, int number, int &money)
++void shopMenu(SCOORD &pos)
++void save()
++void load(string path = SHOP_FILE_PATH)
++Package<Weapon> weaponPackage
++Package<Armor> armorPackage
++Package<Drug> drugPackage
+}
+
+class Package << template >> { 
+Package(int max = 25)
++Package(Package &aPackage)
++vector<T> items
++int maxItem; // 每个背包的最大大小
++bool addItem(int itemId, int number)
++void showItems()
++void showItem(int itemId)
++bool deleteItem(int itemId, int number)
++bool deleteItem(int itemId)
+}
+
+class Player{
+Player()
++int money
++int maxHP
++int maxMP
++void addMoney(int addition)
++void addExp(int addition)
++void levelUp()
++bool equipArmor(string &name)
++bool equipWeapon(string &name)
++bool takeOffArmor(string &name)
++bool takeOffWeapon(string &name)
++Armor* getArmor()
++Weapon* getWeapon()
++void showArmors()
++void showWeapons()
++void showDrugs()
++void showItems()
++void addBuff(Buff &buff)
++void deleteBuff(Buff &buff)
++bool addMission(Mission &mission)
++void showMissions()
++void showMission()
++Mission* getMission(string &assignerName)
++Mission* getMission(int missionId)
++void showStatus()//显示人物属性
++void showSkills()
++void battleBagShow(SCOORD &pos)
++void playerMenu() //提示命令
++void addItem(int itemId, int number = 1)
++void deleteItem(int itemId, int number = 1)
++void eraseItem(int itemId)
++int getItem(int itemId)
++bool showItem(int itemId)
++bool useDrug(string& name, Character& character)
++bool isDead() override 
++void deadScene()// 死亡场景
++void save()
++void load()
+-Package<Weapon> weaponBag
+-Package<Armor> armorBag
+-Package<Drug> drugBag
+-Package<Item> itemBag
+-int experiencePoint
+-vector <Mission> quests
+-int days
+-Weapon weapon
+-Armor armor
+-int Lv
+}
+
+class Skill{
+Skill()
+Skill(string id)
++void saveSkill(string owner)
++void loadSkill(string owner)
++Buff buff
++string description
++int HP
++int MP
++int ATK
++string id
++string nameCN
++string nameEN
+}
+
+Skill *-- Buff
+Player ..|> Package : weaponPackage
+note on link : <<bind>> <<Weapon>>
+Player ..|> Package :armorPackage
+note on link : <<bind>> <<Armor>>
+Player ..|> Package : drugPackage
+note on link : <<bind>> <<Drug>>
+Player ..|> Package : itemBag
+note on link : <<bind>> <<Item>>
+Shop ..|> Package : weaponPackage
+note on link : <<bind>> <<Weapon>>
+Shop ..|> Package :armorPackage
+note on link : <<bind>> <<Armor>>
+Shop ..|> Package : drugPackage
+note on link : <<bind>> <<Drug>>
+
+note as SceneNote
+场景类,用于展示场景
+end note
+
+class Scene {
+Scene(int sceneId)
+int sceneId
+string content
+string path
+{static} void show(string& sentence)
+void branch()
+void displayScene()
+friend istream& operator>>(istream &fpStream, Scene &scene)
+}
+
+SceneNote .. Scene
+
+note as ToolNote
+工具类
+end note
+class Tool {
+{static} vector<string> split(const string& str, char sep = ' ')
+{static} string clean(const string& str)
+{static} map<string, string> dataMap(ifstream& f)
+{static} bool boolFromString(string& str)
+{static} void stringToChar(string &str, char t[])
+}
+ToolNote .. Tool
+
+note as UINote
+UI类用于主界面的设置,但其存在意义不大,
+本来需要和游戏的里的UI合并在一起,奈何意识到这一点的时候太晚了
+所以这个类只负责了游戏启动页面的绘制
+end note
+
+class UI {
++{static} void pos(int x, int y)//确定光标位置
++{static} void white_back()//还原亮白色字体
++{static} void cyan_choose()//青色字体
++{static} void on_Select()//被选中时的样式
++{static} void onChoose(int x, int y)//确定所选中的位置
++{static} void star()//初始化界面
++{static} void setYellow()//黄色字体
++void setPurple()
++void setBlue()
++void blackOnWhite()
++{static} void redOnWhite()//白底红字
++void redOnGrey()
++{static} void printTitle()//输出游戏标题
++{static} void setRed()
+}
+UINote .. UI
+
+Character <|-- Player
+Player *-- Skill
+NPC *-- Shop :contain
+Character <|-- NPC
+Character <|-- Monster
+Item <|-- Weapon
+Item <|-- Armor
+Item <|-- Drug
+Mission *-- Player
+Mission *-- NPC
+Status *-- Character : contains
+Status <|- Buff
+
+@enduml
